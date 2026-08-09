@@ -1,0 +1,191 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-brand: #8B5E3C;
+  --color-brand-light: #C4956A;
+  --color-brand-dark: #5C3D28;
+  --color-accent: #D4A574;
+  --color-cream: #FDF6F0;
+  --color-warm-gray: #F5F0EB;
+  --color-charcoal: #2D2D2D;
+  --font-sans: var(--font-geist-sans);
+  --font-serif: var(--font-playfair);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: #ffffff;
+  color: #2D2D2D;
+  font-family: var(--font-sans), system-ui, sans-serif;
+}
+
+::selection {
+  background: #D4A574;
+  color: #fff;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #F5F0EB;
+}
+::-webkit-scrollbar-thumb {
+  background: #C4956A;
+  border-radius: 4px;
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+.animate-slide-in-left {
+  animation: slideInLeft 0.8s ease-out forwards;
+}
+
+.delay-100 { animation-delay: 0.1s; }
+.delay-200 { animation-delay: 0.2s; }
+.delay-300 { animation-delay: 0.3s; }
+.delay-400 { animation-delay: 0.4s; }
+.delay-500 { animation-delay: 0.5s; }
+
+/* Product card hover */
+.product-card {
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), box-shadow 0.4s ease;
+}
+.product-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(139, 94, 60, 0.15);
+}
+.product-card .product-image {
+  transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.product-card:hover .product-image {
+  transform: scale(1.08);
+}
+
+/* Button styles */
+.btn-primary {
+  background: #8B5E3C;
+  color: #fff;
+  padding: 14px 36px;
+  border-radius: 50px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 2px solid #8B5E3C;
+}
+.btn-primary:hover {
+  background: #5C3D28;
+  border-color: #5C3D28;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(139, 94, 60, 0.3);
+}
+
+.btn-outline {
+  background: transparent;
+  color: #8B5E3C;
+  padding: 14px 36px;
+  border-radius: 50px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 2px solid #8B5E3C;
+}
+.btn-outline:hover {
+  background: #8B5E3C;
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+/* Section styling */
+.section-padding {
+  padding: 100px 0;
+}
+
+/* Nav link underline effect */
+.nav-link {
+  position: relative;
+}
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: #8B5E3C;
+  transition: width 0.3s ease;
+}
+.nav-link:hover::after {
+  width: 100%;
+}
+
+/* WhatsApp floating button */
+.whatsapp-btn {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 60px;
+  height: 60px;
+  background: #25D366;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(37, 211, 102, 0.4);
+  transition: all 0.3s ease;
+  z-index: 1000;
+}
+.whatsapp-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 28px rgba(37, 211, 102, 0.5);
+}
