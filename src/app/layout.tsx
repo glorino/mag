@@ -16,9 +16,9 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "MAG | Premium African Fashion",
+  title: "GZK | Women's Wears",
   description:
-    "MAG is a premium Nigerian fashion brand creating ready-to-wear dresses, kaftans, ankara sets, and contemporary African clothing for the modern woman.",
+    "GZK is a clothing brand located in Lagos Nigeria. We produce ready to wear dresses, blouses, shirts, jackets and tunics for women of all sizes.",
   keywords: [
     "Nigerian fashion",
     "African clothing",
@@ -28,13 +28,13 @@ export const metadata: Metadata = {
     "Lagos fashion",
     "women's wear",
     "ready to wear",
+    "GZK",
   ],
   openGraph: {
-    title: "MAG | Premium African Fashion",
-    description:
-      "Contemporary African fashion for the modern woman. Dresses, kaftans, ankara sets and more.",
-    url: "https://mag.vercel.app",
-    siteName: "MAG Fashion",
+    title: "GZK | Women's Wears",
+    description: "Ready to wear dresses, blouses, shirts, jackets and tunics for women of all sizes.",
+    url: "https://mag-drab.vercel.app",
+    siteName: "GZK Fashion",
     locale: "en_US",
     type: "website",
   },
