@@ -1,8 +1,4 @@
-const footerLinks = {
-  shop: ["New Arrivals", "Ankara", "Adire", "Kaftans", "Dresses", "Tops & Sets"],
-  help: ["Size Guide", "Shipping Info", "Returns Policy", "FAQ", "Track Order"],
-  company: ["About GZK", "Contact", "Blog", "See Who is Wearing GZK"],
-};
+import Link from "next/link";
 
 export default function Footer() {
   return (
@@ -11,9 +7,11 @@ export default function Footer() {
         <div className="grid grid-cols-2 md:grid-cols-4 gap-10">
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
-            <span className="text-2xl font-bold tracking-[0.15em]">GZK</span>
+            <Link href="/" className="text-2xl font-bold tracking-[0.15em]">
+              GZK
+            </Link>
             <p className="text-white/50 text-[13px] leading-relaxed mt-3">
-              GZK is a clothing brand located in Lagos Nigeria. We produce ready to wear dresses, blouses, shirts, jackets and tunics for women of all sizes.
+              Premium Nigerian fashion brand. Ready-to-wear dresses, blouses, shirts, jackets and tunics for women of all sizes.
             </p>
             <div className="flex gap-3 mt-5">
               {["Facebook", "Instagram"].map((s) => (
@@ -24,19 +22,38 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Links */}
-          {Object.entries(footerLinks).map(([title, links]) => (
-            <div key={title}>
-              <h4 className="font-semibold text-[12px] tracking-widest uppercase mb-4">{title}</h4>
-              <ul className="space-y-2.5">
-                {links.map((link) => (
-                  <li key={link}>
-                    <a href="#" className="text-white/50 text-[13px] hover:text-white transition-colors">{link}</a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+          {/* Shop */}
+          <div>
+            <h4 className="font-semibold text-[12px] tracking-widest uppercase mb-4">Shop</h4>
+            <ul className="space-y-2.5">
+              <li><Link href="/shop" className="text-white/50 text-[13px] hover:text-white transition-colors">New Arrivals</Link></li>
+              <li><Link href="/shop" className="text-white/50 text-[13px] hover:text-white transition-colors">Ankara</Link></li>
+              <li><Link href="/shop" className="text-white/50 text-[13px] hover:text-white transition-colors">Adire</Link></li>
+              <li><Link href="/shop" className="text-white/50 text-[13px] hover:text-white transition-colors">Kaftans</Link></li>
+              <li><Link href="/shop" className="text-white/50 text-[13px] hover:text-white transition-colors">Dresses</Link></li>
+              <li><Link href="/shop" className="text-white/50 text-[13px] hover:text-white transition-colors">Tops & Sets</Link></li>
+            </ul>
+          </div>
+
+          {/* Help */}
+          <div>
+            <h4 className="font-semibold text-[12px] tracking-widest uppercase mb-4">Help</h4>
+            <ul className="space-y-2.5">
+              <li><Link href="/size-guide" className="text-white/50 text-[13px] hover:text-white transition-colors">Size Guide</Link></li>
+              <li><Link href="/faq" className="text-white/50 text-[13px] hover:text-white transition-colors">Shipping Info</Link></li>
+              <li><Link href="/returns" className="text-white/50 text-[13px] hover:text-white transition-colors">Returns Policy</Link></li>
+              <li><Link href="/faq" className="text-white/50 text-[13px] hover:text-white transition-colors">FAQ</Link></li>
+            </ul>
+          </div>
+
+          {/* Company */}
+          <div>
+            <h4 className="font-semibold text-[12px] tracking-widest uppercase mb-4">Company</h4>
+            <ul className="space-y-2.5">
+              <li><Link href="/about" className="text-white/50 text-[13px] hover:text-white transition-colors">About GZK</Link></li>
+              <li><Link href="/contact" className="text-white/50 text-[13px] hover:text-white transition-colors">Contact</Link></li>
+            </ul>
+          </div>
         </div>
       </div>
 
@@ -44,11 +61,13 @@ export default function Footer() {
       <div className="border-t border-white/10">
         <div className="max-w-[1200px] mx-auto px-6 py-5 flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-white/40 text-[12px]">
-            Copyright {new Date().getFullYear()} GZK Concept. All rights reserved. Designed by DEE&apos;S WEBVERSE.
+            &copy; 2026 Fashion Store. All rights reserved.
           </p>
           <div className="flex gap-4 text-[12px] text-white/40">
-            <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
-            <a href="#" className="hover:text-white transition-colors">Terms & Conditions</a>
+            <Link href="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link>
+            <Link href="/terms" className="hover:text-white transition-colors">Terms &amp; Conditions</Link>
+            <Link href="/returns" className="hover:text-white transition-colors">Returns Policy</Link>
+            <Link href="/size-guide" className="hover:text-white transition-colors">Size Guide</Link>
           </div>
         </div>
       </div>

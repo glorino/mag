@@ -1,0 +1,139 @@
+"use client";
+
+import { motion } from "framer-motion";
+import Link from "next/link";
+
+export default function ReturnsPage() {
+  return (
+    <main className="pt-[120px]">
+      {/* Hero */}
+      <section className="relative py-20 bg-charcoal text-white">
+        <div className="max-w-[1200px] mx-auto px-6 text-center">
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-[11px] tracking-[0.3em] uppercase text-white/50 mb-3"
+          >
+            Customer Service
+          </motion.p>
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="text-4xl md:text-5xl font-serif font-bold mb-4"
+          >
+            Returns Policy
+          </motion.h1>
+          <motion.div
+            initial={{ width: 0 }}
+            animate={{ width: 60 }}
+            transition={{ delay: 0.3, duration: 0.5 }}
+            className="h-[2px] bg-white/30 mx-auto"
+          />
+        </div>
+      </section>
+
+      {/* Content */}
+      <section className="section-padding bg-white">
+        <div className="max-w-[800px] mx-auto px-6">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            <p className="text-text-light text-[12px] mb-8">Last updated: January 2026</p>
+
+            <div className="space-y-8">
+              <div>
+                <h2 className="text-xl font-serif font-bold text-charcoal mb-3">Return Window</h2>
+                <p className="text-text leading-relaxed">
+                  We want you to love your GZK purchase. If for any reason you are not completely satisfied, you may return your item(s) within <strong>7 days</strong> of receiving your order for a full refund or exchange.
+                </p>
+              </div>
+
+              <div>
+                <h2 className="text-xl font-serif font-bold text-charcoal mb-3">Eligibility</h2>
+                <p className="text-text leading-relaxed">To be eligible for a return, your item must be:</p>
+                <ul className="text-text leading-relaxed space-y-2 list-disc list-inside mt-2">
+                  <li>Unused and in the same condition that you received it</li>
+                  <li>In its original packaging with all tags still attached</li>
+                  <li>Accompanied by the original receipt or proof of purchase</li>
+                </ul>
+              </div>
+
+              <div>
+                <h2 className="text-xl font-serif font-bold text-charcoal mb-3">Non-Returnable Items</h2>
+                <p className="text-text leading-relaxed">The following items cannot be returned:</p>
+                <ul className="text-text leading-relaxed space-y-2 list-disc list-inside mt-2">
+                  <li>Items that have been worn, washed, or altered</li>
+                  <li>Items without original tags or packaging</li>
+                  <li>Items purchased on final sale or with a clearance discount</li>
+                  <li>Custom-made or tailored orders</li>
+                  <li>Accessories (jewelry, scarves, etc.) for hygiene reasons</li>
+                </ul>
+              </div>
+
+              <div>
+                <h2 className="text-xl font-serif font-bold text-charcoal mb-3">How to Initiate a Return</h2>
+                <ol className="text-text leading-relaxed space-y-3 list-decimal list-inside">
+                  <li>Contact our customer service team via WhatsApp at <strong>08184118997</strong> or email at <strong>info@gzknigeria.net</strong> with your order number and reason for return.</li>
+                  <li>Our team will review your request and provide you with a return authorization and instructions.</li>
+                  <li>Pack the item(s) securely in the original packaging.</li>
+                  <li>Ship the item(s) to the address provided by our customer service team.</li>
+                  <li>Once received and inspected, we will process your refund or exchange within 5-7 business days.</li>
+                </ol>
+              </div>
+
+              <div>
+                <h2 className="text-xl font-serif font-bold text-charcoal mb-3">Refund Process</h2>
+                <p className="text-text leading-relaxed">
+                  Refunds will be credited to the original payment method within 5-7 business days after we receive and inspect the returned item. You will receive an email notification once your refund has been processed. Please note that shipping costs are non-refundable.
+                </p>
+              </div>
+
+              <div>
+                <h2 className="text-xl font-serif font-bold text-charcoal mb-3">Exchanges</h2>
+                <p className="text-text leading-relaxed">
+                  We are happy to exchange items for a different size or colour, subject to availability. If you need to exchange for a different product, we recommend placing a new order and returning the original item for a refund.
+                </p>
+              </div>
+
+              <div>
+                <h2 className="text-xl font-serif font-bold text-charcoal mb-3">Damaged or Defective Items</h2>
+                <p className="text-text leading-relaxed">
+                  If you receive a damaged or defective item, please contact us within 48 hours of receiving your order with photos of the damage. We will arrange for a replacement or full refund at no additional cost to you.
+                </p>
+              </div>
+
+              <div>
+                <h2 className="text-xl font-serif font-bold text-charcoal mb-3">Return Shipping</h2>
+                <p className="text-text leading-relaxed">
+                  Return shipping costs are the responsibility of the customer unless the item is defective or we made an error. We recommend using a trackable shipping service for your protection.
+                </p>
+              </div>
+
+              <div>
+                <h2 className="text-xl font-serif font-bold text-charcoal mb-3">Contact Us</h2>
+                <p className="text-text leading-relaxed">
+                  If you have any questions about our Returns Policy, please contact us at:
+                </p>
+                <div className="mt-3 text-text">
+                  <p><strong>GZK Concept</strong></p>
+                  <p>35 Eric Moore Close, Off Eric Moore Road, Surulere, Lagos</p>
+                  <p>Phone: 08184118997, 08033449004</p>
+                  <p>Email: info@gzknigeria.net</p>
+                </div>
+              </div>
+
+              <div className="pt-4 border-t border-border">
+                <Link href="/shop" className="btn-primary inline-flex">
+                  Continue Shopping
+                </Link>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+    </main>
+  );
+}

@@ -2,13 +2,14 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const navLinks = [
-  { name: "Home", href: "#" },
-  { name: "Shop", href: "#shop" },
-  { name: "About GZK", href: "#about" },
-  { name: "Contact", href: "#contact" },
-  { name: "FAQ", href: "#faq" },
+  { name: "Home", href: "/" },
+  { name: "Shop", href: "/shop" },
+  { name: "About GZK", href: "/about" },
+  { name: "Contact", href: "/contact" },
+  { name: "FAQ", href: "/faq" },
 ];
 
 const categories = [
@@ -18,6 +19,7 @@ const categories = [
 ];
 
 export default function Header() {
+  const pathname = usePathname();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [shopOpen, setShopOpen] = useState(false);
@@ -51,24 +53,26 @@ export default function Header() {
               onMouseEnter={() => link.name === "Shop" && setShopOpen(true)}
               onMouseLeave={() => link.name === "Shop" && setShopOpen(false)}
             >
-              <a
+              <Link
                 href={link.href}
-                className="nav-link text-[13px] font-medium tracking-wide text-text hover:text-charcoal transition-colors"
+                className={`nav-link text-[13px] font-medium tracking-wide transition-colors ${
+                  pathname === link.href ? "text-charcoal" : "text-text hover:text-charcoal"
+                }`}
               >
                 {link.name}
-              </a>
+              </Link>
               {/* Shop dropdown */}
               {link.name === "Shop" && shopOpen && (
                 <div className="absolute top-full left-0 pt-2 z-50">
                   <div className="bg-white shadow-lg border border-border rounded-sm py-3 min-w-[220px]">
                     {categories.map((cat) => (
-                      <a
+                      <Link
                         key={cat}
-                        href="#shop"
+                        href="/shop"
                         className="block px-5 py-2 text-[13px] text-text hover:text-charcoal hover:bg-warm-gray transition-colors"
                       >
                         {cat}
-                      </a>
+                      </Link>
                     ))}
                   </div>
                 </div>
@@ -111,22 +115,24 @@ export default function Header() {
       <div className={`lg:hidden overflow-hidden transition-all duration-300 ${mobileOpen ? "max-h-[400px] opacity-100" : "max-h-0 opacity-0"}`}>
         <nav className="px-6 py-6 bg-white border-t border-border flex flex-col">
           {navLinks.map((link) => (
-            <a
+            <Link
               key={link.name}
               href={link.href}
               onClick={() => setMobileOpen(false)}
-              className="text-[13px] font-medium tracking-wide text-text hover:text-charcoal transition-colors py-3 border-b border-border"
+              className={`text-[13px] font-medium tracking-wide transition-colors py-3 border-b border-border ${
+                pathname === link.href ? "text-charcoal" : "text-text hover:text-charcoal"
+              }`}
             >
               {link.name}
-            </a>
+            </Link>
           ))}
           <div className="mt-4">
             <p className="text-[11px] font-semibold tracking-widest uppercase text-text-light mb-3">Categories</p>
             <div className="flex flex-wrap gap-2">
               {categories.map((cat) => (
-                <a key={cat} href="#shop" className="text-[12px] text-text hover:text-charcoal border border-border px-3 py-1 rounded-full hover:border-charcoal transition-colors">
+                <Link key={cat} href="/shop" onClick={() => setMobileOpen(false)} className="text-[12px] text-text hover:text-charcoal border border-border px-3 py-1 rounded-full hover:border-charcoal transition-colors">
                   {cat}
-                </a>
+                </Link>
               ))}
             </div>
           </div>
