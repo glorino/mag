@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 export default function About() {
   return (
@@ -14,13 +15,14 @@ export default function About() {
             transition={{ duration: 0.6 }}
             className="relative"
           >
-            <div className="aspect-[4/5] bg-gradient-to-br from-warm-gray to-cream flex items-center justify-center border border-border">
-              <div className="text-center text-text-light">
-                <svg className="w-24 h-24 mx-auto mb-4 opacity-30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={0.8} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
-                </svg>
-                <p className="text-[12px] tracking-widest uppercase">Our Story</p>
-              </div>
+            <div className="relative aspect-[4/5] overflow-hidden border border-border">
+              <Image
+                src="https://images.unsplash.com/photo-1578905326519-3aa98aa6a728?w=800&h=1000&fit=crop&auto=format"
+                alt="African fashion"
+                fill
+                sizes="(max-width: 1024px) 100vw, 50vw"
+                className="object-cover"
+              />
             </div>
           </motion.div>
 
