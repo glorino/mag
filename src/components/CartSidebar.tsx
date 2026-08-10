@@ -41,13 +41,7 @@ export default function CartSidebar() {
             <div className="space-y-6">
               {items.map((item) => (
                 <div key={`${item.id}-${item.size}`} className="flex gap-4">
-                  <div className="w-20 h-24 flex-shrink-0 rounded overflow-hidden" style={{ background: item.pattern }}>
-                    <div className="w-full h-full flex items-center justify-center">
-                      <svg className="w-6 h-6 text-white/50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                      </svg>
-                    </div>
-                  </div>
+                  <img src={item.image} alt={item.name} className="w-20 h-24 flex-shrink-0 object-cover" />
                   <div className="flex-1 min-w-0">
                     <h3 className="font-semibold text-[14px] text-charcoal truncate">{item.name}</h3>
                     <p className="text-[12px] text-text-light">{item.category}</p>

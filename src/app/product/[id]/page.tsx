@@ -34,7 +34,7 @@ export default function ProductPage() {
         price: product.price,
         priceNum: product.priceNum,
         category: product.category,
-        pattern: product.pattern,
+        image: product.image,
       },
       selectedSize || undefined
     );
@@ -70,15 +70,7 @@ export default function ProductPage() {
               animate={{ opacity: 1, x: 0 }}
               className="relative aspect-[3/4] bg-black overflow-hidden"
             >
-              <div className="absolute inset-0 opacity-80" style={{ background: product.pattern }} />
-              <div className="absolute inset-0 flex items-center justify-center">
-                <div className="text-center text-white/80">
-                  <svg className="w-20 h-20 mx-auto mb-4 opacity-40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                  </svg>
-                  <span className="text-[13px] tracking-wider uppercase opacity-60">{product.category}</span>
-                </div>
-              </div>
+              <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
               {product.badge && (
                 <span className={`absolute top-4 left-4 px-3 py-1 text-[10px] font-bold uppercase tracking-wider z-10 ${
                   product.badge === "Bestseller" ? "bg-accent text-black" : product.badge === "New" ? "bg-white text-black" : "bg-black text-accent border border-accent/30"
@@ -164,12 +156,7 @@ export default function ProductPage() {
               {related.map((p) => (
                 <Link key={p.id} href={`/product/${p.id}`} className="group cursor-pointer">
                   <div className="relative aspect-[3/4] overflow-hidden mb-4 bg-black border border-border">
-                    <div className="absolute inset-0 opacity-80" style={{ background: p.pattern }} />
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <svg className="w-10 h-10 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                      </svg>
-                    </div>
+                      <img src={p.image} alt={p.name} className="w-full h-full object-cover" loading="lazy" />
                     {p.badge && (
                       <span className={`absolute top-3 left-3 px-3 py-1 text-[10px] font-bold uppercase tracking-wider z-10 ${
                         p.badge === "Bestseller" ? "bg-accent text-black" : p.badge === "New" ? "bg-white text-black" : "bg-black text-accent border border-accent/30"
