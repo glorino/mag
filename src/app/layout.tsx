@@ -16,9 +16,9 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "GZK | Women's Wears",
+  title: "MAGRE | Premium African Fashion",
   description:
-    "GZK is a clothing brand located in Lagos Nigeria. We produce ready to wear dresses, blouses, shirts, jackets and tunics for women of all sizes.",
+    "MAGRE is a premium Nigerian fashion brand. We produce ready to wear dresses, blouses, shirts, jackets and tunics for women of all sizes.",
   keywords: [
     "Nigerian fashion",
     "African clothing",
@@ -28,13 +28,13 @@ export const metadata: Metadata = {
     "Lagos fashion",
     "women's wear",
     "ready to wear",
-    "GZK",
+    "MAGRE",
   ],
   openGraph: {
-    title: "GZK | Women's Wears",
+    title: "MAGRE | Premium African Fashion",
     description: "Ready to wear dresses, blouses, shirts, jackets and tunics for women of all sizes.",
     url: "https://mag-drab.vercel.app",
-    siteName: "GZK Fashion",
+    siteName: "MAGRE Fashion",
     locale: "en_US",
     type: "website",
   },

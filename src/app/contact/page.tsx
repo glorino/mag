@@ -6,7 +6,7 @@ export default function ContactPage() {
   return (
     <main className="pt-[120px]">
       {/* Hero */}
-      <section className="relative py-20 bg-charcoal text-white">
+      <section className="relative py-20 bg-black text-white">
         <div className="max-w-[1200px] mx-auto px-6 text-center">
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -69,7 +69,7 @@ export default function ContactPage() {
                   {
                     icon: <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>,
                     title: "Email Us",
-                    lines: ["info@gzknigeria.net"],
+                    lines: ["info@magre.ng"],
                   },
                   {
                     icon: <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>,
@@ -116,7 +116,7 @@ export default function ContactPage() {
                   <option value="other">Other</option>
                 </select>
                 <textarea placeholder="Your Message" rows={4} className="w-full px-5 py-3.5 border border-border bg-white text-charcoal text-[13px] placeholder:text-text-light focus:outline-none focus:border-charcoal transition-colors resize-none" />
-                <button type="submit" className="w-full justify-center bg-charcoal text-white px-8 py-3 text-[13px] font-medium tracking-wider uppercase hover:bg-brand-dark transition-all duration-300 border-none cursor-pointer inline-flex items-center gap-2">
+                <button type="submit" className="w-full justify-center bg-accent text-black px-8 py-3 text-[13px] font-bold tracking-wider uppercase hover:bg-accent-dark transition-all duration-300 border-none cursor-pointer inline-flex items-center gap-2">
                   Send Message
                 </button>
               </form>

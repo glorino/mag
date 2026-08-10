@@ -64,7 +64,7 @@ export default function SizeGuidePage() {
   return (
     <main className="pt-[120px]">
       {/* Hero */}
-      <section className="relative py-20 bg-charcoal text-white">
+      <section className="relative py-20 bg-black text-white">
         <div className="max-w-[1200px] mx-auto px-6 text-center">
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -109,7 +109,7 @@ export default function SizeGuidePage() {
               <div className="overflow-x-auto">
                 <table className="w-full text-[13px] border-collapse">
                   <thead>
-                    <tr className="bg-charcoal text-white">
+                    <tr className="bg-black text-white">
                       <th className="px-3 py-2 text-left font-medium">Size</th>
                       <th className="px-3 py-2 text-left font-medium">Bust</th>
                       <th className="px-3 py-2 text-left font-medium">Waist</th>
@@ -137,7 +137,7 @@ export default function SizeGuidePage() {
               <div className="overflow-x-auto">
                 <table className="w-full text-[13px] border-collapse">
                   <thead>
-                    <tr className="bg-charcoal text-white">
+                    <tr className="bg-black text-white">
                       <th className="px-3 py-2 text-left font-medium">Size</th>
                       <th className="px-3 py-2 text-left font-medium">Bust</th>
                       <th className="px-3 py-2 text-left font-medium">Waist</th>
@@ -165,7 +165,7 @@ export default function SizeGuidePage() {
               <div className="overflow-x-auto">
                 <table className="w-full text-[13px] border-collapse">
                   <thead>
-                    <tr className="bg-charcoal text-white">
+                    <tr className="bg-black text-white">
                       <th className="px-3 py-2 text-left font-medium">Size</th>
                       <th className="px-3 py-2 text-left font-medium">Waist</th>
                       <th className="px-3 py-2 text-left font-medium">Hip</th>
@@ -198,11 +198,11 @@ export default function SizeGuidePage() {
               </p>
               <div className="space-y-2 text-[13px] text-text">
                 <p><strong>WhatsApp:</strong> 08184118997</p>
-                <p><strong>Email:</strong> info@gzknigeria.net</p>
+                <p><strong>Email:</strong> info@magre.ng</p>
                 <p><strong>Hours:</strong> Mon - Sat, 9am - 6pm</p>
               </div>
               <div className="mt-6">
-                <Link href="/contact" className="inline-flex items-center gap-2 bg-transparent text-charcoal px-8 py-3 text-[12px] font-medium tracking-wider uppercase hover:bg-charcoal hover:text-white transition-all duration-300 border border-charcoal cursor-pointer">
+                <Link href="/contact" className="inline-flex items-center gap-2 bg-transparent text-black px-8 py-3 text-[12px] font-bold tracking-wider uppercase hover:bg-accent hover:text-black transition-all duration-300 border border-black cursor-pointer">
                   Contact Us
                 </Link>
               </div>
@@ -210,7 +210,7 @@ export default function SizeGuidePage() {
           </div>
 
           <div className="mt-12 text-center">
-            <Link href="/shop" className="inline-flex items-center gap-2 bg-charcoal text-white px-8 py-3 text-[13px] font-medium tracking-wider uppercase hover:bg-brand-dark transition-all duration-300 border-none cursor-pointer">
+            <Link href="/shop" className="inline-flex items-center gap-2 bg-accent text-black px-8 py-3 text-[13px] font-bold tracking-wider uppercase hover:bg-accent-dark transition-all duration-300 border-none cursor-pointer">
               Shop Collection
             </Link>
           </div>

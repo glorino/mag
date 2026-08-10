@@ -69,7 +69,7 @@ export default function Categories() {
           <h2 className="text-3xl md:text-4xl font-serif font-bold text-charcoal mb-4">
             Shop by Category
           </h2>
-          <div className="w-16 h-[2px] bg-charcoal mx-auto" />
+          <div className="w-16 h-[2px] bg-accent mx-auto" />
         </div>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
@@ -83,9 +83,9 @@ export default function Categories() {
             >
               <Link
                 href="/shop"
-                className="group block text-center p-6 border border-border hover:border-charcoal transition-all duration-300 bg-white hover:shadow-lg"
+                className="group block text-center p-6 border border-border hover:border-accent transition-all duration-300 bg-white hover:shadow-lg"
               >
-                <div className="w-16 h-16 mx-auto mb-4 bg-warm-gray group-hover:bg-charcoal flex items-center justify-center transition-all duration-300 text-text-light group-hover:text-white">
+                <div className="w-16 h-16 mx-auto mb-4 bg-warm-gray group-hover:bg-accent flex items-center justify-center transition-all duration-300 text-text-light group-hover:text-black">
                   {cat.icon}
                 </div>
                 <h3 className="font-semibold text-charcoal text-[14px] mb-1">{cat.name}</h3>

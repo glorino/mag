@@ -9,9 +9,9 @@ export default function Contact() {
         <div className="text-center mb-14">
           <p className="text-[11px] tracking-[0.3em] uppercase text-text-light mb-3 font-medium">Get in Touch</p>
           <h2 className="text-3xl md:text-4xl font-serif font-bold text-charcoal mb-4">
-            Contact GZK
+            Contact MAGRE
           </h2>
-          <div className="w-16 h-[2px] bg-charcoal mx-auto" />
+          <div className="w-16 h-[2px] bg-accent mx-auto" />
         </div>
 
         <div className="grid md:grid-cols-3 gap-6 mb-20">
@@ -33,7 +33,7 @@ export default function Contact() {
                 </svg>
               ),
               title: "Contact",
-              lines: ["08184118997", "08033449004", "info@gzknigeria.net"],
+              lines: ["08184118997", "08033449004", "info@magre.ng"],
             },
             {
               icon: (
@@ -51,9 +51,9 @@ export default function Contact() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.1, duration: 0.5 }}
-              className="text-center p-8 border border-border hover:border-charcoal/30 transition-colors duration-300 bg-white"
+              className="text-center p-8 border border-border hover:border-accent/30 transition-colors duration-300 bg-white"
             >
-              <div className="w-14 h-14 mx-auto mb-5 bg-charcoal text-white flex items-center justify-center">
+              <div className="w-14 h-14 mx-auto mb-5 bg-black text-accent flex items-center justify-center">
                 {item.icon}
               </div>
               <h3 className="font-bold text-charcoal text-[15px] mb-3">{item.title}</h3>
@@ -71,12 +71,12 @@ export default function Contact() {
           <div className="text-center mb-12">
             <p className="text-[11px] tracking-[0.3em] uppercase text-text-light mb-3 font-medium">FAQ</p>
             <h3 className="text-2xl md:text-3xl font-serif font-bold text-charcoal mb-4">Frequently Asked Questions</h3>
-            <div className="w-16 h-[2px] bg-charcoal mx-auto" />
+            <div className="w-16 h-[2px] bg-accent mx-auto" />
           </div>
 
           <div className="space-y-4">
             {[
-              { q: "How do I make payments?", a: "You can pay via bank transfer, ATM card online, or cash at our store. GZK CONCEPT DIAMOND BANK ACCOUNT NUMBER 0045114433." },
+              { q: "How do I make payments?", a: "You can pay via bank transfer, ATM card online, or cash at our store. MAGRE CONCEPT DIAMOND BANK ACCOUNT NUMBER 0045114433." },
               { q: "How long is delivery?", a: "Delivery takes between 3-7 working days after full payment has been confirmed. Orders are dispatched within 48 hours of payment confirmation." },
               { q: "Do you deliver nationwide?", a: "We deliver to all cities and towns in Nigeria. Pay on delivery is available for customers within Lagos only." },
               { q: "What is your return policy?", a: "All returns should be made within 7 days upon delivery. Your item must be unused and in the same condition that you received it." },
@@ -87,7 +87,7 @@ export default function Contact() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1, duration: 0.4 }}
-                className="border border-border p-6 hover:border-charcoal/20 transition-colors duration-300"
+                className="border border-border p-6 hover:border-accent/20 transition-colors duration-300"
               >
                 <h4 className="font-bold text-charcoal text-[14px] mb-2">{faq.q}</h4>
                 <p className="text-[13px] text-text leading-relaxed">{faq.a}</p>

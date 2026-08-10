@@ -26,16 +26,16 @@ export default function Newsletter() {
         >
           <p className="text-[11px] tracking-[0.3em] uppercase text-text-light mb-3 font-medium">Stay Connected</p>
           <h2 className="text-3xl md:text-4xl font-serif font-bold text-charcoal mb-4">
-            Join the GZK Family
+            Join the MAGRE Family
           </h2>
-          <div className="w-16 h-[2px] bg-charcoal mx-auto mb-6" />
+          <div className="w-16 h-[2px] bg-accent mx-auto mb-6" />
           <p className="text-text text-[14px] mb-8 leading-relaxed">
             Be the first to know about new collections, exclusive offers, and styling tips.
           </p>
 
           {submitted ? (
             <div className="bg-white p-8 border border-border">
-              <div className="w-14 h-14 mx-auto mb-4 bg-charcoal text-white flex items-center justify-center">
+              <div className="w-14 h-14 mx-auto mb-4 bg-accent text-black flex items-center justify-center">
                 <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
@@ -51,11 +51,11 @@ export default function Newsletter() {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="Enter your email address"
                 required
-                className="flex-1 px-5 py-4 border border-border border-r-0 bg-white text-charcoal text-[13px] placeholder:text-text-light focus:outline-none focus:border-charcoal transition-colors"
+                className="flex-1 px-5 py-4 border border-border border-r-0 bg-white text-charcoal text-[13px] placeholder:text-text-light focus:outline-none focus:border-accent transition-colors"
               />
               <button 
                 type="submit" 
-                className="bg-charcoal text-white px-8 py-4 text-[13px] font-semibold tracking-wider uppercase hover:bg-charcoal/90 transition-all duration-300 border-none cursor-pointer shrink-0"
+                className="bg-accent text-black px-8 py-4 text-[13px] font-bold tracking-wider uppercase hover:bg-accent-dark transition-all duration-300 border-none cursor-pointer shrink-0"
               >
                 Submit
               </button>

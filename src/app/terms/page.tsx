@@ -6,7 +6,7 @@ export default function TermsPage() {
   return (
     <main className="pt-[120px]">
       {/* Hero */}
-      <section className="relative py-20 bg-charcoal text-white">
+      <section className="relative py-20 bg-black text-white">
         <div className="max-w-[1200px] mx-auto px-6 text-center">
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -46,7 +46,7 @@ export default function TermsPage() {
               <div>
                 <h2 className="text-xl font-serif font-bold text-charcoal mb-3">1. General</h2>
                 <p className="text-text leading-relaxed">
-                  By accessing and using the GZK website (gzknigeria.net), you agree to be bound by these Terms and Conditions. If you do not agree with any part of these terms, please do not use our website.
+                  By accessing and using the MAGRE website (magre.ng), you agree to be bound by these Terms and Conditions. If you do not agree with any part of these terms, please do not use our website.
                 </p>
               </div>
 
@@ -67,7 +67,7 @@ export default function TermsPage() {
               <div>
                 <h2 className="text-xl font-serif font-bold text-charcoal mb-3">4. Payment</h2>
                 <p className="text-text leading-relaxed">
-                  Payment must be received in full before an order is processed. We accept payments through our secure payment partners. All payment information is encrypted and securely processed. GZK Concept does not store your credit card details.
+                  Payment must be received in full before an order is processed. We accept payments through our secure payment partners. All payment information is encrypted and securely processed. MAGRE Concept does not store your credit card details.
                 </p>
               </div>
 
@@ -81,14 +81,14 @@ export default function TermsPage() {
               <div>
                 <h2 className="text-xl font-serif font-bold text-charcoal mb-3">6. Intellectual Property</h2>
                 <p className="text-text leading-relaxed">
-                  All content on this website, including but not limited to text, graphics, logos, images, and software, is the property of GZK Concept and is protected by Nigerian and international copyright laws. You may not reproduce, distribute, or create derivative works without our express written permission.
+                  All content on this website, including but not limited to text, graphics, logos, images, and software, is the property of MAGRE Concept and is protected by Nigerian and international copyright laws. You may not reproduce, distribute, or create derivative works without our express written permission.
                 </p>
               </div>
 
               <div>
                 <h2 className="text-xl font-serif font-bold text-charcoal mb-3">7. Limitation of Liability</h2>
                 <p className="text-text leading-relaxed">
-                  GZK Concept shall not be liable for any indirect, incidental, special, or consequential damages resulting from the use or inability to use our website or products. Our total liability shall not exceed the total amount paid by you for the product(s) in question.
+                  MAGRE Concept shall not be liable for any indirect, incidental, special, or consequential damages resulting from the use or inability to use our website or products. Our total liability shall not exceed the total amount paid by you for the product(s) in question.
                 </p>
               </div>
 
@@ -112,9 +112,9 @@ export default function TermsPage() {
                   For questions regarding these Terms and Conditions, please contact us at:
                 </p>
                 <div className="mt-3 text-text">
-                  <p><strong>GZK Concept</strong></p>
+                  <p><strong>MAGRE Concept</strong></p>
                   <p>35 Eric Moore Close, Off Eric Moore Road, Surulere, Lagos</p>
-                  <p>Email: info@gzknigeria.net</p>
+                  <p>Email: info@magre.ng</p>
                   <p>Phone: 08184118997</p>
                 </div>
               </div>

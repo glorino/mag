@@ -7,7 +7,7 @@ export default function ReturnsPage() {
   return (
     <main className="pt-[120px]">
       {/* Hero */}
-      <section className="relative py-20 bg-charcoal text-white">
+      <section className="relative py-20 bg-black text-white">
         <div className="max-w-[1200px] mx-auto px-6 text-center">
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -47,7 +47,7 @@ export default function ReturnsPage() {
               <div>
                 <h2 className="text-xl font-serif font-bold text-charcoal mb-3">Return Window</h2>
                 <p className="text-text leading-relaxed">
-                  We want you to love your GZK purchase. If for any reason you are not completely satisfied, you may return your item(s) within <strong>7 days</strong> of receiving your order for a full refund or exchange.
+                  We want you to love your MAGRE purchase. If for any reason you are not completely satisfied, you may return your item(s) within <strong>7 days</strong> of receiving your order for a full refund or exchange.
                 </p>
               </div>
 
@@ -76,7 +76,7 @@ export default function ReturnsPage() {
               <div>
                 <h2 className="text-xl font-serif font-bold text-charcoal mb-3">How to Initiate a Return</h2>
                 <ol className="text-text leading-relaxed space-y-3 list-decimal list-inside">
-                  <li>Contact our customer service team via WhatsApp at <strong>08184118997</strong> or email at <strong>info@gzknigeria.net</strong> with your order number and reason for return.</li>
+                  <li>Contact our customer service team via WhatsApp at <strong>08184118997</strong> or email at <strong>info@magre.ng</strong> with your order number and reason for return.</li>
                   <li>Our team will review your request and provide you with a return authorization and instructions.</li>
                   <li>Pack the item(s) securely in the original packaging.</li>
                   <li>Ship the item(s) to the address provided by our customer service team.</li>
@@ -118,15 +118,15 @@ export default function ReturnsPage() {
                   If you have any questions about our Returns Policy, please contact us at:
                 </p>
                 <div className="mt-3 text-text">
-                  <p><strong>GZK Concept</strong></p>
+                  <p><strong>MAGRE Concept</strong></p>
                   <p>35 Eric Moore Close, Off Eric Moore Road, Surulere, Lagos</p>
                   <p>Phone: 08184118997, 08033449004</p>
-                  <p>Email: info@gzknigeria.net</p>
+                  <p>Email: info@magre.ng</p>
                 </div>
               </div>
 
               <div className="pt-4 border-t border-border">
-                <Link href="/shop" className="inline-flex items-center gap-2 bg-charcoal text-white px-8 py-3 text-[13px] font-medium tracking-wider uppercase hover:bg-brand-dark transition-all duration-300 border-none cursor-pointer">
+                <Link href="/shop" className="inline-flex items-center gap-2 bg-accent text-black px-8 py-3 text-[13px] font-bold tracking-wider uppercase hover:bg-accent-dark transition-all duration-300 border-none cursor-pointer">
                   Continue Shopping
                 </Link>
               </div>

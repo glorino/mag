@@ -23,7 +23,7 @@ export default function ShopPage() {
   return (
     <main className="pt-[120px]">
       {/* Hero */}
-      <section className="relative py-20 bg-charcoal text-white">
+      <section className="relative py-20 bg-black text-white">
         <div className="max-w-[1200px] mx-auto px-6 text-center">
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -44,7 +44,7 @@ export default function ShopPage() {
             initial={{ width: 0 }}
             animate={{ width: 60 }}
             transition={{ delay: 0.3, duration: 0.5 }}
-            className="h-[2px] bg-white/30 mx-auto"
+            className="h-[2px] bg-accent mx-auto"
           />
         </div>
       </section>
@@ -58,8 +58,8 @@ export default function ShopPage() {
                 key={cat}
                 className={`px-5 py-2.5 text-[12px] font-semibold tracking-wider uppercase border transition-all duration-300 ${
                   cat === "All"
-                    ? "bg-charcoal text-white border-charcoal"
-                    : "bg-white text-text border-border hover:border-charcoal hover:text-charcoal"
+                    ? "bg-accent text-black border-accent"
+                    : "bg-white text-text border-border hover:border-accent hover:text-charcoal"
                 }`}
               >
                 {cat}
@@ -107,13 +107,13 @@ export default function ShopPage() {
                   </div>
                   {product.badge && (
                     <span className={`absolute top-3 left-3 px-3 py-1 text-[10px] font-bold uppercase tracking-wider z-10 ${
-                      product.badge === "Bestseller" ? "bg-white text-charcoal" : product.badge === "New" ? "bg-accent text-white" : "bg-charcoal text-white border border-white/30"
+                      product.badge === "Bestseller" ? "bg-accent text-black" : product.badge === "New" ? "bg-white text-black" : "bg-black text-accent border border-accent/30"
                     }`}>
                       {product.badge}
                     </span>
                   )}
-                  <div className="absolute bottom-0 left-0 right-0 bg-white/95 py-3 text-center opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-full group-hover:translate-y-0 z-10">
-                    <span className="text-[12px] font-bold text-charcoal tracking-wider uppercase">Add to Cart</span>
+                  <div className="absolute bottom-0 left-0 right-0 bg-accent py-3 text-center opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-full group-hover:translate-y-0 z-10">
+                    <span className="text-[12px] font-bold text-black tracking-wider uppercase">Add to Cart</span>
                   </div>
                 </div>
                 <div>
@@ -127,9 +127,9 @@ export default function ShopPage() {
 
           {/* Pagination */}
           <div className="flex justify-center gap-2 mt-12">
-            <button className="w-10 h-10 bg-charcoal text-white text-[13px] font-medium">1</button>
-            <button className="w-10 h-10 border border-border text-text text-[13px] font-medium hover:border-charcoal hover:text-charcoal transition-colors">2</button>
-            <button className="w-10 h-10 border border-border text-text text-[13px] font-medium hover:border-charcoal hover:text-charcoal transition-colors">
+            <button className="w-10 h-10 bg-accent text-black text-[13px] font-medium">1</button>
+            <button className="w-10 h-10 border border-border text-text text-[13px] font-medium hover:border-accent hover:text-charcoal transition-colors">2</button>
+            <button className="w-10 h-10 border border-border text-text text-[13px] font-medium hover:border-accent hover:text-charcoal transition-colors">
               <svg className="w-4 h-4 mx-auto" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
               </svg>

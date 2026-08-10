@@ -6,7 +6,7 @@ export default function PrivacyPolicyPage() {
   return (
     <main className="pt-[120px]">
       {/* Hero */}
-      <section className="relative py-20 bg-charcoal text-white">
+      <section className="relative py-20 bg-black text-white">
         <div className="max-w-[1200px] mx-auto px-6 text-center">
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -96,9 +96,9 @@ export default function PrivacyPolicyPage() {
                   If you have any questions about this Privacy Policy, please contact us at:
                 </p>
                 <div className="mt-3 text-text">
-                  <p><strong>GZK Concept</strong></p>
+                  <p><strong>MAGRE Concept</strong></p>
                   <p>35 Eric Moore Close, Off Eric Moore Road, Surulere, Lagos</p>
-                  <p>Email: info@gzknigeria.net</p>
+                  <p>Email: info@magre.ng</p>
                   <p>Phone: 08184118997</p>
                 </div>
               </div>

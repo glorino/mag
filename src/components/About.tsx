@@ -15,31 +15,29 @@ export default function About() {
             transition={{ duration: 0.6 }}
             className="relative"
           >
-            <div className="relative aspect-[4/5] overflow-hidden bg-charcoal">
-              {/* Decorative pattern */}
-              <div className="absolute inset-0 opacity-20">
+            <div className="relative aspect-[4/5] overflow-hidden bg-black">
+              <div className="absolute inset-0 opacity-10">
                 <div className="absolute inset-0" style={{
-                  backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 20.5V18H0v-2h20v-2l4 3.5-4 3zm0-7V11h20V9H20V7l-4 3.5 4 3z' fill='%23ffffff' fill-opacity='0.3' fill-rule='evenodd'/%3E%3C/svg%3E")`,
+                  backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 20.5V18H0v-2h20v-2l4 3.5-4 3zm0-7V11h20V9H20V7l-4 3.5 4 3z' fill='%2300e5ff' fill-opacity='0.3' fill-rule='evenodd'/%3E%3C/svg%3E")`,
                 }} />
               </div>
-              <div className="absolute inset-0 bg-gradient-to-br from-charcoal via-charcoal/90 to-charcoal/70" />
+              <div className="absolute inset-0 bg-gradient-to-br from-black via-black/95 to-black/80" />
               
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="text-center text-white">
-                  <div className="w-24 h-24 mx-auto mb-4 border-2 border-white/30 rounded-full flex items-center justify-center">
-                    <svg className="w-12 h-12 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="w-24 h-24 mx-auto mb-4 border-2 border-accent/30 rounded-full flex items-center justify-center">
+                    <svg className="w-12 h-12 text-accent/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
                     </svg>
                   </div>
-                  <p className="text-[12px] tracking-widest uppercase opacity-70">GZK Fashion</p>
+                  <p className="text-[12px] tracking-widest uppercase opacity-70">MAGRE Fashion</p>
                 </div>
               </div>
             </div>
             
-            {/* Stats overlay */}
-            <div className="absolute -bottom-6 -right-6 bg-accent text-white p-6 shadow-xl">
+            <div className="absolute -bottom-6 -right-6 bg-accent text-black p-6 shadow-xl">
               <span className="block text-3xl font-bold font-serif">8+</span>
-              <span className="text-[12px] text-white/80">Years of Excellence</span>
+              <span className="text-[12px] text-black/70">Years of Excellence</span>
             </div>
           </motion.div>
 
@@ -51,16 +49,16 @@ export default function About() {
             className="space-y-6"
           >
             <div>
-              <p className="text-[11px] tracking-[0.3em] uppercase text-text-light mb-3 font-medium">About GZK</p>
+              <p className="text-[11px] tracking-[0.3em] uppercase text-text-light mb-3 font-medium">About MAGRE</p>
               <h2 className="text-3xl md:text-4xl font-serif font-bold text-charcoal mb-4 leading-tight">
                 Where Heritage<br />Meets Modern
               </h2>
-              <div className="w-16 h-[2px] bg-charcoal" />
+              <div className="w-16 h-[2px] bg-accent" />
             </div>
 
             <div className="space-y-4 text-text leading-relaxed">
               <p>
-                GZK is a clothing brand located in Lagos Nigeria. We produce ready to wear dresses, blouses, shirts, jackets and tunics for women of all sizes. We make clothes women will love and feel comfortable in.
+                MAGRE is a clothing brand located in Lagos Nigeria. We produce ready to wear dresses, blouses, shirts, jackets and tunics for women of all sizes. We make clothes women will love and feel comfortable in.
               </p>
               <p>
                 From vibrant ankara to indigo adire, we honor the artisans and cultures that inspire our collections. Every garment is thoughtfully designed and handcrafted using premium fabrics sourced from across West Africa.
@@ -84,7 +82,7 @@ export default function About() {
             <div className="pt-4">
               <Link
                 href="/about"
-                className="inline-flex items-center gap-2 bg-charcoal text-white px-8 py-3.5 text-[13px] font-semibold tracking-wider uppercase hover:bg-charcoal/90 transition-all duration-300"
+                className="inline-flex items-center gap-2 bg-accent text-black px-8 py-3.5 text-[13px] font-bold tracking-wider uppercase hover:bg-accent-dark transition-all duration-300"
               >
                 Learn More
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

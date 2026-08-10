@@ -17,7 +17,7 @@ export default function AboutPage() {
   return (
     <main className="pt-[120px]">
       {/* Hero */}
-      <section className="relative py-20 bg-charcoal text-white">
+      <section className="relative py-20 bg-black text-white">
         <div className="max-w-[1200px] mx-auto px-6 text-center">
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -38,7 +38,7 @@ export default function AboutPage() {
             initial={{ width: 0 }}
             animate={{ width: 60 }}
             transition={{ delay: 0.3, duration: 0.5 }}
-            className="h-[2px] bg-white/30 mx-auto"
+            className="h-[2px] bg-accent mx-auto"
           />
         </div>
       </section>
@@ -60,7 +60,7 @@ export default function AboutPage() {
               <div className="divider mb-6" />
               <div className="space-y-4 text-text leading-relaxed">
                 <p>
-                  GZK is a premium Nigerian fashion brand rooted in the rich traditions of West African textile artistry. Founded in Lagos, we create ready-to-wear pieces that seamlessly blend traditional African prints with modern silhouettes.
+                  MAGRE is a premium Nigerian fashion brand rooted in the rich traditions of West African textile artistry. Founded in Lagos, we create ready-to-wear pieces that seamlessly blend traditional African prints with modern silhouettes.
                 </p>
                 <p>
                   Every garment is thoughtfully designed and handcrafted using premium fabrics sourced from across West Africa. From vibrant ankara to indigo adire, we honor the artisans and cultures that inspire our collections.
@@ -86,7 +86,7 @@ export default function AboutPage() {
                   <p className="text-[12px] tracking-widest uppercase">Our Story</p>
                 </div>
               </div>
-              <div className="absolute -bottom-6 -right-6 bg-charcoal text-white p-6 max-w-[180px]">
+              <div className="absolute -bottom-6 -right-6 bg-accent text-black p-6 max-w-[180px]">
                 <span className="block text-3xl font-bold font-serif">8+</span>
                 <span className="text-[12px] text-white/70">Years of fashion excellence</span>
               </div>
@@ -146,7 +146,7 @@ export default function AboutPage() {
           <div className="text-center mb-12">
             <p className="text-[11px] tracking-[0.3em] uppercase text-text-light mb-2">Why Choose Us</p>
             <h2 className="text-3xl md:text-4xl font-serif font-bold text-charcoal mb-3">
-              The GZK Difference
+              The MAGRE Difference
             </h2>
             <div className="divider mx-auto" />
           </div>
@@ -175,7 +175,7 @@ export default function AboutPage() {
                   </svg>
                 ),
                 title: "Inclusive Sizing",
-                desc: "We design for every body. Our extended size range ensures every woman can find her perfect fit and feel confident in GZK.",
+                desc: "We design for every body. Our extended size range ensures every woman can find her perfect fit and feel confident in MAGRE.",
               },
               {
                 icon: (
@@ -231,7 +231,7 @@ export default function AboutPage() {
       </section>
 
       {/* What We Stand For */}
-      <section className="section-padding bg-charcoal text-white">
+      <section className="section-padding bg-black text-white">
         <div className="max-w-[1200px] mx-auto px-6">
           <div className="text-center mb-12">
             <p className="text-[11px] tracking-[0.3em] uppercase text-white/50 mb-2">Our Values</p>
@@ -277,14 +277,14 @@ export default function AboutPage() {
             viewport={{ once: true }}
           >
             <h2 className="text-3xl font-serif font-bold text-charcoal mb-4">
-              Ready to Experience GZK?
+              Ready to Experience MAGRE?
             </h2>
             <p className="text-text mb-8">
               Explore our collection and discover pieces that celebrate your unique style and African heritage.
             </p>
             <Link
               href="/shop"
-              className="inline-flex items-center gap-2 bg-charcoal text-white px-8 py-3 text-[13px] font-medium tracking-wider uppercase hover:bg-brand-dark transition-all duration-300 border-none cursor-pointer"
+              className="inline-flex items-center gap-2 bg-accent text-black px-8 py-3 text-[13px] font-bold tracking-wider uppercase hover:bg-accent-dark transition-all duration-300 border-none cursor-pointer"
             >
               Shop Collection
             </Link>

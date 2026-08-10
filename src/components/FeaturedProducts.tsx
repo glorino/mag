@@ -10,7 +10,6 @@ const products = [
     price: "₦42,500",
     category: "Tops & Sets",
     badge: "Bestseller",
-    color: "from-amber-800 to-amber-950",
     pattern: "linear-gradient(135deg, #92400e 0%, #78350f 100%)",
   },
   {
@@ -19,7 +18,6 @@ const products = [
     price: "₦38,000",
     category: "Tops & Sets",
     badge: "New",
-    color: "from-emerald-800 to-emerald-950",
     pattern: "linear-gradient(135deg, #065f46 0%, #064e3b 100%)",
   },
   {
@@ -28,7 +26,6 @@ const products = [
     price: "₦86,500",
     category: "Kaftans",
     badge: null,
-    color: "from-indigo-800 to-indigo-950",
     pattern: "linear-gradient(135deg, #3730a3 0%, #312e81 100%)",
   },
   {
@@ -37,7 +34,6 @@ const products = [
     price: "₦45,000",
     category: "Dresses",
     badge: "Bestseller",
-    color: "from-rose-800 to-rose-950",
     pattern: "linear-gradient(135deg, #9f1239 0%, #881337 100%)",
   },
   {
@@ -46,7 +42,6 @@ const products = [
     price: "₦52,000",
     category: "Tops & Sets",
     badge: "New",
-    color: "from-violet-800 to-violet-950",
     pattern: "linear-gradient(135deg, #5b21b6 0%, #4c1d95 100%)",
   },
   {
@@ -55,7 +50,6 @@ const products = [
     price: "₦28,500",
     category: "Tops",
     badge: null,
-    color: "from-teal-800 to-teal-950",
     pattern: "linear-gradient(135deg, #115e59 0%, #134e4a 100%)",
   },
   {
@@ -64,7 +58,6 @@ const products = [
     price: "₦35,000",
     category: "Tops & Jackets",
     badge: null,
-    color: "from-orange-800 to-orange-950",
     pattern: "linear-gradient(135deg, #9a3412 0%, #7c2d12 100%)",
   },
   {
@@ -73,7 +66,6 @@ const products = [
     price: "₦86,500",
     category: "Kaftans",
     badge: "Premium",
-    color: "from-slate-800 to-slate-950",
     pattern: "linear-gradient(135deg, #1e293b 0%, #0f172a 100%)",
   },
 ];
@@ -88,7 +80,7 @@ export default function FeaturedProducts() {
             <h2 className="text-3xl md:text-4xl font-serif font-bold text-charcoal mb-4">
               Bestsellers
             </h2>
-            <div className="w-16 h-[2px] bg-charcoal" />
+            <div className="w-16 h-[2px] bg-accent" />
           </div>
           <Link
             href="/shop"
@@ -111,9 +103,7 @@ export default function FeaturedProducts() {
               transition={{ delay: i * 0.08, duration: 0.5 }}
               className="group cursor-pointer"
             >
-              {/* Image */}
               <div className="relative aspect-[3/4] overflow-hidden mb-4 bg-charcoal border border-border">
-                {/* Decorative pattern */}
                 <div 
                   className="absolute inset-0 opacity-80"
                   style={{ background: product.pattern }}
@@ -129,21 +119,19 @@ export default function FeaturedProducts() {
                 
                 {product.badge && (
                   <span className={`absolute top-3 left-3 px-3 py-1 text-[10px] font-bold uppercase tracking-wider z-10 ${
-                    product.badge === "Bestseller" ? "bg-white text-charcoal" : 
-                    product.badge === "New" ? "bg-accent text-white" : 
-                    "bg-charcoal text-white border border-white/30"
+                    product.badge === "Bestseller" ? "bg-accent text-black" : 
+                    product.badge === "New" ? "bg-white text-black" : 
+                    "bg-black text-accent border border-accent/30"
                   }`}>
                     {product.badge}
                   </span>
                 )}
                 
-                {/* Quick add */}
-                <div className="absolute bottom-0 left-0 right-0 bg-white/95 py-3 text-center opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-full group-hover:translate-y-0 z-10">
-                  <span className="text-[12px] font-bold text-charcoal tracking-wider uppercase">Add to Cart</span>
+                <div className="absolute bottom-0 left-0 right-0 bg-accent py-3 text-center opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-full group-hover:translate-y-0 z-10">
+                  <span className="text-[12px] font-bold text-black tracking-wider uppercase">Add to Cart</span>
                 </div>
               </div>
 
-              {/* Info */}
               <div>
                 <p className="text-[11px] text-text-light tracking-wider uppercase mb-1 font-medium">{product.category}</p>
                 <h3 className="text-[14px] font-semibold text-charcoal group-hover:text-accent transition-colors mb-1">{product.name}</h3>

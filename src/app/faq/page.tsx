@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 const faqs = [
   {
     q: "How do I make payments?",
-    a: "You can pay via bank transfer, ATM card online, or cash at our store. GZK CONCEPT DIAMOND BANK ACCOUNT NUMBER 0045114433. You can also pay on delivery for orders within Lagos.",
+    a: "You can pay via bank transfer, ATM card online, or cash at our store. MAGRE CONCEPT DIAMOND BANK ACCOUNT NUMBER 0045114433. You can also pay on delivery for orders within Lagos.",
   },
   {
     q: "How long is delivery?",
@@ -21,7 +21,7 @@ const faqs = [
   },
   {
     q: "How do I place an order?",
-    a: "Go to our website www.gzknigeria.net, select your items and make payment via our various payment options: pay on delivery (Lagos only), bank transfer, online payment with ATM card, or walk into our shop and pay cash.",
+    a: "Go to our website www.magre.ng, select your items and make payment via our various payment options: pay on delivery (Lagos only), bank transfer, online payment with ATM card, or walk into our shop and pay cash.",
   },
   {
     q: "What sizes do you offer?",
@@ -41,7 +41,7 @@ export default function FAQPage() {
   return (
     <main className="pt-[120px]">
       {/* Hero */}
-      <section className="relative py-20 bg-charcoal text-white">
+      <section className="relative py-20 bg-black text-white">
         <div className="max-w-[1200px] mx-auto px-6 text-center">
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -96,7 +96,7 @@ export default function FAQPage() {
             <p className="text-text text-[13px] mb-6">
               Can&apos;t find what you&apos;re looking for? Our team is here to help.
             </p>
-            <a href="tel:08184118997" className="inline-flex items-center gap-2 bg-charcoal text-white px-8 py-3 text-[13px] font-medium tracking-wider uppercase hover:bg-brand-dark transition-all duration-300 border-none cursor-pointer">
+            <a href="tel:08184118997" className="inline-flex items-center gap-2 bg-accent text-black px-8 py-3 text-[13px] font-bold tracking-wider uppercase hover:bg-accent-dark transition-all duration-300 border-none cursor-pointer">
               Call Us: 08184118997
             </a>
           </motion.div>

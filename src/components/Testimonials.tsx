@@ -6,13 +6,13 @@ const testimonials = [
   {
     name: "Adaeze O.",
     location: "Lagos, Nigeria",
-    text: "The quality of GZK pieces is unmatched. Every time I wear my ankara set, I get endless compliments. The fabric is premium and the fit is perfect.",
+    text: "The quality of MAGRE pieces is unmatched. Every time I wear my ankara set, I get endless compliments. The fabric is premium and the fit is perfect.",
     rating: 5,
   },
   {
     name: "Fatima B.",
     location: "Abuja, Nigeria",
-    text: "I ordered a custom kaftan for my sister's wedding and it exceeded my expectations. GZK truly understands how to blend African heritage with modern elegance.",
+    text: "I ordered a custom kaftan for my sister's wedding and it exceeded my expectations. MAGRE truly understands how to blend African heritage with modern elegance.",
     rating: 5,
   },
   {
@@ -25,14 +25,14 @@ const testimonials = [
 
 export default function Testimonials() {
   return (
-    <section className="section-padding bg-charcoal text-white">
+    <section className="section-padding bg-black text-white">
       <div className="max-w-[1200px] mx-auto px-6">
         <div className="text-center mb-14">
           <p className="text-[11px] tracking-[0.3em] uppercase text-white/50 mb-3 font-medium">Testimonials</p>
           <h2 className="text-3xl md:text-4xl font-serif font-bold mb-4">
             What Our Clients Say
           </h2>
-          <div className="w-16 h-[2px] bg-white/30 mx-auto" />
+          <div className="w-16 h-[2px] bg-accent mx-auto" />
         </div>
 
         <div className="grid md:grid-cols-3 gap-6">
@@ -43,7 +43,7 @@ export default function Testimonials() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: i * 0.12, duration: 0.5 }}
-              className="bg-white/5 border border-white/10 p-8 hover:border-white/20 transition-colors duration-300"
+              className="bg-white/5 border border-white/10 p-8 hover:border-accent/30 transition-colors duration-300"
             >
               <div className="flex gap-1 mb-6">
                 {Array.from({ length: t.rating }).map((_, j) => (
