@@ -1,10 +1,7 @@
-import { neon } from "@neondatabase/serverless";
-
-const sql = neon(process.env.DATABASE_URL!);
-
-export default sql;
+import getSql from "./database";
 
 export async function initDatabase() {
+  const sql = getSql();
   await sql`
     CREATE TABLE IF NOT EXISTS products (
       id SERIAL PRIMARY KEY,
@@ -44,6 +41,7 @@ export async function initDatabase() {
 }
 
 export async function getProducts(category?: string) {
+  const sql = getSql();
   if (category) {
     return sql`SELECT * FROM products WHERE category = ${category} ORDER BY created_at DESC`;
   }
@@ -51,6 +49,7 @@ export async function getProducts(category?: string) {
 }
 
 export async function getProduct(id: number) {
+  const sql = getSql();
   const results = await sql`SELECT * FROM products WHERE id = ${id}`;
   return results[0] || null;
 }
@@ -63,6 +62,7 @@ export async function createOrder(order: {
   items: unknown;
   total: number;
 }) {
+  const sql = getSql();
   return sql`
     INSERT INTO orders (customer_name, email, phone, address, items, total)
     VALUES (${order.customer_name}, ${order.email}, ${order.phone || ""}, ${order.address}, ${JSON.stringify(order.items)}::jsonb, ${order.total})
@@ -71,6 +71,7 @@ export async function createOrder(order: {
 }
 
 export async function subscribe(email: string) {
+  const sql = getSql();
   return sql`
     INSERT INTO subscribers (email)
     VALUES (${email})
