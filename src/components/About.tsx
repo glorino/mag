@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Image from "next/image";
+import Link from "next/link";
 
 export default function About() {
   return (
@@ -15,14 +15,31 @@ export default function About() {
             transition={{ duration: 0.6 }}
             className="relative"
           >
-            <div className="relative aspect-[4/5] overflow-hidden border border-border">
-              <Image
-                src="https://images.unsplash.com/photo-1578905326519-3aa98aa6a728?w=800&h=1000&fit=crop&auto=format"
-                alt="African fashion"
-                fill
-                sizes="(max-width: 1024px) 100vw, 50vw"
-                className="object-cover"
-              />
+            <div className="relative aspect-[4/5] overflow-hidden bg-charcoal">
+              {/* Decorative pattern */}
+              <div className="absolute inset-0 opacity-20">
+                <div className="absolute inset-0" style={{
+                  backgroundImage: `url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 20.5V18H0v-2h20v-2l4 3.5-4 3zm0-7V11h20V9H20V7l-4 3.5 4 3z' fill='%23ffffff' fill-opacity='0.3' fill-rule='evenodd'/%3E%3C/svg%3E")`,
+                }} />
+              </div>
+              <div className="absolute inset-0 bg-gradient-to-br from-charcoal via-charcoal/90 to-charcoal/70" />
+              
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="text-center text-white">
+                  <div className="w-24 h-24 mx-auto mb-4 border-2 border-white/30 rounded-full flex items-center justify-center">
+                    <svg className="w-12 h-12 text-white/60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                  </div>
+                  <p className="text-[12px] tracking-widest uppercase opacity-70">GZK Fashion</p>
+                </div>
+              </div>
+            </div>
+            
+            {/* Stats overlay */}
+            <div className="absolute -bottom-6 -right-6 bg-accent text-white p-6 shadow-xl">
+              <span className="block text-3xl font-bold font-serif">8+</span>
+              <span className="text-[12px] text-white/80">Years of Excellence</span>
             </div>
           </motion.div>
 
@@ -34,11 +51,11 @@ export default function About() {
             className="space-y-6"
           >
             <div>
-              <p className="text-[11px] tracking-[0.3em] uppercase text-text-light mb-2">About GZK</p>
-              <h2 className="text-3xl md:text-4xl font-serif font-bold text-charcoal mb-3">
+              <p className="text-[11px] tracking-[0.3em] uppercase text-text-light mb-3 font-medium">About GZK</p>
+              <h2 className="text-3xl md:text-4xl font-serif font-bold text-charcoal mb-4 leading-tight">
                 Where Heritage<br />Meets Modern
               </h2>
-              <div className="divider" />
+              <div className="w-16 h-[2px] bg-charcoal" />
             </div>
 
             <div className="space-y-4 text-text leading-relaxed">
@@ -50,7 +67,7 @@ export default function About() {
               </p>
             </div>
 
-            <div className="grid grid-cols-2 gap-6 pt-4">
+            <div className="grid grid-cols-2 gap-8 pt-6 border-t border-border">
               {[
                 { num: "500+", label: "Happy Clients" },
                 { num: "200+", label: "Unique Designs" },
@@ -58,10 +75,22 @@ export default function About() {
                 { num: "8+", label: "Years Experience" },
               ].map((stat) => (
                 <div key={stat.label}>
-                  <span className="block text-2xl font-bold text-charcoal font-serif">{stat.num}</span>
-                  <span className="text-[12px] text-text-light">{stat.label}</span>
+                  <span className="block text-3xl font-bold text-charcoal font-serif mb-1">{stat.num}</span>
+                  <span className="text-[12px] text-text-light tracking-wide">{stat.label}</span>
                 </div>
               ))}
+            </div>
+
+            <div className="pt-4">
+              <Link
+                href="/about"
+                className="inline-flex items-center gap-2 bg-charcoal text-white px-8 py-3.5 text-[13px] font-semibold tracking-wider uppercase hover:bg-charcoal/90 transition-all duration-300"
+              >
+                Learn More
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </Link>
             </div>
           </motion.div>
         </div>

@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Image from "next/image";
+import Link from "next/link";
 
 const products = [
   {
@@ -10,7 +10,8 @@ const products = [
     price: "₦42,500",
     category: "Tops & Sets",
     badge: "Bestseller",
-    image: "https://images.unsplash.com/photo-1664151099736-1ac6365a25aa?w=600&h=800&fit=crop&auto=format",
+    color: "from-amber-800 to-amber-950",
+    pattern: "linear-gradient(135deg, #92400e 0%, #78350f 100%)",
   },
   {
     id: 2,
@@ -18,7 +19,8 @@ const products = [
     price: "₦38,000",
     category: "Tops & Sets",
     badge: "New",
-    image: "https://images.unsplash.com/photo-1664151099399-d41ed991a10d?w=600&h=800&fit=crop&auto=format",
+    color: "from-emerald-800 to-emerald-950",
+    pattern: "linear-gradient(135deg, #065f46 0%, #064e3b 100%)",
   },
   {
     id: 3,
@@ -26,7 +28,8 @@ const products = [
     price: "₦86,500",
     category: "Kaftans",
     badge: null,
-    image: "https://images.unsplash.com/photo-1611853904829-6d0f4034ce2f?w=600&h=800&fit=crop&auto=format",
+    color: "from-indigo-800 to-indigo-950",
+    pattern: "linear-gradient(135deg, #3730a3 0%, #312e81 100%)",
   },
   {
     id: 4,
@@ -34,7 +37,8 @@ const products = [
     price: "₦45,000",
     category: "Dresses",
     badge: "Bestseller",
-    image: "https://images.unsplash.com/photo-1664151100713-e8833417b95e?w=600&h=800&fit=crop&auto=format",
+    color: "from-rose-800 to-rose-950",
+    pattern: "linear-gradient(135deg, #9f1239 0%, #881337 100%)",
   },
   {
     id: 5,
@@ -42,7 +46,8 @@ const products = [
     price: "₦52,000",
     category: "Tops & Sets",
     badge: "New",
-    image: "https://images.unsplash.com/photo-1687052093309-7a14efa58ecb?w=600&h=800&fit=crop&auto=format",
+    color: "from-violet-800 to-violet-950",
+    pattern: "linear-gradient(135deg, #5b21b6 0%, #4c1d95 100%)",
   },
   {
     id: 6,
@@ -50,7 +55,8 @@ const products = [
     price: "₦28,500",
     category: "Tops",
     badge: null,
-    image: "https://images.unsplash.com/photo-1702384927013-3df149c1bd44?w=600&h=800&fit=crop&auto=format",
+    color: "from-teal-800 to-teal-950",
+    pattern: "linear-gradient(135deg, #115e59 0%, #134e4a 100%)",
   },
   {
     id: 7,
@@ -58,7 +64,8 @@ const products = [
     price: "₦35,000",
     category: "Tops & Jackets",
     badge: null,
-    image: "https://images.unsplash.com/photo-1768212565424-efa3a3852b81?w=600&h=800&fit=crop&auto=format",
+    color: "from-orange-800 to-orange-950",
+    pattern: "linear-gradient(135deg, #9a3412 0%, #7c2d12 100%)",
   },
   {
     id: 8,
@@ -66,66 +73,80 @@ const products = [
     price: "₦86,500",
     category: "Kaftans",
     badge: "Premium",
-    image: "https://images.unsplash.com/photo-1768212565426-58b089b6386d?w=600&h=800&fit=crop&auto=format",
+    color: "from-slate-800 to-slate-950",
+    pattern: "linear-gradient(135deg, #1e293b 0%, #0f172a 100%)",
   },
 ];
 
 export default function FeaturedProducts() {
   return (
-    <section className="section-padding bg-warm-gray">
+    <section className="section-padding bg-cream">
       <div className="max-w-[1200px] mx-auto px-6">
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-12">
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-14">
           <div>
-            <p className="text-[11px] tracking-[0.3em] uppercase text-text-light mb-2">Featured</p>
-            <h2 className="text-3xl md:text-4xl font-serif font-bold text-charcoal mb-3">
+            <p className="text-[11px] tracking-[0.3em] uppercase text-text-light mb-3 font-medium">Featured</p>
+            <h2 className="text-3xl md:text-4xl font-serif font-bold text-charcoal mb-4">
               Bestsellers
             </h2>
-            <div className="divider" />
+            <div className="w-16 h-[2px] bg-charcoal" />
           </div>
-          <a href="#shop" className="mt-4 md:mt-0 text-[13px] font-medium text-charcoal hover:text-accent transition-colors flex items-center gap-2">
-            View More
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <Link
+            href="/shop"
+            className="mt-4 md:mt-0 text-[13px] font-semibold text-charcoal hover:text-accent transition-colors flex items-center gap-2 group"
+          >
+            View All
+            <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
-          </a>
+          </Link>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
           {products.map((product, i) => (
             <motion.div
               key={product.id}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.1, duration: 0.5 }}
-              className="product-card group cursor-pointer"
+              transition={{ delay: i * 0.08, duration: 0.5 }}
+              className="group cursor-pointer"
             >
               {/* Image */}
-              <div className="relative aspect-[3/4] overflow-hidden mb-3 bg-white border border-border">
-                <Image
-                  src={product.image}
-                  alt={product.name}
-                  fill
-                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-                  className="product-image object-cover"
+              <div className="relative aspect-[3/4] overflow-hidden mb-4 bg-charcoal border border-border">
+                {/* Decorative pattern */}
+                <div 
+                  className="absolute inset-0 opacity-80"
+                  style={{ background: product.pattern }}
                 />
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="text-center text-white/80">
+                    <svg className="w-12 h-12 mx-auto mb-2 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                    </svg>
+                    <span className="text-[11px] tracking-wider uppercase opacity-60">{product.category}</span>
+                  </div>
+                </div>
+                
                 {product.badge && (
-                  <span className={`absolute top-3 left-3 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider z-10 ${
-                    product.badge === "Bestseller" ? "bg-charcoal text-white" : product.badge === "New" ? "bg-accent text-white" : "bg-white text-charcoal border border-charcoal"
+                  <span className={`absolute top-3 left-3 px-3 py-1 text-[10px] font-bold uppercase tracking-wider z-10 ${
+                    product.badge === "Bestseller" ? "bg-white text-charcoal" : 
+                    product.badge === "New" ? "bg-accent text-white" : 
+                    "bg-charcoal text-white border border-white/30"
                   }`}>
                     {product.badge}
                   </span>
                 )}
+                
                 {/* Quick add */}
-                <div className="absolute bottom-0 left-0 right-0 bg-white/95 py-2.5 text-center opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-full group-hover:translate-y-0 z-10">
-                  <span className="text-[12px] font-semibold text-charcoal tracking-wider uppercase">Add to Cart</span>
+                <div className="absolute bottom-0 left-0 right-0 bg-white/95 py-3 text-center opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-full group-hover:translate-y-0 z-10">
+                  <span className="text-[12px] font-bold text-charcoal tracking-wider uppercase">Add to Cart</span>
                 </div>
               </div>
 
               {/* Info */}
               <div>
-                <p className="text-[11px] text-text-light tracking-wider uppercase mb-1">{product.category}</p>
-                <h3 className="text-[14px] font-medium text-charcoal group-hover:text-accent transition-colors mb-1">{product.name}</h3>
+                <p className="text-[11px] text-text-light tracking-wider uppercase mb-1 font-medium">{product.category}</p>
+                <h3 className="text-[14px] font-semibold text-charcoal group-hover:text-accent transition-colors mb-1">{product.name}</h3>
                 <p className="text-[15px] font-bold text-charcoal">{product.price}</p>
               </div>
             </motion.div>

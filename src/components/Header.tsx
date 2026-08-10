@@ -32,10 +32,8 @@ export default function Header() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled
-          ? "bg-white shadow-[0_1px_10px_rgba(0,0,0,0.08)] py-2"
-          : "bg-white py-4"
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 bg-white ${
+        scrolled ? "shadow-[0_1px_10px_rgba(0,0,0,0.08)] py-2" : "py-4"
       }`}
     >
       <div className="max-w-[1200px] mx-auto px-6 flex items-center justify-between">
@@ -64,7 +62,7 @@ export default function Header() {
               {/* Shop dropdown */}
               {link.name === "Shop" && shopOpen && (
                 <div className="absolute top-full left-0 pt-2 z-50">
-                  <div className="bg-white shadow-lg border border-border rounded-sm py-3 min-w-[220px]">
+                  <div className="bg-white shadow-lg border border-border py-3 min-w-[220px]">
                     {categories.map((cat) => (
                       <Link
                         key={cat}
@@ -130,7 +128,7 @@ export default function Header() {
             <p className="text-[11px] font-semibold tracking-widest uppercase text-text-light mb-3">Categories</p>
             <div className="flex flex-wrap gap-2">
               {categories.map((cat) => (
-                <Link key={cat} href="/shop" onClick={() => setMobileOpen(false)} className="text-[12px] text-text hover:text-charcoal border border-border px-3 py-1 rounded-full hover:border-charcoal transition-colors">
+                <Link key={cat} href="/shop" onClick={() => setMobileOpen(false)} className="text-[12px] text-text hover:text-charcoal border border-border px-3 py-1 hover:border-charcoal transition-colors">
                   {cat}
                 </Link>
               ))}
