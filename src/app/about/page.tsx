@@ -284,7 +284,7 @@ export default function AboutPage() {
             </p>
             <Link
               href="/shop"
-              className="btn-primary inline-flex"
+              className="inline-flex items-center gap-2 bg-charcoal text-white px-8 py-3 text-[13px] font-medium tracking-wider uppercase hover:bg-brand-dark transition-all duration-300 border-none cursor-pointer"
             >
               Shop Collection
             </Link>

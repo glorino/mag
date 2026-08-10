@@ -4,7 +4,7 @@ export default function WhatsAppButton() {
       href="https://wa.me/2348184118997?text=Hello%20MAG!%20I'm%20interested%20in%20your%20collections."
       target="_blank"
       rel="noopener noreferrer"
-      className="whatsapp-btn"
+      className="fixed bottom-6 right-6 w-14 h-14 bg-[#25D366] rounded-full flex items-center justify-center shadow-[0_4px_16px_rgba(37,211,102,0.4)] hover:scale-110 hover:shadow-[0_6px_24px_rgba(37,211,102,0.5)] transition-all duration-300 z-[1000]"
       aria-label="Chat on WhatsApp"
     >
       <svg className="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 24 24">

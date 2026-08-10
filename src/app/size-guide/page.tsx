@@ -202,7 +202,7 @@ export default function SizeGuidePage() {
                 <p><strong>Hours:</strong> Mon - Sat, 9am - 6pm</p>
               </div>
               <div className="mt-6">
-                <Link href="/contact" className="btn-outline inline-flex text-[12px]">
+                <Link href="/contact" className="inline-flex items-center gap-2 bg-transparent text-charcoal px-8 py-3 text-[12px] font-medium tracking-wider uppercase hover:bg-charcoal hover:text-white transition-all duration-300 border border-charcoal cursor-pointer">
                   Contact Us
                 </Link>
               </div>
@@ -210,7 +210,7 @@ export default function SizeGuidePage() {
           </div>
 
           <div className="mt-12 text-center">
-            <Link href="/shop" className="btn-primary inline-flex">
+            <Link href="/shop" className="inline-flex items-center gap-2 bg-charcoal text-white px-8 py-3 text-[13px] font-medium tracking-wider uppercase hover:bg-brand-dark transition-all duration-300 border-none cursor-pointer">
               Shop Collection
             </Link>
           </div>

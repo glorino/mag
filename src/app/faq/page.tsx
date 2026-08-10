@@ -96,7 +96,7 @@ export default function FAQPage() {
             <p className="text-text text-[13px] mb-6">
               Can&apos;t find what you&apos;re looking for? Our team is here to help.
             </p>
-            <a href="tel:08184118997" className="btn-primary inline-flex">
+            <a href="tel:08184118997" className="inline-flex items-center gap-2 bg-charcoal text-white px-8 py-3 text-[13px] font-medium tracking-wider uppercase hover:bg-brand-dark transition-all duration-300 border-none cursor-pointer">
               Call Us: 08184118997
             </a>
           </motion.div>

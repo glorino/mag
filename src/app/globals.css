@@ -63,47 +63,6 @@ a:hover {
   border-radius: 3px;
 }
 
-/* Button styles */
-.btn-primary {
-  background: #333333;
-  color: #fff;
-  padding: 12px 32px;
-  font-weight: 500;
-  font-size: 13px;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  transition: all 0.3s ease;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  border: none;
-  cursor: pointer;
-}
-.btn-primary:hover {
-  background: #222222;
-  color: #fff;
-}
-
-.btn-outline {
-  background: transparent;
-  color: #333333;
-  padding: 12px 32px;
-  font-weight: 500;
-  font-size: 13px;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  transition: all 0.3s ease;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  border: 1px solid #333333;
-  cursor: pointer;
-}
-.btn-outline:hover {
-  background: #333333;
-  color: #fff;
-}
-
 /* Section */
 .section-padding {
   padding: 80px 0;
@@ -139,27 +98,6 @@ a:hover {
 }
 .nav-link:hover::after {
   width: 100%;
-}
-
-/* WhatsApp */
-.whatsapp-btn {
-  position: fixed;
-  bottom: 24px;
-  right: 24px;
-  width: 56px;
-  height: 56px;
-  background: #25D366;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 16px rgba(37, 211, 102, 0.4);
-  transition: all 0.3s ease;
-  z-index: 1000;
-}
-.whatsapp-btn:hover {
-  transform: scale(1.1);
-  box-shadow: 0 6px 24px rgba(37, 211, 102, 0.5);
 }
 
 /* Divider */

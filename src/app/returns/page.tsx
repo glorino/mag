@@ -126,7 +126,7 @@ export default function ReturnsPage() {
               </div>
 
               <div className="pt-4 border-t border-border">
-                <Link href="/shop" className="btn-primary inline-flex">
+                <Link href="/shop" className="inline-flex items-center gap-2 bg-charcoal text-white px-8 py-3 text-[13px] font-medium tracking-wider uppercase hover:bg-brand-dark transition-all duration-300 border-none cursor-pointer">
                   Continue Shopping
                 </Link>
               </div>

@@ -51,7 +51,7 @@ export default function Newsletter() {
                 required
                 className="flex-1 px-5 py-3.5 border border-r-0 border-border bg-white text-charcoal text-[13px] placeholder:text-text-light focus:outline-none focus:border-charcoal transition-colors"
               />
-              <button type="submit" className="btn-primary shrink-0 rounded-none">
+              <button type="submit" className="shrink-0 bg-charcoal text-white px-8 py-3.5 text-[13px] font-medium tracking-wider uppercase hover:bg-brand-dark transition-all duration-300 border-none cursor-pointer inline-flex items-center gap-2">
                 Submit
               </button>
             </form>

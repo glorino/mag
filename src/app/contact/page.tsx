@@ -116,7 +116,7 @@ export default function ContactPage() {
                   <option value="other">Other</option>
                 </select>
                 <textarea placeholder="Your Message" rows={4} className="w-full px-5 py-3.5 border border-border bg-white text-charcoal text-[13px] placeholder:text-text-light focus:outline-none focus:border-charcoal transition-colors resize-none" />
-                <button type="submit" className="btn-primary w-full justify-center">
+                <button type="submit" className="w-full justify-center bg-charcoal text-white px-8 py-3 text-[13px] font-medium tracking-wider uppercase hover:bg-brand-dark transition-all duration-300 border-none cursor-pointer inline-flex items-center gap-2">
                   Send Message
                 </button>
               </form>
