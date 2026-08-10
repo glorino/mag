@@ -1,0 +1,191 @@
+"use client";
+
+import { useState } from "react";
+import { useParams } from "next/navigation";
+import { motion } from "framer-motion";
+import Link from "next/link";
+import { getProduct, products } from "@/lib/products";
+import { useCart } from "@/lib/cart-context";
+
+export default function ProductPage() {
+  const params = useParams();
+  const id = Number(params.id);
+  const product = getProduct(id);
+  const { addItem } = useCart();
+  const [selectedSize, setSelectedSize] = useState<string>("");
+  const [added, setAdded] = useState(false);
+
+  if (!product) {
+    return (
+      <main className="pt-[120px] min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <h1 className="text-2xl font-bold text-charcoal mb-4">Product Not Found</h1>
+          <Link href="/shop" className="text-accent hover:underline">Back to Shop</Link>
+        </div>
+      </main>
+    );
+  }
+
+  const handleAddToCart = () => {
+    addItem(
+      {
+        id: product.id,
+        name: product.name,
+        price: product.price,
+        priceNum: product.priceNum,
+        category: product.category,
+        pattern: product.pattern,
+      },
+      selectedSize || undefined
+    );
+    setAdded(true);
+    setTimeout(() => setAdded(false), 2000);
+  };
+
+  // Related products (same category, excluding current)
+  const related = products.filter((p) => p.category === product.category && p.id !== product.id).slice(0, 4);
+
+  return (
+    <main className="pt-[120px]">
+      {/* Breadcrumb */}
+      <div className="bg-white border-b border-border">
+        <div className="max-w-[1200px] mx-auto px-6 py-4">
+          <div className="flex items-center gap-2 text-[13px] text-text-light">
+            <Link href="/" className="hover:text-charcoal">Home</Link>
+            <span>/</span>
+            <Link href="/shop" className="hover:text-charcoal">Shop</Link>
+            <span>/</span>
+            <span className="text-charcoal">{product.name}</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Product */}
+      <section className="py-12 bg-white">
+        <div className="max-w-[1200px] mx-auto px-6">
+          <div className="grid lg:grid-cols-2 gap-12">
+            {/* Image */}
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="relative aspect-[3/4] bg-black overflow-hidden"
+            >
+              <div className="absolute inset-0 opacity-80" style={{ background: product.pattern }} />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="text-center text-white/80">
+                  <svg className="w-20 h-20 mx-auto mb-4 opacity-40" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                  </svg>
+                  <span className="text-[13px] tracking-wider uppercase opacity-60">{product.category}</span>
+                </div>
+              </div>
+              {product.badge && (
+                <span className={`absolute top-4 left-4 px-3 py-1 text-[10px] font-bold uppercase tracking-wider z-10 ${
+                  product.badge === "Bestseller" ? "bg-accent text-black" : product.badge === "New" ? "bg-white text-black" : "bg-black text-accent border border-accent/30"
+                }`}>
+                  {product.badge}
+                </span>
+              )}
+            </motion.div>
+
+            {/* Info */}
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="flex flex-col"
+            >
+              <p className="text-[11px] tracking-[0.3em] uppercase text-text-light mb-2 font-medium">{product.category}</p>
+              <h1 className="text-3xl md:text-4xl font-serif font-bold text-charcoal mb-3">{product.name}</h1>
+              <div className="w-16 h-[2px] bg-accent mb-4" />
+              <p className="text-2xl font-bold text-charcoal mb-6">{product.price}</p>
+              <p className="text-text leading-relaxed mb-8">{product.description}</p>
+
+              {/* Sizes */}
+              {product.sizes.length > 0 && (
+                <div className="mb-8">
+                  <p className="text-[12px] font-semibold text-charcoal uppercase tracking-wider mb-3">Select Size</p>
+                  <div className="flex flex-wrap gap-2">
+                    {product.sizes.map((size) => (
+                      <button
+                        key={size}
+                        onClick={() => setSelectedSize(size)}
+                        className={`w-12 h-12 text-[13px] font-medium border transition-all duration-300 ${
+                          selectedSize === size
+                            ? "bg-accent text-black border-accent"
+                            : "bg-white text-charcoal border-border hover:border-charcoal"
+                        }`}
+                      >
+                        {size}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Add to Cart */}
+              <button
+                onClick={handleAddToCart}
+                className={`w-full py-4 text-[13px] font-bold tracking-wider uppercase transition-all duration-300 border-none cursor-pointer ${
+                  added
+                    ? "bg-green-500 text-white"
+                    : "bg-accent text-black hover:bg-accent-dark"
+                }`}
+              >
+                {added ? "Added to Cart!" : "Add to Cart"}
+              </button>
+
+              {/* Details */}
+              <div className="mt-8 pt-8 border-t border-border">
+                <p className="text-[12px] font-semibold text-charcoal uppercase tracking-wider mb-3">Product Details</p>
+                <ul className="space-y-2">
+                  {product.details.map((detail, i) => (
+                    <li key={i} className="text-[13px] text-text flex items-start gap-2">
+                      <span className="text-accent mt-1">•</span>
+                      {detail}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* Related Products */}
+      {related.length > 0 && (
+        <section className="section-padding bg-cream">
+          <div className="max-w-[1200px] mx-auto px-6">
+            <div className="text-center mb-12">
+              <p className="text-[11px] tracking-[0.3em] uppercase text-text-light mb-3 font-medium">You May Also Like</p>
+              <h2 className="text-3xl font-serif font-bold text-charcoal mb-4">Related Products</h2>
+              <div className="w-16 h-[2px] bg-accent mx-auto" />
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+              {related.map((p) => (
+                <Link key={p.id} href={`/product/${p.id}`} className="group cursor-pointer">
+                  <div className="relative aspect-[3/4] overflow-hidden mb-4 bg-black border border-border">
+                    <div className="absolute inset-0 opacity-80" style={{ background: p.pattern }} />
+                    <div className="absolute inset-0 flex items-center justify-center">
+                      <svg className="w-10 h-10 text-white/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                      </svg>
+                    </div>
+                    {p.badge && (
+                      <span className={`absolute top-3 left-3 px-3 py-1 text-[10px] font-bold uppercase tracking-wider z-10 ${
+                        p.badge === "Bestseller" ? "bg-accent text-black" : p.badge === "New" ? "bg-white text-black" : "bg-black text-accent border border-accent/30"
+                      }`}>
+                        {p.badge}
+                      </span>
+                    )}
+                  </div>
+                  <h3 className="text-[14px] font-semibold text-charcoal group-hover:text-accent transition-colors mb-1">{p.name}</h3>
+                  <p className="text-[15px] font-bold text-charcoal">{p.price}</p>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+    </main>
+  );
+}

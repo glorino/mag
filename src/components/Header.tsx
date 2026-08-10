@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { useCart } from "@/lib/cart-context";
 
 const navLinks = [
   { name: "Home", href: "/" },
@@ -21,6 +22,7 @@ const categories = [
 
 export default function Header() {
   const pathname = usePathname();
+  const { totalItems, toggleCart } = useCart();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [shopOpen, setShopOpen] = useState(false);
@@ -98,13 +100,15 @@ export default function Header() {
           </button>
 
           {/* Cart */}
-          <button className="p-2 hover:bg-white/10 rounded-full transition-colors relative">
+          <button onClick={toggleCart} className="p-2 hover:bg-white/10 rounded-full transition-colors relative">
             <svg className="w-[18px] h-[18px] text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
             </svg>
-            <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-accent text-black text-[9px] font-bold rounded-full flex items-center justify-center">
-              0
-            </span>
+            {totalItems() > 0 && (
+              <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-accent text-black text-[9px] font-bold rounded-full flex items-center justify-center">
+                {totalItems()}
+              </span>
+            )}
           </button>
 
           {/* Mobile menu */}
