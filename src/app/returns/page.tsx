@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export default function ReturnsPage() {
   return (
-    <main className="pt-[120px]">
+    <main className="">
       {/* Hero */}
       <section className="relative py-20 bg-black text-white">
         <div className="max-w-[1200px] mx-auto px-6 text-center">

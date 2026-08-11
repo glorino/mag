@@ -5,17 +5,23 @@ import { usePathname } from "next/navigation";
 import { CartProvider } from "@/lib/cart-context";
 import CartSidebar from "@/components/CartSidebar";
 import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import WhatsAppButton from "@/components/WhatsAppButton";
 
 export default function ClientLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const isAdmin = pathname.startsWith("/admin");
   const isDashboard = pathname.startsWith("/dashboard");
+  const isCheckout = pathname.startsWith("/checkout");
+  const isAuth = pathname.startsWith("/login") || pathname.startsWith("/register");
 
   return (
     <CartProvider>
-      {!isAdmin && !isDashboard && <Header />}
+      {!isAdmin && !isDashboard && !isAuth && <Header />}
       {children}
-      <CartSidebar />
+      {!isAdmin && !isDashboard && <Footer />}
+      {!isAdmin && !isDashboard && <WhatsAppButton />}
+      {!isAdmin && !isDashboard && <CartSidebar />}
       <Toast />
     </CartProvider>
   );

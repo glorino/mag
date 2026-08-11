@@ -15,31 +15,46 @@ const stagger = {
 
 export default function AboutPage() {
   return (
-    <main className="pt-[120px]">
+    <main>
       {/* Hero */}
-      <section className="relative py-20 bg-black text-white">
-        <div className="max-w-[1200px] mx-auto px-6 text-center">
+      <section className="relative py-24 md:py-32 bg-black text-white overflow-hidden">
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute inset-0" style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2300e5ff' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+          }} />
+        </div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] border border-accent/5 rounded-full" />
+        <div className="max-w-[1200px] mx-auto px-6 text-center relative z-10">
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-[11px] tracking-[0.3em] uppercase text-white/50 mb-3"
+            className="text-[11px] tracking-[0.4em] uppercase text-accent mb-4 font-medium"
           >
-            About Us
+            Our Story
           </motion.p>
           <motion.h1
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-4xl md:text-5xl font-serif font-bold mb-4"
+            className="text-4xl md:text-6xl font-serif font-bold mb-6"
           >
-            Our Story
+            Born in Lagos, <br className="hidden md:block" />
+            <span className="text-accent">Worn Everywhere</span>
           </motion.h1>
           <motion.div
             initial={{ width: 0 }}
             animate={{ width: 60 }}
             transition={{ delay: 0.3, duration: 0.5 }}
-            className="h-[2px] bg-accent mx-auto"
+            className="h-[2px] bg-accent mx-auto mb-6"
           />
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.4 }}
+            className="text-white/50 text-[15px] max-w-[600px] mx-auto leading-relaxed"
+          >
+            Premium Nigerian fashion celebrating African heritage through contemporary design.
+          </motion.p>
         </div>
       </section>
 
@@ -53,12 +68,12 @@ export default function AboutPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.7 }}
             >
-              <p className="text-[11px] tracking-[0.3em] uppercase text-text-light mb-2">Who We Are</p>
-              <h2 className="text-3xl md:text-4xl font-serif font-bold text-charcoal mb-3">
+              <p className="text-[11px] tracking-[0.3em] uppercase text-accent mb-3 font-medium">Who We Are</p>
+              <h2 className="text-3xl md:text-4xl font-serif font-bold text-charcoal mb-4">
                 A Legacy of African Elegance
               </h2>
-              <div className="divider mb-6" />
-              <div className="space-y-4 text-text leading-relaxed">
+              <div className="w-[60px] h-[2px] bg-accent mb-8" />
+              <div className="space-y-5 text-text leading-relaxed">
                 <p>
                   MAGRE is a premium Nigerian fashion brand rooted in the rich traditions of West African textile artistry. Founded in Lagos, we create ready-to-wear pieces that seamlessly blend traditional African prints with modern silhouettes.
                 </p>
@@ -78,17 +93,16 @@ export default function AboutPage() {
               transition={{ duration: 0.7 }}
               className="relative"
             >
-              <div className="aspect-[4/5] bg-gradient-to-br from-warm-gray to-cream border border-border flex items-center justify-center">
-                <div className="text-center text-text-light">
-                  <svg className="w-24 h-24 mx-auto mb-4 opacity-30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={0.8} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
-                  </svg>
-                  <p className="text-[12px] tracking-widest uppercase">Our Story</p>
-                </div>
+              <div className="aspect-[4/5] overflow-hidden">
+                <img
+                  src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&h=750&fit=crop"
+                  alt="MAGRE Story"
+                  className="w-full h-full object-cover"
+                />
               </div>
-              <div className="absolute -bottom-6 -right-6 bg-accent text-black p-6 max-w-[180px]">
-                <span className="block text-3xl font-bold font-serif">8+</span>
-                <span className="text-[12px] text-white/70">Years of fashion excellence</span>
+              <div className="absolute -bottom-6 -right-6 bg-black text-white p-8 max-w-[200px]">
+                <span className="block text-4xl font-bold font-serif text-accent">8+</span>
+                <span className="text-[12px] text-white/60 leading-relaxed">Years of fashion excellence across Nigeria</span>
               </div>
             </motion.div>
           </div>
@@ -98,6 +112,13 @@ export default function AboutPage() {
       {/* Mission & Vision */}
       <section className="section-padding bg-cream">
         <div className="max-w-[1200px] mx-auto px-6">
+          <div className="text-center mb-14">
+            <p className="text-[11px] tracking-[0.3em] uppercase text-accent mb-3 font-medium">What Drives Us</p>
+            <h2 className="text-3xl md:text-4xl font-serif font-bold text-charcoal mb-3">
+              Mission & Vision
+            </h2>
+            <div className="w-[60px] h-[2px] bg-accent mx-auto" />
+          </div>
           <div className="grid md:grid-cols-2 gap-8">
             {[
               {
@@ -107,7 +128,7 @@ export default function AboutPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M13 10V3L4 14h7v7l9-11h-7z" />
                   </svg>
                 ),
-                text: "To celebrate African heritage through fashion by creating high-quality, contemporary clothing that empowers women to express their cultural identity with confidence and pride. We aim to make premium African fashion accessible to women across the globe.",
+                text: "To celebrate African heritage through fashion by creating high-quality, contemporary clothing that empowers women to express their cultural identity with confidence and pride.",
               },
               {
                 title: "Our Vision",
@@ -117,7 +138,7 @@ export default function AboutPage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                   </svg>
                 ),
-                text: "To become the leading African fashion brand recognized worldwide for quality, innovation, and cultural authenticity. We envision a future where African fashion sits at the forefront of global style, telling stories of heritage through every stitch and pattern.",
+                text: "To become the leading African fashion brand recognized worldwide for quality, innovation, and cultural authenticity.",
               },
             ].map((item, i) => (
               <motion.div
@@ -126,13 +147,13 @@ export default function AboutPage() {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.15, duration: 0.6 }}
-                className="bg-white p-10 border border-border"
+                className="bg-white p-10 border border-border group hover:border-accent/30 transition-all duration-500"
               >
-                <div className="w-16 h-16 bg-charcoal/5 flex items-center justify-center text-charcoal mb-6">
+                <div className="w-16 h-16 bg-accent/10 flex items-center justify-center text-accent mb-6 group-hover:bg-accent group-hover:text-black transition-all duration-500">
                   {item.icon}
                 </div>
                 <h3 className="text-2xl font-serif font-bold text-charcoal mb-4">{item.title}</h3>
-                <div className="divider mb-4" />
+                <div className="w-[40px] h-[2px] bg-accent mb-5" />
                 <p className="text-text leading-relaxed">{item.text}</p>
               </motion.div>
             ))}
@@ -143,12 +164,12 @@ export default function AboutPage() {
       {/* Why Choose Us */}
       <section className="section-padding bg-white">
         <div className="max-w-[1200px] mx-auto px-6">
-          <div className="text-center mb-12">
-            <p className="text-[11px] tracking-[0.3em] uppercase text-text-light mb-2">Why Choose Us</p>
+          <div className="text-center mb-14">
+            <p className="text-[11px] tracking-[0.3em] uppercase text-accent mb-3 font-medium">Why Choose Us</p>
             <h2 className="text-3xl md:text-4xl font-serif font-bold text-charcoal mb-3">
               The MAGRE Difference
             </h2>
-            <div className="divider mx-auto" />
+            <div className="w-[60px] h-[2px] bg-accent mx-auto" />
           </div>
 
           <motion.div
@@ -156,73 +177,47 @@ export default function AboutPage() {
             initial="initial"
             whileInView="animate"
             viewport={{ once: true }}
-            className="grid md:grid-cols-3 gap-8"
+            className="grid md:grid-cols-3 gap-6"
           >
             {[
               {
-                icon: (
-                  <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                  </svg>
-                ),
+                num: "01",
                 title: "Premium Quality",
-                desc: "Every piece is crafted with the finest African fabrics, ensuring durability, comfort, and timeless elegance that lasts beyond seasons.",
+                desc: "Every piece is crafted with the finest African fabrics, ensuring durability, comfort, and timeless elegance.",
               },
               {
-                icon: (
-                  <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                  </svg>
-                ),
+                num: "02",
                 title: "Inclusive Sizing",
-                desc: "We design for every body. Our extended size range ensures every woman can find her perfect fit and feel confident in MAGRE.",
+                desc: "We design for every body. Our extended size range ensures every woman can find her perfect fit.",
               },
               {
-                icon: (
-                  <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064" />
-                  </svg>
-                ),
+                num: "03",
                 title: "Authentically African",
-                desc: "Our fabrics are sourced directly from skilled artisans across West Africa, supporting local economies and preserving traditional craftsmanship.",
+                desc: "Fabrics sourced directly from skilled artisans across West Africa, supporting local economies.",
               },
               {
-                icon: (
-                  <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                  </svg>
-                ),
+                num: "04",
                 title: "Fast Delivery",
-                desc: "Orders are dispatched within 48 hours. Enjoy 3-7 day delivery across Nigeria, with same-day delivery available in Lagos.",
+                desc: "Orders dispatched within 48 hours. 3-7 day delivery across Nigeria, same-day in Lagos.",
               },
               {
-                icon: (
-                  <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                  </svg>
-                ),
+                num: "05",
                 title: "Easy Returns",
-                desc: "Not satisfied? Return within 7 days for a full refund. Your satisfaction is our priority, no questions asked.",
+                desc: "Not satisfied? Return within 7 days for a full refund. Your satisfaction is our priority.",
               },
               {
-                icon: (
-                  <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
-                  </svg>
-                ),
+                num: "06",
                 title: "Expert Support",
-                desc: "Our dedicated team is available via phone, email, or WhatsApp to help with sizing, styling, and any questions you may have.",
+                desc: "Dedicated team available via phone, email, or WhatsApp for sizing, styling, and questions.",
               },
             ].map((item) => (
               <motion.div
                 key={item.title}
                 variants={fadeIn}
-                className="p-8 border border-border hover:border-charcoal/30 transition-colors duration-300"
+                className="p-8 bg-cream/50 border border-border hover:border-accent/30 hover:bg-white transition-all duration-500 group"
               >
-                <div className="w-14 h-14 bg-charcoal/5 flex items-center justify-center text-charcoal mb-5">
-                  {item.icon}
-                </div>
-                <h3 className="font-semibold text-charcoal text-[15px] mb-3">{item.title}</h3>
+                <span className="text-3xl font-serif font-bold text-accent/30 group-hover:text-accent transition-colors duration-500">{item.num}</span>
+                <h3 className="font-bold text-charcoal text-[15px] mt-4 mb-3">{item.title}</h3>
                 <p className="text-[13px] text-text leading-relaxed">{item.desc}</p>
               </motion.div>
             ))}
@@ -233,12 +228,12 @@ export default function AboutPage() {
       {/* What We Stand For */}
       <section className="section-padding bg-black text-white">
         <div className="max-w-[1200px] mx-auto px-6">
-          <div className="text-center mb-12">
-            <p className="text-[11px] tracking-[0.3em] uppercase text-white/50 mb-2">Our Values</p>
+          <div className="text-center mb-14">
+            <p className="text-[11px] tracking-[0.3em] uppercase text-accent mb-3 font-medium">Our Values</p>
             <h2 className="text-3xl md:text-4xl font-serif font-bold mb-3">
               What We Stand For
             </h2>
-            <div className="divider mx-auto bg-white/30" />
+            <div className="w-[60px] h-[2px] bg-accent mx-auto" />
           </div>
 
           <motion.div
@@ -257,34 +252,60 @@ export default function AboutPage() {
               <motion.div
                 key={item.title}
                 variants={fadeIn}
-                className="text-center p-8 border border-white/10 hover:border-white/30 transition-colors duration-300"
+                className="text-center p-8 border border-white/10 hover:border-accent/50 transition-all duration-500 group"
               >
-                <span className="text-4xl font-serif font-bold text-white/20">{item.num}</span>
+                <span className="text-4xl font-serif font-bold text-accent/40 group-hover:text-accent transition-colors duration-500">{item.num}</span>
                 <h3 className="text-xl font-serif font-bold mt-4 mb-3">{item.title}</h3>
-                <p className="text-[13px] text-white/60 leading-relaxed">{item.desc}</p>
+                <div className="w-[30px] h-[2px] bg-accent mx-auto mb-4 group-hover:w-[50px] transition-all duration-500" />
+                <p className="text-[13px] text-white/50 leading-relaxed">{item.desc}</p>
               </motion.div>
             ))}
           </motion.div>
         </div>
       </section>
 
+      {/* Stats */}
+      <section className="py-16 bg-cream">
+        <div className="max-w-[1200px] mx-auto px-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            {[
+              { value: "8+", label: "Years in Business" },
+              { value: "10K+", label: "Happy Customers" },
+              { value: "500+", label: "Unique Designs" },
+              { value: "All", label: "Sizes Available" },
+            ].map((stat) => (
+              <motion.div
+                key={stat.label}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                className="text-center"
+              >
+                <span className="block text-3xl md:text-4xl font-serif font-bold text-charcoal">{stat.value}</span>
+                <span className="text-[12px] text-text mt-2 block">{stat.label}</span>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* CTA */}
-      <section className="section-padding bg-cream">
-        <div className="max-w-[600px] mx-auto px-6 text-center">
+      <section className="section-padding bg-black text-white text-center">
+        <div className="max-w-[600px] mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <h2 className="text-3xl font-serif font-bold text-charcoal mb-4">
-              Ready to Experience MAGRE?
+            <h2 className="text-3xl md:text-4xl font-serif font-bold mb-4">
+              Ready to Experience <span className="text-accent">MAGRE</span>?
             </h2>
-            <p className="text-text mb-8">
+            <p className="text-white/50 mb-10">
               Explore our collection and discover pieces that celebrate your unique style and African heritage.
             </p>
             <Link
               href="/shop"
-              className="inline-flex items-center gap-2 bg-accent text-black px-8 py-3 text-[13px] font-bold tracking-wider uppercase hover:bg-accent-dark transition-all duration-300 border-none cursor-pointer"
+              className="inline-flex items-center gap-2 bg-accent text-black px-10 py-4 text-[13px] font-bold tracking-wider uppercase hover:bg-accent-dark transition-all duration-300"
             >
               Shop Collection
             </Link>

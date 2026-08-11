@@ -17,7 +17,7 @@ export default function ProductPage() {
 
   if (!product) {
     return (
-      <main className="pt-[120px] min-h-screen flex items-center justify-center">
+      <main className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <h1 className="text-2xl font-bold text-charcoal mb-4">Product Not Found</h1>
           <Link href="/shop" className="text-accent hover:underline">Back to Shop</Link>
@@ -46,7 +46,7 @@ export default function ProductPage() {
   const related = products.filter((p) => p.category === product.category && p.id !== product.id).slice(0, 4);
 
   return (
-    <main className="pt-[120px]">
+    <main className="">
       {/* Breadcrumb */}
       <div className="bg-white border-b border-border">
         <div className="max-w-[1200px] mx-auto px-6 py-4">
