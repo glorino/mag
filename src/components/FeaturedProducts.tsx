@@ -12,17 +12,15 @@ export default function FeaturedProducts() {
   return (
     <section className="py-20 bg-cream">
       <div className="max-w-[1200px] mx-auto px-6">
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-14">
-          <div>
-            <p className="text-[11px] tracking-[0.3em] uppercase text-text-light mb-3 font-medium">Featured</p>
-            <h2 className="text-3xl md:text-4xl font-serif font-bold text-charcoal mb-4">Bestsellers</h2>
-            <div className="w-16 h-[2px] bg-accent" />
-          </div>
+        <div className="text-center mb-14">
+          <p className="text-[11px] tracking-[0.3em] uppercase text-accent mb-3 font-medium">Featured</p>
+          <h2 className="text-3xl md:text-4xl font-serif font-bold text-charcoal mb-4">Bestsellers</h2>
+          <div className="w-16 h-[2px] bg-accent mx-auto mb-6" />
           <Link
             href="/shop"
-            className="mt-4 md:mt-0 text-[13px] font-semibold text-charcoal hover:text-accent transition-colors flex items-center gap-2 group"
+            className="text-[13px] font-semibold text-charcoal hover:text-accent transition-colors inline-flex items-center gap-2 group"
           >
-            View All
+            View All Products
             <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
