@@ -22,7 +22,7 @@ export default function ShopPage() {
   return (
     <main>
       {/* Hero */}
-      <section className="relative py-20 bg-black text-white">
+      <section className="relative pt-8 pb-16 md:pt-12 md:pb-24 bg-black text-white">
         <div className="max-w-[1200px] mx-auto px-6 text-center">
           <motion.p
             initial={{ opacity: 0, y: 20 }}
