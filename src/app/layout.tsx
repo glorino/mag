@@ -48,7 +48,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={`${geistSans.variable} ${playfair.variable}`}>
-      <body className="min-h-screen">
+      <body className="min-h-screen pt-[60px]">
         <ClientLayout>{children}</ClientLayout>
       </body>
     </html>

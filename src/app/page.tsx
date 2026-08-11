@@ -1,4 +1,3 @@
-import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import Categories from "@/components/Categories";
 import FeaturedProducts from "@/components/FeaturedProducts";
@@ -12,8 +11,7 @@ import WhatsAppButton from "@/components/WhatsAppButton";
 export default function Home() {
   return (
     <>
-      <Header />
-      <main className="pt-[60px]">
+      <main>
         <Hero />
         <Categories />
         <FeaturedProducts />

@@ -1,15 +1,21 @@
 "use client";
 
 import { ReactNode } from "react";
+import { usePathname } from "next/navigation";
 import { CartProvider } from "@/lib/cart-context";
 import CartSidebar from "@/components/CartSidebar";
+import Header from "@/components/Header";
 
 export default function ClientLayout({ children }: { children: ReactNode }) {
+  const pathname = usePathname();
+  const isAdmin = pathname.startsWith("/admin");
+  const isDashboard = pathname.startsWith("/dashboard");
+
   return (
     <CartProvider>
+      {!isAdmin && !isDashboard && <Header />}
       {children}
       <CartSidebar />
-      {/* Toast */}
       <Toast />
     </CartProvider>
   );

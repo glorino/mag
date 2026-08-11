@@ -20,7 +20,7 @@ export default function ShopPage() {
   if (sortBy === "name") filtered = [...filtered].sort((a, b) => a.name.localeCompare(b.name));
 
   return (
-    <main className="pt-[120px]">
+    <main>
       {/* Hero */}
       <section className="relative py-20 bg-black text-white">
         <div className="max-w-[1200px] mx-auto px-6 text-center">
