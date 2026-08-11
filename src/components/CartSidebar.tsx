@@ -1,9 +1,23 @@
 "use client";
 
+import { useState, useEffect } from "react";
+import Link from "next/link";
 import { useCart } from "@/lib/cart-context";
 
 export default function CartSidebar() {
   const { items, isOpen, closeCart, removeItem, updateQuantity, totalPrice } = useCart();
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsLoggedIn(!!localStorage.getItem("token"));
+    check();
+    window.addEventListener("storage", check);
+    const interval = setInterval(check, 1000);
+    return () => {
+      window.removeEventListener("storage", check);
+      clearInterval(interval);
+    };
+  }, []);
 
   return (
     <>
@@ -89,9 +103,13 @@ export default function CartSidebar() {
               <span className="text-[18px] font-bold text-charcoal">₦{totalPrice().toLocaleString()}</span>
             </div>
             <p className="text-[12px] text-text-light">Shipping calculated at checkout</p>
-            <button className="w-full bg-accent text-black py-4 text-[13px] font-bold tracking-wider uppercase hover:bg-accent-dark transition-all duration-300">
+            <Link
+              href={isLoggedIn ? "/checkout" : "/login"}
+              onClick={closeCart}
+              className="block w-full bg-accent text-black py-4 text-[13px] font-bold tracking-wider uppercase hover:bg-accent-dark transition-all duration-300 text-center"
+            >
               Proceed to Checkout
-            </button>
+            </Link>
             <button
               onClick={closeCart}
               className="w-full border border-border py-3 text-[13px] font-medium text-charcoal hover:border-charcoal transition-colors"

@@ -6,13 +6,13 @@ const testimonials = [
   {
     name: "Adaeze O.",
     location: "Lagos, Nigeria",
-    text: "The quality of MAGRE pieces is unmatched. Every time I wear my ankara set, I get endless compliments. The fabric is premium and the fit is perfect.",
+    text: "The quality of MAGRE pieces is unmatched. Every time I wear my ankara shirt, I get endless compliments. The fabric is premium and the fit is perfect.",
     rating: 5,
   },
   {
     name: "Fatima B.",
     location: "Abuja, Nigeria",
-    text: "I ordered a custom kaftan for my sister's wedding and it exceeded my expectations. MAGRE truly understands how to blend African heritage with modern elegance.",
+    text: "I ordered a custom outfit for my sister's wedding and it exceeded my expectations. MAGRE truly understands how to blend African heritage with modern elegance.",
     rating: 5,
   },
   {

@@ -6,27 +6,21 @@ import Link from "next/link";
 export default function Hero() {
   return (
     <section className="relative bg-black">
-      {/* Top bar */}
       <div className="bg-accent text-black text-center py-2.5">
         <p className="text-[12px] tracking-wider font-bold">
           Free delivery within Lagos on orders above ₦50,000
         </p>
       </div>
 
-      {/* Banner */}
-      <div className="relative w-full h-[520px] md:h-[620px] overflow-hidden bg-black">
-        {/* Pattern background */}
+      <div className="relative w-full h-[520px] md:h-[650px] overflow-hidden bg-black">
         <div className="absolute inset-0 opacity-5">
           <div className="absolute inset-0" style={{
             backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2300e5ff' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
           }} />
         </div>
-        
-        {/* Gradient overlays */}
         <div className="absolute inset-0 bg-gradient-to-br from-black via-black/95 to-black/80" />
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-        
-        {/* Decorative elements */}
+
         <div className="absolute top-20 left-10 w-72 h-72 bg-accent/5 rounded-full blur-3xl" />
         <div className="absolute bottom-20 right-10 w-96 h-96 bg-accent/3 rounded-full blur-3xl" />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] border border-accent/5 rounded-full" />
@@ -67,7 +61,7 @@ export default function Hero() {
               transition={{ delay: 0.6, duration: 0.6 }}
               className="text-white/60 text-[15px] mb-10 max-w-lg mx-auto leading-relaxed"
             >
-              Discover our curated collection of ankara, adire, and contemporary African wear for the modern woman.
+              Discover our curated collection of shirts, trousers, and nickers designed exclusively for the modern woman.
             </motion.p>
             
             <motion.div

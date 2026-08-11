@@ -6,18 +6,14 @@ import Link from "next/link";
 import { getProductsByCategory } from "@/lib/products";
 import { useCart } from "@/lib/cart-context";
 
-const categories = ["All", "New", "Ankara", "Adire", "Kaftans", "Dresses", "Tops & Sets", "Trousers"];
+const categories = ["All", "Shirt", "Trouser", "Nicker"];
 
 export default function ShopPage() {
   const [activeCategory, setActiveCategory] = useState("All");
   const [sortBy, setSortBy] = useState("latest");
   const { addItem } = useCart();
 
-  let filtered = getProductsByCategory(activeCategory === "New" ? "All" : activeCategory);
-
-  if (activeCategory === "New") {
-    filtered = filtered.filter((p) => p.badge === "New");
-  }
+  let filtered = getProductsByCategory(activeCategory);
 
   if (sortBy === "price-low") filtered = [...filtered].sort((a, b) => a.priceNum - b.priceNum);
   if (sortBy === "price-high") filtered = [...filtered].sort((a, b) => b.priceNum - a.priceNum);

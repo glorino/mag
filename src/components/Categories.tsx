@@ -5,64 +5,28 @@ import Link from "next/link";
 
 const categories = [
   { 
-    name: "Ankara", 
-    desc: "Bold prints, timeless style",
-    icon: (
-      <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.2} d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z" />
-      </svg>
-    ),
-  },
-  { 
-    name: "Adire", 
-    desc: "Indigo heritage",
-    icon: (
-      <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
-      </svg>
-    ),
-  },
-  { 
-    name: "Kaftans", 
-    desc: "Flowing elegance",
-    icon: (
-      <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.2} d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-      </svg>
-    ),
-  },
-  { 
-    name: "Dresses", 
-    desc: "Ready-to-wear luxury",
-    icon: (
-      <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
-      </svg>
-    ),
-  },
-  { 
-    name: "Tops & Sets", 
-    desc: "Mix & match perfection",
-    icon: (
-      <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-      </svg>
-    ),
+    name: "Shirts", 
+    desc: "Elegant tops & blouses for every occasion",
+    image: "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=600&h=400&fit=crop",
+    count: "24+ styles",
   },
   { 
     name: "Trousers", 
-    desc: "Comfortable sophistication",
-    icon: (
-      <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.2} d="M14.121 14.121L19 19m-7-7l7-7m-7 7l-2.879 2.879M12 12L9.121 9.121m0 5.758a3 3 0 10-4.243 4.243 3 3 0 004.243-4.243zm0-5.758a3 3 0 10-4.243-4.243 3 3 0 004.243 4.243z" />
-      </svg>
-    ),
+    desc: "Stylish bottoms that define your silhouette",
+    image: "https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=600&h=400&fit=crop",
+    count: "18+ styles",
+  },
+  { 
+    name: "Nicker", 
+    desc: "Comfortable undergarments with African flair",
+    image: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=600&h=400&fit=crop",
+    count: "12+ styles",
   },
 ];
 
 export default function Categories() {
   return (
-    <section className="section-padding bg-white" id="shop">
+    <section className="py-20 bg-white" id="shop">
       <div className="max-w-[1200px] mx-auto px-6">
         <div className="text-center mb-14">
           <p className="text-[11px] tracking-[0.3em] uppercase text-text-light mb-3 font-medium">Collections</p>
@@ -72,24 +36,37 @@ export default function Categories() {
           <div className="w-16 h-[2px] bg-accent mx-auto" />
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {categories.map((cat, i) => (
             <motion.div
               key={cat.name}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.08, duration: 0.5 }}
+              transition={{ delay: i * 0.1, duration: 0.5 }}
             >
               <Link
                 href="/shop"
-                className="group block text-center p-6 border border-border hover:border-accent transition-all duration-300 bg-white hover:shadow-lg"
+                className="group block relative overflow-hidden bg-black aspect-[4/3]"
               >
-                <div className="w-16 h-16 mx-auto mb-4 bg-warm-gray group-hover:bg-accent flex items-center justify-center transition-all duration-300 text-text-light group-hover:text-black">
-                  {cat.icon}
+                <img
+                  src={cat.image}
+                  alt={cat.name}
+                  className="w-full h-full object-cover opacity-70 group-hover:opacity-50 group-hover:scale-105 transition-all duration-700"
+                  loading="lazy"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                <div className="absolute bottom-0 left-0 right-0 p-8">
+                  <span className="text-accent text-[11px] font-bold tracking-widest uppercase">{cat.count}</span>
+                  <h3 className="text-white text-2xl font-serif font-bold mt-1 mb-2">{cat.name}</h3>
+                  <p className="text-white/60 text-[13px] leading-relaxed">{cat.desc}</p>
+                  <div className="mt-4 inline-flex items-center gap-2 text-accent text-[12px] font-bold tracking-wider uppercase group-hover:gap-3 transition-all duration-300">
+                    Shop Now
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                    </svg>
+                  </div>
                 </div>
-                <h3 className="font-semibold text-charcoal text-[14px] mb-1">{cat.name}</h3>
-                <p className="text-[12px] text-text-light leading-relaxed">{cat.desc}</p>
               </Link>
             </motion.div>
           ))}

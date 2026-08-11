@@ -13,7 +13,7 @@ export default function Footer() {
               <span className="text-xl font-bold tracking-[0.2em]">MAGRE</span>
             </Link>
             <p className="text-white/50 text-[13px] leading-relaxed mt-4">
-              Premium Nigerian fashion brand. Ready-to-wear dresses, blouses, shirts, jackets and tunics for women of all sizes.
+              Premium Nigerian fashion brand. Ready-to-wear shirts, trousers, and nickers designed exclusively for women of all sizes.
             </p>
             <div className="flex gap-3 mt-6">
               {["Facebook", "Instagram"].map((s) => (
@@ -28,12 +28,9 @@ export default function Footer() {
           <div>
             <h4 className="font-bold text-[12px] tracking-widest uppercase mb-5 text-accent">Shop</h4>
             <ul className="space-y-3">
-              <li><Link href="/shop" className="text-white/50 text-[13px] hover:text-white transition-colors">New Arrivals</Link></li>
-              <li><Link href="/shop" className="text-white/50 text-[13px] hover:text-white transition-colors">Ankara</Link></li>
-              <li><Link href="/shop" className="text-white/50 text-[13px] hover:text-white transition-colors">Adire</Link></li>
-              <li><Link href="/shop" className="text-white/50 text-[13px] hover:text-white transition-colors">Kaftans</Link></li>
-              <li><Link href="/shop" className="text-white/50 text-[13px] hover:text-white transition-colors">Dresses</Link></li>
-              <li><Link href="/shop" className="text-white/50 text-[13px] hover:text-white transition-colors">Tops & Sets</Link></li>
+              <li><Link href="/shop" className="text-white/50 text-[13px] hover:text-white transition-colors">Shirts</Link></li>
+              <li><Link href="/shop" className="text-white/50 text-[13px] hover:text-white transition-colors">Trousers</Link></li>
+              <li><Link href="/shop" className="text-white/50 text-[13px] hover:text-white transition-colors">Nicker</Link></li>
             </ul>
           </div>
 

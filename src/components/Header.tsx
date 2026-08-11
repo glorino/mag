@@ -6,6 +6,11 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useCart } from "@/lib/cart-context";
 
+function getIsLoggedIn(): boolean {
+  if (typeof window === "undefined") return false;
+  return !!localStorage.getItem("token");
+}
+
 const navLinks = [
   { name: "Home", href: "/" },
   { name: "Shop", href: "/shop" },
@@ -14,11 +19,7 @@ const navLinks = [
   { name: "FAQ", href: "/faq" },
 ];
 
-const categories = [
-  "New", "Adire", "Ankara", "Dresses", "Jumpsuits",
-  "Kaftans", "Shorts", "Skirts", "Tops", "Tops & Jackets",
-  "Sets", "Trousers",
-];
+const categories = ["Shirt", "Trouser", "Nicker"];
 
 export default function Header() {
   const pathname = usePathname();
@@ -26,6 +27,18 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [shopOpen, setShopOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    setIsLoggedIn(getIsLoggedIn());
+    const handleStorage = () => setIsLoggedIn(getIsLoggedIn());
+    window.addEventListener("storage", handleStorage);
+    const interval = setInterval(() => setIsLoggedIn(getIsLoggedIn()), 1000);
+    return () => {
+      window.removeEventListener("storage", handleStorage);
+      clearInterval(interval);
+    };
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50);
@@ -98,6 +111,21 @@ export default function Header() {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
           </button>
+
+          {/* User / Login */}
+          {isLoggedIn ? (
+            <Link href="/dashboard" className="p-2 hover:bg-white/10 rounded-full transition-colors">
+              <svg className="w-[18px] h-[18px] text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+              </svg>
+            </Link>
+          ) : (
+            <Link href="/login" className="p-2 hover:bg-white/10 rounded-full transition-colors">
+              <svg className="w-[18px] h-[18px] text-white/70" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+              </svg>
+            </Link>
+          )}
 
           {/* Cart */}
           <button onClick={toggleCart} className="p-2 hover:bg-white/10 rounded-full transition-colors relative">

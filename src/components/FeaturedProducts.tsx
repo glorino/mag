@@ -7,17 +7,15 @@ import { useCart } from "@/lib/cart-context";
 
 export default function FeaturedProducts() {
   const { addItem } = useCart();
-  const featured = products.slice(0, 8);
+  const featured = products.filter((p) => p.badge).slice(0, 8);
 
   return (
-    <section className="section-padding bg-cream">
+    <section className="py-20 bg-cream">
       <div className="max-w-[1200px] mx-auto px-6">
         <div className="flex flex-col md:flex-row md:items-end md:justify-between mb-14">
           <div>
             <p className="text-[11px] tracking-[0.3em] uppercase text-text-light mb-3 font-medium">Featured</p>
-            <h2 className="text-3xl md:text-4xl font-serif font-bold text-charcoal mb-4">
-              Bestsellers
-            </h2>
+            <h2 className="text-3xl md:text-4xl font-serif font-bold text-charcoal mb-4">Bestsellers</h2>
             <div className="w-16 h-[2px] bg-accent" />
           </div>
           <Link
@@ -31,7 +29,7 @@ export default function FeaturedProducts() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
           {featured.map((product, i) => (
             <motion.div
               key={product.id}
@@ -41,9 +39,14 @@ export default function FeaturedProducts() {
               transition={{ delay: i * 0.08, duration: 0.5 }}
               className="group"
             >
-              <Link href={`/product/${product.id}`} className="block cursor-pointer">
-                <div className="relative aspect-[3/4] overflow-hidden mb-4 bg-black border border-border">
-                  <img src={product.image} alt={product.name} className="w-full h-full object-cover" loading="lazy" />
+              <Link href={`/product/${product.id}`} className="block">
+                <div className="relative aspect-[3/4] overflow-hidden mb-4 bg-black">
+                  <img
+                    src={product.image}
+                    alt={product.name}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                    loading="lazy"
+                  />
                   {product.badge && (
                     <span className={`absolute top-3 left-3 px-3 py-1 text-[10px] font-bold uppercase tracking-wider z-10 ${
                       product.badge === "Bestseller" ? "bg-accent text-black" : product.badge === "New" ? "bg-white text-black" : "bg-black text-accent border border-accent/30"
@@ -51,15 +54,15 @@ export default function FeaturedProducts() {
                       {product.badge}
                     </span>
                   )}
-                  <div className="absolute bottom-0 left-0 right-0 bg-accent py-3 text-center opacity-0 group-hover:opacity-100 transition-all duration-300 translate-y-full group-hover:translate-y-0 z-10">
-                    <span className="text-[12px] font-bold text-black tracking-wider uppercase">View Details</span>
+                  <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <span className="bg-white text-black px-6 py-3 text-[12px] font-bold tracking-wider uppercase">View Details</span>
                   </div>
                 </div>
               </Link>
               <div className="flex items-start justify-between">
-                <div>
+                <div className="min-w-0">
                   <p className="text-[11px] text-text-light tracking-wider uppercase mb-1 font-medium">{product.category}</p>
-                  <h3 className="text-[14px] font-semibold text-charcoal group-hover:text-accent transition-colors mb-1">{product.name}</h3>
+                  <h3 className="text-[14px] font-semibold text-charcoal group-hover:text-accent transition-colors mb-1 truncate">{product.name}</h3>
                   <p className="text-[15px] font-bold text-charcoal">{product.price}</p>
                 </div>
                 <button
@@ -74,7 +77,7 @@ export default function FeaturedProducts() {
                       image: product.image,
                     });
                   }}
-                  className="mt-2 p-2 border border-border hover:border-accent hover:bg-accent hover:text-black text-text transition-all duration-300"
+                  className="mt-1 w-9 h-9 border border-border hover:border-accent hover:bg-accent hover:text-black text-text flex items-center justify-center transition-all duration-300 flex-shrink-0"
                 >
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />

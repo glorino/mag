@@ -17,23 +17,23 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "MAGRE | Premium African Fashion",
+  title: "MAGRE | Premium Women's Fashion",
   description:
-    "MAGRE is a premium Nigerian fashion brand. We produce ready to wear dresses, blouses, shirts, jackets and tunics for women of all sizes.",
+    "MAGRE is a premium Nigerian fashion brand. Ready-to-wear shirts, trousers, and nickers designed exclusively for women of all sizes.",
   keywords: [
     "Nigerian fashion",
     "African clothing",
-    "Ankara",
-    "Adire",
-    "Kaftans",
+    "Women's shirts",
+    "Women's trousers",
+    "Women's undergarments",
     "Lagos fashion",
     "women's wear",
     "ready to wear",
     "MAGRE",
   ],
   openGraph: {
-    title: "MAGRE | Premium African Fashion",
-    description: "Ready to wear dresses, blouses, shirts, jackets and tunics for women of all sizes.",
+    title: "MAGRE | Premium Women's Fashion",
+    description: "Ready-to-wear shirts, trousers, and nickers designed exclusively for women of all sizes.",
     url: "https://mag-drab.vercel.app",
     siteName: "MAGRE Fashion",
     locale: "en_US",
