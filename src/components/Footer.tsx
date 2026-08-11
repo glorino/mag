@@ -3,22 +3,40 @@ import Image from "next/image";
 
 export default function Footer() {
   return (
-    <footer className="bg-black text-white">
-      <div className="max-w-[1200px] mx-auto px-6 py-14">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-10">
+    <footer style={{ background: "#000", color: "#fff" }}>
+      {/* Main Footer */}
+      <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "60px 24px 40px" }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: "40px" }}>
           {/* Brand */}
-          <div className="col-span-2 md:col-span-1">
-            <Link href="/" className="flex items-center gap-2 mb-4">
-              <Image src="/logo.jpeg" alt="MAGRE" width={36} height={36} className="object-contain" />
-              <span className="text-xl font-bold tracking-[0.2em]">MAGRE</span>
+          <div>
+            <Link href="/" style={{ display: "flex", alignItems: "center", gap: "10px", textDecoration: "none" }}>
+              <Image src="/logo.jpeg" alt="MAGRE" width={36} height={36} style={{ objectFit: "contain" }} />
+              <span style={{ fontSize: "20px", fontWeight: 700, letterSpacing: "0.15em", color: "#fff" }}>MAGRE</span>
             </Link>
-            <p className="text-white/50 text-[13px] leading-relaxed mt-4">
+            <p style={{ color: "#999", fontSize: "13px", lineHeight: 1.8, marginTop: "16px" }}>
               Premium Nigerian fashion brand. Ready-to-wear shirts, trousers, and nickers designed exclusively for women of all sizes.
             </p>
-            <div className="flex gap-3 mt-6">
-              {["Facebook", "Instagram"].map((s) => (
-                <a key={s} href="#" className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-accent transition-colors text-[11px] font-medium text-white hover:text-black">
-                  {s[0]}
+            <div style={{ display: "flex", gap: "10px", marginTop: "20px" }}>
+              {[
+                { label: "F", href: "#" },
+                { label: "I", href: "#" },
+              ].map((s) => (
+                <a
+                  key={s.label}
+                  href={s.href}
+                  style={{
+                    width: "36px", height: "36px",
+                    borderRadius: "50%",
+                    background: "rgba(255,255,255,0.08)",
+                    display: "flex", alignItems: "center", justifyContent: "center",
+                    fontSize: "12px", fontWeight: 600, color: "#fff",
+                    textDecoration: "none",
+                    transition: "background 0.3s",
+                  }}
+                  onMouseEnter={(e) => (e.currentTarget.style.background = "#00e5ff")}
+                  onMouseLeave={(e) => (e.currentTarget.style.background = "rgba(255,255,255,0.08)")}
+                >
+                  {s.label}
                 </a>
               ))}
             </div>
@@ -26,47 +44,91 @@ export default function Footer() {
 
           {/* Shop */}
           <div>
-            <h4 className="font-bold text-[12px] tracking-widest uppercase mb-5 text-accent">Shop</h4>
-            <ul className="space-y-3">
-              <li><Link href="/shop" className="text-white/50 text-[13px] hover:text-white transition-colors">Shirts</Link></li>
-              <li><Link href="/shop" className="text-white/50 text-[13px] hover:text-white transition-colors">Trousers</Link></li>
-              <li><Link href="/shop" className="text-white/50 text-[13px] hover:text-white transition-colors">Nicker</Link></li>
+            <h4 style={{ fontWeight: 700, fontSize: "12px", letterSpacing: "0.15em", textTransform: "uppercase", color: "#00e5ff", marginBottom: "20px" }}>Shop</h4>
+            <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "12px" }}>
+              {["Shirts", "Trousers", "Nicker"].map((item) => (
+                <li key={item}>
+                  <Link href="/shop" style={{ color: "#aaa", fontSize: "13px", textDecoration: "none", transition: "color 0.3s" }}
+                    onMouseEnter={(e) => (e.currentTarget.style.color = "#fff")}
+                    onMouseLeave={(e) => (e.currentTarget.style.color = "#aaa")}
+                  >
+                    {item}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
           {/* Help */}
           <div>
-            <h4 className="font-bold text-[12px] tracking-widest uppercase mb-5 text-accent">Help</h4>
-            <ul className="space-y-3">
-              <li><Link href="/size-guide" className="text-white/50 text-[13px] hover:text-white transition-colors">Size Guide</Link></li>
-              <li><Link href="/faq" className="text-white/50 text-[13px] hover:text-white transition-colors">Shipping Info</Link></li>
-              <li><Link href="/returns" className="text-white/50 text-[13px] hover:text-white transition-colors">Returns Policy</Link></li>
-              <li><Link href="/faq" className="text-white/50 text-[13px] hover:text-white transition-colors">FAQ</Link></li>
+            <h4 style={{ fontWeight: 700, fontSize: "12px", letterSpacing: "0.15em", textTransform: "uppercase", color: "#00e5ff", marginBottom: "20px" }}>Help</h4>
+            <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "12px" }}>
+              {[
+                { name: "Size Guide", href: "/size-guide" },
+                { name: "Shipping Info", href: "/faq" },
+                { name: "Returns Policy", href: "/returns" },
+                { name: "FAQ", href: "/faq" },
+              ].map((item) => (
+                <li key={item.name}>
+                  <Link href={item.href} style={{ color: "#aaa", fontSize: "13px", textDecoration: "none", transition: "color 0.3s" }}
+                    onMouseEnter={(e) => (e.currentTarget.style.color = "#fff")}
+                    onMouseLeave={(e) => (e.currentTarget.style.color = "#aaa")}
+                  >
+                    {item.name}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
 
-          {/* Company */}
+          {/* Contact */}
           <div>
-            <h4 className="font-bold text-[12px] tracking-widest uppercase mb-5 text-accent">Company</h4>
-            <ul className="space-y-3">
-              <li><Link href="/about" className="text-white/50 text-[13px] hover:text-white transition-colors">About MAGRE</Link></li>
-              <li><Link href="/contact" className="text-white/50 text-[13px] hover:text-white transition-colors">Contact</Link></li>
+            <h4 style={{ fontWeight: 700, fontSize: "12px", letterSpacing: "0.15em", textTransform: "uppercase", color: "#00e5ff", marginBottom: "20px" }}>Contact Us</h4>
+            <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "12px" }}>
+              <li style={{ color: "#aaa", fontSize: "13px", lineHeight: 1.7 }}>
+                35 Eric Moore Close, Off Eric Moore Road, Surulere, Lagos
+              </li>
+              <li>
+                <a href="tel:08184118997" style={{ color: "#aaa", fontSize: "13px", textDecoration: "none", transition: "color 0.3s" }}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = "#fff")}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = "#aaa")}
+                >
+                  08184118997
+                </a>
+              </li>
+              <li>
+                <a href="mailto:info@magre.ng" style={{ color: "#aaa", fontSize: "13px", textDecoration: "none", transition: "color 0.3s" }}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = "#fff")}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = "#aaa")}
+                >
+                  info@magre.ng
+                </a>
+              </li>
             </ul>
           </div>
         </div>
       </div>
 
-      {/* Bottom */}
-      <div className="border-t border-white/10">
-        <div className="max-w-[1200px] mx-auto px-6 py-5 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-white/40 text-[12px]">
+      {/* Bottom Bar */}
+      <div style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}>
+        <div style={{ maxWidth: "1200px", margin: "0 auto", padding: "20px 24px", display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: "16px" }}>
+          <p style={{ color: "#666", fontSize: "12px", margin: 0 }}>
             &copy; 2026 MAGRE. All rights reserved.
           </p>
-          <div className="flex gap-5 text-[12px] text-white/40">
-            <Link href="/privacy-policy" className="hover:text-white transition-colors">Privacy Policy</Link>
-            <Link href="/terms" className="hover:text-white transition-colors">Terms &amp; Conditions</Link>
-            <Link href="/returns" className="hover:text-white transition-colors">Returns Policy</Link>
-            <Link href="/size-guide" className="hover:text-white transition-colors">Size Guide</Link>
+          <div style={{ display: "flex", gap: "24px", flexWrap: "wrap" }}>
+            {[
+              { name: "Privacy Policy", href: "/privacy-policy" },
+              { name: "Terms & Conditions", href: "/terms" },
+              { name: "Returns Policy", href: "/returns" },
+              { name: "Size Guide", href: "/size-guide" },
+            ].map((item) => (
+              <Link key={item.name} href={item.href} style={{ color: "#666", fontSize: "12px", textDecoration: "none", transition: "color 0.3s" }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = "#fff")}
+                onMouseLeave={(e) => (e.currentTarget.style.color = "#666")}
+              >
+                {item.name}
+              </Link>
+            ))}
           </div>
         </div>
       </div>

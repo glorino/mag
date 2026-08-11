@@ -52,7 +52,7 @@ function FaqItem({ q, a }: { q: string; a: string }) {
       <div style={{ maxHeight: open ? "200px" : "0", opacity: open ? 1 : 0, overflow: "hidden", transition: "all 0.3s" }}>
         <div style={{ padding: "0 24px 20px" }}>
           <div style={{ width: "40px", height: "2px", background: "#00e5ff", marginBottom: "12px" }} />
-          <p style={{ fontSize: "13px", color: "#888", lineHeight: 1.7 }}>{a}</p>
+          <p style={{ fontSize: "13px", color: "#333", lineHeight: 1.7 }}>{a}</p>
         </div>
       </div>
     </div>
