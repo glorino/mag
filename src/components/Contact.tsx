@@ -27,7 +27,7 @@ function FaqItem({ q, a }: { q: string; a: string }) {
           cursor: "pointer",
         }}
       >
-        <span style={{ fontWeight: 600, fontSize: "14px", color: open ? "#00e5ff" : "#000", paddingRight: "16px" }}>
+        <span style={{ fontWeight: 600, fontSize: "14px", color: "#000", paddingRight: "16px" }}>
           {q}
         </span>
         <span
