@@ -13,11 +13,19 @@ export async function POST(request: Request) {
       );
     }
 
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return NextResponse.json(
+        { error: "Please enter a valid email address" },
+        { status: 400 }
+      );
+    }
+
     const users = await findUserByEmail(email);
     const user = users;
     if (!user) {
       return NextResponse.json(
-        { error: "Invalid email or password" },
+        { error: "No account found with this email" },
         { status: 401 }
       );
     }
@@ -25,7 +33,7 @@ export async function POST(request: Request) {
     const valid = await comparePassword(password, user.password_hash);
     if (!valid) {
       return NextResponse.json(
-        { error: "Invalid email or password" },
+        { error: "Incorrect password. Please try again." },
         { status: 401 }
       );
     }
@@ -61,7 +69,7 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error("Login error:", error);
     return NextResponse.json(
-      { error: "Failed to login" },
+      { error: "Failed to login. Please try again." },
       { status: 500 }
     );
   }

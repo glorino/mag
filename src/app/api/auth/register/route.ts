@@ -13,16 +13,38 @@ export async function POST(request: Request) {
       );
     }
 
+    if (name.trim().length < 2) {
+      return NextResponse.json(
+        { error: "Name must be at least 2 characters" },
+        { status: 400 }
+      );
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return NextResponse.json(
+        { error: "Please enter a valid email address" },
+        { status: 400 }
+      );
+    }
+
+    if (password.length < 6) {
+      return NextResponse.json(
+        { error: "Password must be at least 6 characters" },
+        { status: 400 }
+      );
+    }
+
     const existing = await findUserByEmail(email);
     if (existing) {
       return NextResponse.json(
-        { error: "Email already registered" },
+        { error: "An account with this email already exists" },
         { status: 409 }
       );
     }
 
     const password_hash = await hashPassword(password);
-    const users = await createUser({ name, email, password_hash, phone });
+    const users = await createUser({ name: name.trim(), email: email.toLowerCase().trim(), password_hash, phone: phone?.trim() || null });
     const user = users[0];
 
     const token = await generateToken({
@@ -31,7 +53,18 @@ export async function POST(request: Request) {
       role: user.role,
     });
 
-    const response = NextResponse.json({ token, user }, { status: 201 });
+    const response = NextResponse.json({
+      token,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        role: user.role,
+        created_at: user.created_at,
+      },
+    }, { status: 201 });
+
     response.cookies.set("token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
@@ -44,7 +77,7 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error("Register error:", error);
     return NextResponse.json(
-      { error: "Failed to register user" },
+      { error: "Failed to create account. Please try again." },
       { status: 500 }
     );
   }
