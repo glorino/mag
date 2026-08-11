@@ -15,40 +15,66 @@ export default function Newsletter() {
   };
 
   return (
-    <section className="py-20 bg-[#f9f7f5]">
-      <div className="max-w-[700px] mx-auto px-6 text-center">
-        <p className="text-[11px] tracking-[0.3em] uppercase text-gray-400 mb-3 font-medium">Stay Connected</p>
-        <h2 className="text-3xl md:text-4xl font-serif font-bold text-black mb-4">
+    <section style={{ padding: "80px 0", background: "#f9f7f5" }}>
+      <div style={{ maxWidth: "600px", margin: "0 auto", padding: "0 24px", textAlign: "center" }}>
+        <p style={{ fontSize: "11px", letterSpacing: "0.3em", textTransform: "uppercase", color: "#aaa", marginBottom: "12px" }}>
+          Stay Connected
+        </p>
+        <h2 style={{ fontSize: "36px", fontWeight: 700, color: "#000", marginBottom: "16px", fontFamily: "var(--font-playfair), serif" }}>
           Join the MAGRE Family
         </h2>
-        <div className="w-16 h-[2px] bg-[#00e5ff] mx-auto mb-6" />
-        <p className="text-gray-500 text-[14px] mb-8 leading-relaxed">
+        <div style={{ width: "60px", height: "2px", background: "#00e5ff", margin: "0 auto 24px" }} />
+        <p style={{ color: "#888", fontSize: "14px", marginBottom: "32px", lineHeight: 1.7 }}>
           Be the first to know about new collections, exclusive offers, and styling tips.
         </p>
 
         {submitted ? (
-          <div className="bg-white p-8 border border-gray-200">
-            <div className="w-14 h-14 mx-auto mb-4 bg-[#00e5ff] text-black flex items-center justify-center">
-              <svg className="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <div style={{ background: "#fff", padding: "32px", border: "1px solid #eee" }}>
+            <div style={{
+              width: "56px", height: "56px", margin: "0 auto 16px",
+              background: "#00e5ff", color: "#000",
+              display: "flex", alignItems: "center", justifyContent: "center",
+            }}>
+              <svg width="28" height="28" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
               </svg>
             </div>
-            <p className="font-bold text-black text-[15px]">Welcome to the family!</p>
-            <p className="text-[13px] text-gray-400 mt-2">Check your inbox for your discount code.</p>
+            <p style={{ fontWeight: 700, color: "#000", fontSize: "15px" }}>Welcome to the family!</p>
+            <p style={{ fontSize: "13px", color: "#aaa", marginTop: "8px" }}>Check your inbox for your discount code.</p>
           </div>
         ) : (
-          <form onSubmit={handleSubmit} className="flex max-w-[500px] mx-auto">
+          <form onSubmit={handleSubmit} style={{ display: "flex", maxWidth: "480px", margin: "0 auto" }}>
             <input
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="Enter your email address"
               required
-              className="flex-1 px-5 py-4 border border-gray-200 border-r-0 bg-white text-black text-[13px] placeholder:text-gray-400 focus:outline-none focus:border-[#00e5ff] transition-colors"
+              style={{
+                flex: 1,
+                padding: "16px 20px",
+                border: "1px solid #eee",
+                borderRight: "none",
+                background: "#fff",
+                color: "#000",
+                fontSize: "13px",
+                outline: "none",
+              }}
             />
             <button
               type="submit"
-              className="bg-[#00e5ff] text-black px-8 py-4 text-[12px] font-bold tracking-wider uppercase hover:bg-[#00b8d4] transition-all duration-300 cursor-pointer shrink-0"
+              style={{
+                background: "#00e5ff",
+                color: "#000",
+                padding: "16px 32px",
+                fontSize: "12px",
+                fontWeight: 700,
+                letterSpacing: "0.1em",
+                textTransform: "uppercase",
+                border: "none",
+                cursor: "pointer",
+                whiteSpace: "nowrap",
+              }}
             >
               Submit
             </button>
