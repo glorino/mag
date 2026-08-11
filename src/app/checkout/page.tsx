@@ -135,7 +135,7 @@ export default function CheckoutPage() {
 
   if (items.length === 0 && !error) {
     return (
-      <div className="min-h-screen bg-black pt-24 flex items-center justify-center">
+      <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="text-center">
           <p className="text-white/50 text-[15px]">Your cart is empty</p>
           <Link href="/shop" className="text-accent text-[13px] font-medium mt-3 inline-block hover:text-accent-dark">
@@ -147,7 +147,7 @@ export default function CheckoutPage() {
   }
 
   return (
-    <div className="min-h-screen bg-black pt-24 pb-16">
+    <div className="min-h-screen bg-black pb-16">
       <div className="max-w-[1000px] mx-auto px-6">
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}>
           <h1 className="text-2xl font-bold text-white mb-8">Checkout</h1>

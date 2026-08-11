@@ -6,12 +6,18 @@ export default function TermsPage() {
   return (
     <main className="">
       {/* Hero */}
-      <section className="relative py-20 bg-black text-white">
-        <div className="max-w-[1200px] mx-auto px-6 text-center">
+      <section className="relative py-24 md:py-32 bg-black text-white overflow-hidden">
+        <div className="absolute inset-0 opacity-5">
+          <div className="absolute inset-0" style={{
+            backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2300e5ff' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+          }} />
+        </div>
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] border border-accent/5 rounded-full" />
+        <div className="max-w-[1200px] mx-auto px-6 text-center relative z-10">
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-[11px] tracking-[0.3em] uppercase text-white/50 mb-3"
+            className="text-[11px] tracking-[0.4em] uppercase text-accent mb-4 font-medium"
           >
             Legal
           </motion.p>
@@ -19,7 +25,7 @@ export default function TermsPage() {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-4xl md:text-5xl font-serif font-bold mb-4"
+            className="text-4xl md:text-6xl font-serif font-bold mb-6"
           >
             Terms & Conditions
           </motion.h1>
@@ -27,7 +33,7 @@ export default function TermsPage() {
             initial={{ width: 0 }}
             animate={{ width: 60 }}
             transition={{ delay: 0.3, duration: 0.5 }}
-            className="h-[2px] bg-white/30 mx-auto"
+            className="h-[2px] bg-accent mx-auto mb-6"
           />
         </div>
       </section>

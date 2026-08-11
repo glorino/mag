@@ -12,15 +12,19 @@ export default function ClientLayout({ children }: { children: ReactNode }) {
   const pathname = usePathname();
   const isAdmin = pathname.startsWith("/admin");
   const isDashboard = pathname.startsWith("/dashboard");
-  const isCheckout = pathname.startsWith("/checkout");
   const isAuth = pathname.startsWith("/login") || pathname.startsWith("/register");
+  const isCheckout = pathname.startsWith("/checkout");
+
+  const showChrome = !isAdmin && !isDashboard && !isAuth;
 
   return (
     <CartProvider>
-      {!isAdmin && !isDashboard && !isAuth && <Header />}
-      {children}
-      {!isAdmin && !isDashboard && <Footer />}
-      {!isAdmin && !isDashboard && <WhatsAppButton />}
+      {showChrome && <Header />}
+      <div className={showChrome ? "pt-[64px]" : ""}>
+        {children}
+      </div>
+      {showChrome && <Footer />}
+      {showChrome && <WhatsAppButton />}
       {!isAdmin && !isDashboard && <CartSidebar />}
       <Toast />
     </CartProvider>

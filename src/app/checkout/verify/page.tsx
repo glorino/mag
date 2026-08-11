@@ -111,7 +111,7 @@ function VerifyContent() {
 
 export default function CheckoutVerifyPage() {
   return (
-    <div className="min-h-screen bg-black pt-24 pb-16 flex items-center justify-center">
+    <div className="min-h-screen bg-black pb-16 flex items-center justify-center">
       <Suspense fallback={<div className="text-white/40">Loading...</div>}>
         <VerifyContent />
       </Suspense>

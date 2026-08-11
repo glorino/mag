@@ -95,7 +95,7 @@ export default function AboutPage() {
             >
               <div className="aspect-[4/5] overflow-hidden">
                 <img
-                  src="https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&h=750&fit=crop"
+                  src="https://images.unsplash.com/photo-1487222477894-8943e31ef7b2?w=600&h=750&fit=crop"
                   alt="MAGRE Story"
                   className="w-full h-full object-cover"
                 />
