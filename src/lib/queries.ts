@@ -92,6 +92,17 @@ export async function initDatabase() {
   `;
 
   await sql`
+    CREATE TABLE IF NOT EXISTS password_reset_tokens (
+      id SERIAL PRIMARY KEY,
+      user_id INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+      token VARCHAR(255) UNIQUE NOT NULL,
+      expires_at TIMESTAMP NOT NULL,
+      used BOOLEAN DEFAULT false,
+      created_at TIMESTAMP DEFAULT NOW()
+    )
+  `;
+
+  await sql`
     CREATE TABLE IF NOT EXISTS carts (
       id SERIAL PRIMARY KEY,
       user_id INT UNIQUE REFERENCES users(id) ON DELETE CASCADE,
@@ -550,4 +561,41 @@ export async function decrementStock(items: { id: number; quantity: number }[]):
       WHERE id = ${item.id}
     `;
   }
+}
+
+// ─── Password Reset Tokens ────────────────────────────
+
+export async function createPasswordResetToken(userId: number): Promise<string> {
+  const sql = getSql();
+  const crypto = await import("crypto");
+  const token = crypto.randomBytes(32).toString("hex");
+  const expiresAt = new Date(Date.now() + 3600000); // 1 hour
+
+  await sql`
+    INSERT INTO password_reset_tokens (user_id, token, expires_at)
+    VALUES (${userId}, ${token}, ${expiresAt.toISOString()})
+    ON CONFLICT (user_id) DO UPDATE SET token = EXCLUDED.token, expires_at = EXCLUDED.expires_at, used = false
+  `;
+  return token;
+}
+
+export async function getPasswordResetToken(token: string) {
+  const sql = getSql();
+  const results = await sql`
+    SELECT * FROM password_reset_tokens 
+    WHERE token = ${token} AND used = false AND expires_at > NOW()
+  `;
+  return results[0] || null;
+}
+
+export async function markPasswordResetTokenUsed(token: string) {
+  const sql = getSql();
+  await sql`
+    UPDATE password_reset_tokens SET used = true WHERE token = ${token}
+  `;
+}
+
+export async function cleanExpiredPasswordResetTokens(): Promise<void> {
+  const sql = getSql();
+  await sql`DELETE FROM password_reset_tokens WHERE expires_at < NOW() OR used = true`;
 }
