@@ -1,10 +1,22 @@
 import { NextResponse } from "next/server";
 import { findUserByEmail } from "@/lib/queries";
 import { comparePassword, generateToken } from "@/lib/auth";
+import { getUserCart, saveUserCart } from "@/lib/queries";
+
+interface CartItem {
+  id: number;
+  name: string;
+  price: string;
+  priceNum: number;
+  category: string;
+  image: string;
+  quantity: number;
+  size?: string;
+}
 
 export async function POST(request: Request) {
   try {
-    const { email, password } = await request.json();
+    const { email, password, cart } = await request.json();
 
     if (!email || !password) {
       return NextResponse.json(
@@ -38,6 +50,26 @@ export async function POST(request: Request) {
       );
     }
 
+    // Merge carts: if user has a saved cart and anonymous cart is provided, merge them
+    let mergedCart: CartItem[] = [];
+    if (cart && Array.isArray(cart) && cart.length > 0) {
+      const savedCart = await getUserCart(user.id);
+      const savedMap = new Map(savedCart.map((item: CartItem) => [`${item.id}-${item.size || ''}`, item]));
+      
+      for (const item of cart as CartItem[]) {
+        const key = `${item.id}-${item.size || ''}`;
+        if (savedMap.has(key)) {
+          // Merge quantities
+          const savedItem = savedMap.get(key)!;
+          savedItem.quantity += item.quantity;
+        } else {
+          savedMap.set(key, { ...item });
+        }
+      }
+      mergedCart = Array.from(savedMap.values());
+      await saveUserCart(user.id, mergedCart);
+    }
+
     const token = await generateToken({
       userId: user.id,
       email: user.email,
@@ -55,6 +87,7 @@ export async function POST(request: Request) {
         address: user.address,
         created_at: user.created_at,
       },
+      cart: mergedCart,
     });
 
     response.cookies.set("token", token, {

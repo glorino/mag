@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, useCallback, ReactNode } from "react";
+import { createContext, useContext, useState, useCallback, ReactNode, useEffect } from "react";
 
 export interface CartItem {
   id: number;
@@ -25,6 +25,8 @@ interface CartContextType {
   totalItems: () => number;
   totalPrice: () => number;
   showToast: (msg: string) => void;
+  clearCart: () => void;
+  syncCart: () => Promise<void>;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -61,6 +63,10 @@ export function CartProvider({ children }: { children: ReactNode }) {
     );
   }, [removeItem]);
 
+  const clearCart = useCallback(() => {
+    setItems([]);
+  }, []);
+
   const toggleCart = useCallback(() => setIsOpen((p) => !p), []);
   const closeCart = useCallback(() => setIsOpen(false), []);
 
@@ -72,9 +78,30 @@ export function CartProvider({ children }: { children: ReactNode }) {
     setTimeout(() => setToast(""), 3000);
   }, []);
 
+  const syncCart = useCallback(async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+
+      const res = await fetch("/api/cart", {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await res.json();
+      if (data.success && data.items) {
+        setItems(data.items);
+      }
+    } catch {
+      // Ignore sync errors
+    }
+  }, []);
+
+  useEffect(() => {
+    syncCart();
+  }, [syncCart]);
+
   return (
     <CartContext.Provider
-      value={{ items, isOpen, toast, addItem, removeItem, updateQuantity, toggleCart, closeCart, totalItems, totalPrice, showToast }}
+      value={{ items, isOpen, toast, addItem, removeItem, updateQuantity, toggleCart, closeCart, totalItems, totalPrice, showToast, clearCart, syncCart }}
     >
       {children}
     </CartContext.Provider>

@@ -5,9 +5,11 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { useCart } from "@/lib/cart-context";
 
 export default function LoginPage() {
   const router = useRouter();
+  const { items, syncCart } = useCart();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -23,7 +25,7 @@ export default function LoginPage() {
       const res = await fetch("/api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ email, password, cart: items }),
       });
 
       const data = await res.json();
@@ -36,6 +38,10 @@ export default function LoginPage() {
 
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
+
+      if (data.cart) {
+        // Cart was merged, sync will happen automatically via CartProvider
+      }
 
       if (data.user.role === "admin") {
         router.push("/admin");

@@ -90,6 +90,15 @@ export async function initDatabase() {
       created_at TIMESTAMP DEFAULT NOW()
     )
   `;
+
+  await sql`
+    CREATE TABLE IF NOT EXISTS carts (
+      id SERIAL PRIMARY KEY,
+      user_id INT UNIQUE REFERENCES users(id) ON DELETE CASCADE,
+      items JSONB NOT NULL DEFAULT '[]',
+      updated_at TIMESTAMP DEFAULT NOW()
+    )
+  `;
 }
 
 // ─── Seed Data ─────────────────────────────────────────
@@ -497,4 +506,37 @@ export async function getUnreadMessageCount() {
   const sql = getSql();
   const results = await sql`SELECT COUNT(*) as count FROM messages WHERE is_read = false`;
   return Number(results[0]?.count || 0);
+}
+
+// ─── Carts ────────────────────────────────────────────
+
+interface CartItem {
+  id: number;
+  name: string;
+  price: string;
+  priceNum: number;
+  category: string;
+  image: string;
+  quantity: number;
+  size?: string;
+}
+
+export async function getUserCart(userId: number): Promise<CartItem[]> {
+  const sql = getSql();
+  const results = await sql`SELECT items FROM carts WHERE user_id = ${userId}`;
+  return (results[0]?.items as CartItem[]) || [];
+}
+
+export async function saveUserCart(userId: number, items: CartItem[]): Promise<void> {
+  const sql = getSql();
+  await sql`
+    INSERT INTO carts (user_id, items, updated_at)
+    VALUES (${userId}, ${JSON.stringify(items)}::jsonb, NOW())
+    ON CONFLICT (user_id) DO UPDATE SET items = EXCLUDED.items, updated_at = NOW()
+  `;
+}
+
+export async function clearUserCart(userId: number) {
+  const sql = getSql();
+  await sql`DELETE FROM carts WHERE user_id = ${userId}`;
 }
