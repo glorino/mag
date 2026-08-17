@@ -8,7 +8,11 @@ export async function GET(request: Request) {
   try {
     const orders = await getAllOrders();
     return NextResponse.json(orders);
-  } catch {
-    return NextResponse.json([]);
+  } catch (error) {
+    console.error("Get all orders error:", error);
+    return NextResponse.json(
+      { error: "Failed to fetch orders" },
+      { status: 500 }
+    );
   }
 }

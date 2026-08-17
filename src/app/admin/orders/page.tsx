@@ -34,6 +34,7 @@ function OrdersContent() {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("all");
   const [expandedId, setExpandedId] = useState<number | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const token = typeof window !== "undefined" ? localStorage.getItem("token") : "";
 
@@ -43,8 +44,18 @@ function OrdersContent() {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
+
+      if (!res.ok) {
+        setError(data.error || "Failed to fetch orders");
+        setOrders([]);
+        setLoading(false);
+        return;
+      }
+
       setOrders(data);
+      setError(null);
     } catch {
+      setError("Failed to fetch orders");
       setOrders([]);
     }
     setLoading(false);
@@ -138,6 +149,15 @@ function OrdersContent() {
           </button>
         ))}
       </div>
+
+      {error && (
+        <div className="bg-red-500/10 border border-red-500/30 text-red-400 text-[13px] px-4 py-3 flex items-center gap-2">
+          <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          {error}
+        </div>
+      )}
 
       <div className="bg-[#111] border border-white/10 rounded-xl overflow-hidden">
         <div className="overflow-x-auto">

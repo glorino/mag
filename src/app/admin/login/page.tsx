@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { motion } from "framer-motion";
@@ -63,6 +64,17 @@ export default function AdminLoginPage() {
         transition={{ duration: 0.6 }}
         className="w-full max-w-[440px] relative z-10"
       >
+        {/* Back to Homepage */}
+        <Link
+          href="/"
+          className="flex items-center gap-2 text-white/40 text-[13px] mb-8 hover:text-accent transition-colors group"
+        >
+          <svg className="w-4 h-4 group-hover:-translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          Back to Homepage
+        </Link>
+
         <div className="text-center mb-10">
           <div className="flex items-center gap-3 justify-center mb-6">
             <Image src="/logo.jpeg" alt="MAGRE" width={48} height={48} className="object-contain" />
@@ -123,12 +135,6 @@ export default function AdminLoginPage() {
               ) : "Admin Login"}
             </button>
           </form>
-
-          <div className="mt-8 text-center">
-            <p className="text-white/30 text-[12px]">
-              Default credentials: admin@magre.ng / admin123
-            </p>
-          </div>
         </div>
       </motion.div>
     </div>
