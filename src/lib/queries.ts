@@ -146,6 +146,17 @@ export async function seedProducts() {
   return { count: staticProducts.length };
 }
 
+export async function seedAdmin() {
+  const sql = getSql();
+  const bcrypt = (await import("bcryptjs")).default;
+  const password_hash = await bcrypt.hash("admin123", 12);
+  await sql`
+    INSERT INTO users (name, email, password_hash, phone, role, address)
+    VALUES ('Admin', 'admin@magre.ng', ${password_hash}, '', 'admin', '')
+    ON CONFLICT (email) DO UPDATE SET role = 'admin', password_hash = ${password_hash}
+  `;
+}
+
 // ─── Users ─────────────────────────────────────────────
 
 export async function findUserByEmail(email: string) {

@@ -32,10 +32,14 @@ async function verifyAuth(request: NextRequest) {
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
+  if (pathname.startsWith("/admin/login")) {
+    return NextResponse.next();
+  }
+
   if (pathname.startsWith("/admin")) {
     const user = await verifyAuth(request);
     if (!user) {
-      const loginUrl = new URL("/login", request.url);
+      const loginUrl = new URL("/admin/login", request.url);
       loginUrl.searchParams.set("redirect", pathname);
       return NextResponse.redirect(loginUrl);
     }
