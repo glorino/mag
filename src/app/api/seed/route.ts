@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { initDatabase, seedCategories, seedProducts, seedAdmin } from "@/lib/queries";
+import { initDatabase, seedCategories, seedProducts, seedAdmin, seedCustomer } from "@/lib/queries";
 
 export async function POST() {
   try {
@@ -7,6 +7,7 @@ export async function POST() {
     await seedCategories();
     await seedProducts();
     await seedAdmin();
+    await seedCustomer();
     return NextResponse.json({ success: true, message: "Database initialized with seed data" });
   } catch (error) {
     return NextResponse.json(

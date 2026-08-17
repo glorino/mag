@@ -157,6 +157,17 @@ export async function seedAdmin() {
   `;
 }
 
+export async function seedCustomer() {
+  const sql = getSql();
+  const bcrypt = (await import("bcryptjs")).default;
+  const password_hash = await bcrypt.hash("customer123", 12);
+  await sql`
+    INSERT INTO users (name, email, password_hash, phone, role, address)
+    VALUES ('Customer', 'customer@magre.ng', ${password_hash}, '', 'user', '')
+    ON CONFLICT (email) DO UPDATE SET password_hash = ${password_hash}
+  `;
+}
+
 // ─── Users ─────────────────────────────────────────────
 
 export async function findUserByEmail(email: string) {
