@@ -540,3 +540,14 @@ export async function clearUserCart(userId: number) {
   const sql = getSql();
   await sql`DELETE FROM carts WHERE user_id = ${userId}`;
 }
+
+export async function decrementStock(items: { id: number; quantity: number }[]): Promise<void> {
+  const sql = getSql();
+  for (const item of items) {
+    await sql`
+      UPDATE products 
+      SET stock = GREATEST(stock - ${item.quantity}, 0)
+      WHERE id = ${item.id}
+    `;
+  }
+}

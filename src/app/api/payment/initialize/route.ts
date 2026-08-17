@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getProductById } from "@/lib/queries";
 import { getUserFromRequest } from "@/lib/auth";
+import crypto from "crypto";
 
 export async function POST(request: Request) {
   try {
@@ -22,6 +23,16 @@ export async function POST(request: Request) {
         return NextResponse.json({ error: `Product not found: ${item.id}` }, { status: 400 });
       }
       const qty = item.quantity || 1;
+      
+      // Stock validation
+      const availableStock = product.stock || 0;
+      if (qty > availableStock) {
+        return NextResponse.json(
+          { error: `Insufficient stock for ${product.name}. Available: ${availableStock}` },
+          { status: 400 }
+        );
+      }
+      
       serverTotal += Number(product.price) * qty;
       validatedItems.push({
         id: product.id,
@@ -39,7 +50,8 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Payment system not configured" }, { status: 500 });
     }
 
-    const txRef = `magre-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+    // Generate unique tx_ref using UUID to prevent collision
+    const txRef = `magre-${crypto.randomUUID()}`;
     const origin = request.headers.get("origin") || process.env.NEXT_PUBLIC_SITE_URL || "https://mag-drab.vercel.app";
 
     // Get user_id if logged in

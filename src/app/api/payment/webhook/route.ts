@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createOrder } from "@/lib/queries";
+import { createOrder, decrementStock } from "@/lib/queries";
 import getSql from "@/lib/database";
 import crypto from "crypto";
 
@@ -59,6 +59,9 @@ export async function POST(request: NextRequest) {
       payment_ref: transactionId,
       payment_status: "paid",
     });
+
+    // Decrement stock
+    await decrementStock(items.map((item: any) => ({ id: item.id, quantity: item.quantity })));
 
     return NextResponse.json({ received: true, orderId: order[0].id });
   } catch {
