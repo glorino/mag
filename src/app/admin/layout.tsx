@@ -99,6 +99,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
   const pathname = usePathname();
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  const isLoginPage = pathname === "/admin/login";
   const isActive = (href: string) => {
     if (href === "/admin") return pathname === "/admin";
     return pathname.startsWith(href);
@@ -106,73 +107,77 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   return (
     <div className="min-h-screen bg-black flex">
-      <AnimatePresence>
-        {sidebarOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 bg-black/60 z-40 lg:hidden"
-            onClick={() => setSidebarOpen(false)}
-          />
-        )}
-      </AnimatePresence>
+      {!isLoginPage && (
+        <>
+          <AnimatePresence>
+            {sidebarOpen && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="fixed inset-0 bg-black/60 z-40 lg:hidden"
+                onClick={() => setSidebarOpen(false)}
+              />
+            )}
+          </AnimatePresence>
 
-      <aside
-        className={`fixed top-0 left-0 h-full w-64 bg-[#0a0a0a] border-r border-white/10 z-50 flex flex-col transition-transform duration-300 lg:translate-x-0 ${
-          sidebarOpen ? "translate-x-0" : "-translate-x-full"
-        }`}
-      >
-        <div className="flex items-center justify-between px-6 py-5 border-b border-white/10">
-          <Link href="/admin" className="flex items-center gap-2">
-            <span className="text-xl font-bold tracking-wider text-white" style={{ fontFamily: "var(--font-serif)" }}>
-              MAGRE
-            </span>
-            <span className="text-[10px] font-medium text-accent bg-accent/10 px-1.5 py-0.5 rounded">
-              ADMIN
-            </span>
-          </Link>
-          <button
-            onClick={() => setSidebarOpen(false)}
-            className="lg:hidden text-white/50 hover:text-white transition-colors"
+          <aside
+            className={`fixed top-0 left-0 h-full w-64 bg-[#0a0a0a] border-r border-white/10 z-50 flex flex-col transition-transform duration-300 lg:translate-x-0 ${
+              sidebarOpen ? "translate-x-0" : "-translate-x-full"
+            }`}
           >
-            <CloseIcon />
-          </button>
-        </div>
+            <div className="flex items-center justify-between px-6 py-5 border-b border-white/10">
+              <Link href="/admin" className="flex items-center gap-2">
+                <span className="text-xl font-bold tracking-wider text-white" style={{ fontFamily: "var(--font-serif)" }}>
+                  MAGRE
+                </span>
+                <span className="text-[10px] font-medium text-accent bg-accent/10 px-1.5 py-0.5 rounded">
+                  ADMIN
+                </span>
+              </Link>
+              <button
+                onClick={() => setSidebarOpen(false)}
+                className="lg:hidden text-white/50 hover:text-white transition-colors"
+              >
+                <CloseIcon />
+              </button>
+            </div>
 
-        <nav className="flex-1 px-3 py-6 space-y-1">
-          {navItems.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              onClick={() => setSidebarOpen(false)}
-              className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 ${
-                isActive(item.href)
-                  ? "bg-accent/10 text-accent"
-                  : "text-white/50 hover:text-white hover:bg-white/5"
-              }`}
-            >
-              <item.icon />
-              {item.label}
-            </Link>
-          ))}
-        </nav>
+            <nav className="flex-1 px-3 py-6 space-y-1">
+              {navItems.map((item) => (
+                <Link
+                  key={item.href}
+                  href={item.href}
+                  onClick={() => setSidebarOpen(false)}
+                  className={`flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 ${
+                    isActive(item.href)
+                      ? "bg-accent/10 text-accent"
+                      : "text-white/50 hover:text-white hover:bg-white/5"
+                  }`}
+                >
+                  <item.icon />
+                  {item.label}
+                </Link>
+              ))}
+            </nav>
 
-        <div className="px-3 py-4 border-t border-white/10">
-          <button
-            onClick={() => {
-              localStorage.removeItem("token");
-              window.location.href = "/";
-            }}
-            className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-white/50 hover:text-red-400 hover:bg-white/5 transition-all duration-200 w-full"
-          >
-            <LogoutIcon />
-            Logout
-          </button>
-        </div>
-      </aside>
+            <div className="px-3 py-4 border-t border-white/10">
+              <button
+                onClick={() => {
+                  localStorage.removeItem("token");
+                  window.location.href = "/";
+                }}
+                className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-white/50 hover:text-red-400 hover:bg-white/5 transition-all duration-200 w-full"
+              >
+                <LogoutIcon />
+                Logout
+              </button>
+            </div>
+          </aside>
+        </>
+      )}
 
-      <div className="flex-1 flex flex-col lg:ml-64">
+      <div className={`flex-1 flex flex-col ${isLoginPage ? "" : "lg:ml-64"}`}>
         <header className="sticky top-0 z-30 bg-[#0a0a0a]/80 backdrop-blur-xl border-b border-white/10">
           <div className="flex items-center justify-between px-4 sm:px-6 py-4">
             <button
