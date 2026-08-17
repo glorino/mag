@@ -1,0 +1,24 @@
+{
+  "name": "MAGRE | Premium Women's Fashion",
+  "short_name": "MAGRE",
+  "description": "Premium Nigerian fashion brand. Ready-to-wear blouses, trousers, and loungewear designed exclusively for women of all sizes.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#00e5ff",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/logo.jpeg?v=2",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/logo.jpeg?v=2",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    }
+  ]
+}

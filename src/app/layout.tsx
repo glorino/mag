@@ -41,20 +41,25 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/logo.jpeg", type: "image/jpeg" },
-      { url: "/logo.jpeg", type: "image/jpeg", sizes: "32x32" },
-      { url: "/logo.jpeg", type: "image/jpeg", sizes: "16x16" },
+      { url: "/logo.jpeg?v=2", type: "image/jpeg" },
+      { url: "/logo.jpeg?v=2", type: "image/jpeg", sizes: "32x32" },
+      { url: "/logo.jpeg?v=2", type: "image/jpeg", sizes: "16x16" },
     ],
-    shortcut: "/logo.jpeg",
-    apple: "/logo.jpeg",
+    shortcut: "/logo.jpeg?v=2",
+    apple: "/logo.jpeg?v=2",
     other: [
       {
         rel: "icon",
         type: "image/jpeg",
-        url: "/logo.jpeg",
+        url: "/logo.jpeg?v=2",
+      },
+      {
+        rel: "manifest",
+        url: "/manifest.json",
       },
     ],
   },
+  manifest: "/manifest.json",
 };
 
 export default function RootLayout({
