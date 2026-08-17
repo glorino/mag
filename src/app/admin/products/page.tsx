@@ -47,18 +47,22 @@ export default function ProductsPage() {
   const [form, setForm] = useState(emptyForm);
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [page, setPage] = useState(1);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const PER_PAGE = 10;
 
   const token = typeof window !== "undefined" ? localStorage.getItem("token") : "";
 
-  const fetchProducts = () => {
-    fetch("/api/admin/products", { headers: { Authorization: `Bearer ${token}` } })
-      .then((res) => res.json())
-      .then((data) => {
-        setProducts(data);
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
+  const fetchProducts = async () => {
+    try {
+      const res = await fetch("/api/admin/products", { headers: { Authorization: `Bearer ${token}` } });
+      const data = await res.json();
+      setProducts(data);
+    } catch {
+      // ignore
+    } finally {
+      setLoading(false);
+    }
   };
 
   const fetchCategories = () => {
@@ -79,6 +83,10 @@ export default function ProductsPage() {
       p.name.toLowerCase().includes(search.toLowerCase()) ||
       (p.category_name || "").toLowerCase().includes(search.toLowerCase())
   );
+
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PER_PAGE));
+  const safePage = Math.min(page, totalPages);
+  const paginated = filtered.slice((safePage - 1) * PER_PAGE, safePage * PER_PAGE);
 
   const openAdd = () => {
     setForm(emptyForm);
@@ -106,7 +114,7 @@ export default function ProductsPage() {
     const method = editingId ? "PUT" : "POST";
     const url = editingId ? `/api/admin/products/${editingId}` : "/api/admin/products";
     try {
-      await fetch(url, {
+      const res = await fetch(url, {
         method,
         headers: {
           "Content-Type": "application/json",
@@ -119,10 +127,13 @@ export default function ProductsPage() {
           stock: parseInt(form.stock) || 0,
         }),
       });
-      setShowForm(false);
-      setEditingId(null);
-      setForm(emptyForm);
-      fetchProducts();
+      if (res.ok) {
+        setShowForm(false);
+        setEditingId(null);
+        setForm(emptyForm);
+        setPage(1);
+        await fetchProducts();
+      }
     } catch (err) {
       console.error(err);
     }
@@ -135,7 +146,8 @@ export default function ProductsPage() {
       method: "DELETE",
       headers: { Authorization: `Bearer ${token}` },
     });
-    fetchProducts();
+    setPage(1);
+    await fetchProducts();
   };
 
   const toggleActive = async (p: Product) => {
@@ -147,7 +159,7 @@ export default function ProductsPage() {
       },
       body: JSON.stringify({ is_active: !p.is_active }),
     });
-    fetchProducts();
+    await fetchProducts();
   };
 
   const toggleSize = (size: string) => {
@@ -219,7 +231,7 @@ export default function ProductsPage() {
           type="text"
           placeholder="Search products..."
           value={search}
-          onChange={(e) => setSearch(e.target.value)}
+          onChange={(e) => { setSearch(e.target.value); setPage(1); }}
           className="w-full bg-[#111] border border-white/10 rounded-lg pl-10 pr-4 py-2.5 text-sm text-white placeholder-white/30 focus:outline-none focus:border-accent/50 transition-colors"
         />
       </div>
@@ -438,12 +450,14 @@ export default function ProductsPage() {
                     </td>
                   </tr>
                 ))
-              ) : filtered.length === 0 ? (
+              ) : paginated.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="px-6 py-12 text-center text-white/30">No products found</td>
+                  <td colSpan={6} className="px-6 py-12 text-center text-white/30">
+                    {search ? "No products match your search" : "No products yet"}
+                  </td>
                 </tr>
               ) : (
-                filtered.map((product) => (
+                paginated.map((product) => (
                   <tr key={product.id} className="border-b border-white/5 hover:bg-white/5 transition-colors">
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-3">
@@ -507,6 +521,54 @@ export default function ProductsPage() {
             </tbody>
           </table>
         </div>
+
+        {filtered.length > PER_PAGE && (
+          <div className="flex items-center justify-between px-6 py-4 border-t border-white/10">
+            <p className="text-sm text-white/40">
+              Showing {(safePage - 1) * PER_PAGE + 1}–{Math.min(safePage * PER_PAGE, filtered.length)} of {filtered.length}
+            </p>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setPage((p) => Math.max(1, p - 1))}
+                disabled={safePage <= 1}
+                className="px-3 py-1.5 text-sm font-medium rounded-lg border border-white/10 text-white/50 hover:text-white hover:border-white/20 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+              >
+                Previous
+              </button>
+              {Array.from({ length: totalPages }, (_, i) => i + 1)
+                .filter((p) => p === 1 || p === totalPages || Math.abs(p - safePage) <= 1)
+                .reduce<(number | "...")[]>((acc, p, idx, arr) => {
+                  if (idx > 0 && p - (arr[idx - 1] as number) > 1) acc.push("...");
+                  acc.push(p);
+                  return acc;
+                }, [])
+                .map((p, i) =>
+                  p === "..." ? (
+                    <span key={`dots-${i}`} className="text-white/30 px-1">...</span>
+                  ) : (
+                    <button
+                      key={p}
+                      onClick={() => setPage(p as number)}
+                      className={`px-3 py-1.5 text-sm font-medium rounded-lg transition-colors ${
+                        safePage === p
+                          ? "bg-accent text-black"
+                          : "border border-white/10 text-white/50 hover:text-white hover:border-white/20"
+                      }`}
+                    >
+                      {p}
+                    </button>
+                  )
+                )}
+              <button
+                onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
+                disabled={safePage >= totalPages}
+                className="px-3 py-1.5 text-sm font-medium rounded-lg border border-white/10 text-white/50 hover:text-white hover:border-white/20 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
+              >
+                Next
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
