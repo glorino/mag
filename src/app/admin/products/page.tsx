@@ -47,6 +47,7 @@ export default function ProductsPage() {
   const [form, setForm] = useState(emptyForm);
   const [saving, setSaving] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [saveError, setSaveError] = useState("");
   const [page, setPage] = useState(1);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const PER_PAGE = 10;
@@ -111,31 +112,46 @@ export default function ProductsPage() {
 
   const handleSave = async () => {
     setSaving(true);
+    setSaveError("");
     const method = editingId ? "PUT" : "POST";
     const url = editingId ? `/api/admin/products/${editingId}` : "/api/admin/products";
     try {
+      const formData = new FormData();
+      formData.append("name", form.name);
+      formData.append("price", form.price);
+      formData.append("category_id", form.category_id);
+      formData.append("description", form.description);
+      formData.append("sizes", JSON.stringify(form.sizes));
+      formData.append("badge", form.badge);
+      formData.append("stock", form.stock);
+
+      const fileInput = fileInputRef.current;
+      if (fileInput && fileInput.files && fileInput.files[0]) {
+        formData.append("image", fileInput.files[0]);
+        formData.append("image_url", "");
+      } else {
+        formData.append("image_url", form.image_url);
+      }
+
       const res = await fetch(url, {
         method,
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          ...form,
-          price: parseFloat(form.price) || 0,
-          category_id: form.category_id ? parseInt(form.category_id) : null,
-          stock: parseInt(form.stock) || 0,
-        }),
+        headers: { Authorization: `Bearer ${token}` },
+        body: formData,
       });
+
+      const data = await res.json();
       if (res.ok) {
         setShowForm(false);
         setEditingId(null);
         setForm(emptyForm);
         setPage(1);
         await fetchProducts();
+      } else {
+        setSaveError(data.error || "Failed to save product");
       }
     } catch (err) {
       console.error(err);
+      setSaveError("An error occurred. Please try again.");
     }
     setSaving(false);
   };
@@ -250,7 +266,7 @@ export default function ProductsPage() {
                   {editingId ? "Edit Product" : "Add Product"}
                 </h3>
                 <button
-                  onClick={() => { setShowForm(false); setEditingId(null); }}
+                  onClick={() => { setShowForm(false); setEditingId(null); setSaveError(""); }}
                   className="text-white/40 hover:text-white transition-colors"
                 >
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -417,12 +433,17 @@ export default function ProductsPage() {
                   {saving ? "Saving..." : editingId ? "Update Product" : "Add Product"}
                 </button>
                 <button
-                  onClick={() => { setShowForm(false); setEditingId(null); }}
+                  onClick={() => { setShowForm(false); setEditingId(null); setSaveError(""); }}
                   className="px-6 py-2.5 bg-white/10 text-white text-sm font-semibold rounded-lg hover:bg-white/15 transition-colors border border-white/10"
                 >
                   Cancel
                 </button>
               </div>
+              {saveError && (
+                <p className="text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-lg px-4 py-2 mt-2">
+                  {saveError}
+                </p>
+              )}
             </div>
           </motion.div>
         )}
