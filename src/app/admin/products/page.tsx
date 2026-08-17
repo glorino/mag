@@ -124,14 +124,7 @@ export default function ProductsPage() {
       formData.append("sizes", JSON.stringify(form.sizes));
       formData.append("badge", form.badge);
       formData.append("stock", form.stock);
-
-      const fileInput = fileInputRef.current;
-      if (fileInput && fileInput.files && fileInput.files[0]) {
-        formData.append("image", fileInput.files[0]);
-        formData.append("image_url", "");
-      } else {
-        formData.append("image_url", form.image_url);
-      }
+      formData.append("image_url", form.image_url);
 
       const res = await fetch(url, {
         method,
@@ -191,24 +184,34 @@ export default function ProductsPage() {
 
     setUploading(true);
     try {
-      const formData = new FormData();
-      formData.append("file", file);
-
-      const res = await fetch("/api/upload", {
-        method: "POST",
-        headers: { Authorization: `Bearer ${token}` },
-        body: formData,
+      const compressed = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+          const img = new window.Image();
+          img.onload = () => {
+            const canvas = document.createElement("canvas");
+            const MAX = 800;
+            let w = img.width;
+            let h = img.height;
+            if (w > MAX || h > MAX) {
+              if (w > h) { h = Math.round((h * MAX) / w); w = MAX; }
+              else { w = Math.round((w * MAX) / h); h = MAX; }
+            }
+            canvas.width = w;
+            canvas.height = h;
+            const ctx = canvas.getContext("2d")!;
+            ctx.drawImage(img, 0, 0, w, h);
+            resolve(canvas.toDataURL("image/jpeg", 0.8));
+          };
+          img.onerror = reject;
+          img.src = ev.target?.result as string;
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
       });
-
-      const data = await res.json();
-      if (!res.ok) {
-        alert(data.error || "Upload failed");
-        return;
-      }
-
-      setForm((prev) => ({ ...prev, image_url: data.url }));
+      setForm((prev) => ({ ...prev, image_url: compressed }));
     } catch {
-      alert("Upload failed. Please try again.");
+      alert("Failed to process image. Please try again.");
     } finally {
       setUploading(false);
       if (fileInputRef.current) fileInputRef.current.value = "";
