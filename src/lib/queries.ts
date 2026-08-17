@@ -352,21 +352,40 @@ export async function createProduct(product: {
   stock?: number;
 }) {
   const sql = getSql();
-  return sql`
-    INSERT INTO products (name, price, category_id, description, sizes, colors, badge, image_url, stock)
-    VALUES (
-      ${product.name},
-      ${product.price},
-      ${product.category_id || null},
-      ${product.description || ""},
-      ${product.sizes || ["S", "M", "L", "XL"]},
-      ${product.colors || []},
-      ${product.badge || ""},
-      ${product.image_url || ""},
-      ${product.stock || 0}
-    )
-    RETURNING *
-  `;
+  try {
+    return await sql`
+      INSERT INTO products (name, price, category_id, description, sizes, colors, badge, image_url, stock)
+      VALUES (
+        ${product.name},
+        ${product.price},
+        ${product.category_id || null},
+        ${product.description || ""},
+        ${product.sizes || ["S", "M", "L", "XL"]},
+        ${product.colors || []},
+        ${product.badge || ""},
+        ${product.image_url || ""},
+        ${product.stock || 0}
+      )
+      RETURNING *
+    `;
+  } catch {
+    await sql`SELECT setval(pg_get_serial_sequence('products', 'id'), COALESCE((SELECT MAX(id) FROM products), 0) + 1, false)`;
+    return sql`
+      INSERT INTO products (name, price, category_id, description, sizes, colors, badge, image_url, stock)
+      VALUES (
+        ${product.name},
+        ${product.price},
+        ${product.category_id || null},
+        ${product.description || ""},
+        ${product.sizes || ["S", "M", "L", "XL"]},
+        ${product.colors || []},
+        ${product.badge || ""},
+        ${product.image_url || ""},
+        ${product.stock || 0}
+      )
+      RETURNING *
+    `;
+  }
 }
 
 export async function updateProduct(
