@@ -5,17 +5,25 @@ import { useState } from "react";
 export default function Newsletter() {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email) return;
     try {
-      await fetch("/api/subscribe", {
+      const res = await fetch("/api/subscribe", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email }),
       });
-    } catch {}
+      if (!res.ok) {
+        setError(true);
+        return;
+      }
+    } catch {
+      setError(true);
+      return;
+    }
     setSubmitted(true);
     setEmail("");
   };
@@ -33,6 +41,12 @@ export default function Newsletter() {
         <p style={{ color: "#888", fontSize: "14px", marginBottom: "32px", lineHeight: 1.7 }}>
           Be the first to know about new collections, exclusive offers, and styling tips.
         </p>
+
+        {error && (
+          <p style={{ color: "#ff4444", fontSize: "13px", marginBottom: "16px" }}>
+            Something went wrong. Please try again.
+          </p>
+        )}
 
         {submitted ? (
           <div style={{ background: "#fff", padding: "32px", border: "1px solid #eee" }}>

@@ -64,7 +64,15 @@ export default function CartSidebar() {
                     <div className="flex items-center gap-3 mt-2">
                       <div className="flex items-center border border-border">
                         <button
-                          onClick={() => updateQuantity(item.id, item.size, item.quantity - 1)}
+                          onClick={() => {
+                            if (item.quantity <= 1) {
+                              if (window.confirm("Remove this item from your cart?")) {
+                                removeItem(item.id, item.size);
+                              }
+                            } else {
+                              updateQuantity(item.id, item.size, item.quantity - 1);
+                            }
+                          }}
                           className="w-8 h-8 flex items-center justify-center text-text hover:bg-warm-gray transition-colors"
                         >
                           -

@@ -175,6 +175,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <button
                 onClick={() => {
                   localStorage.removeItem("token");
+                  localStorage.removeItem("user");
                   window.location.href = "/";
                 }}
                 className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-white/50 hover:text-red-400 hover:bg-white/5 transition-all duration-200 w-full"

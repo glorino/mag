@@ -69,7 +69,7 @@ export default function CategoriesPage() {
     const method = editingId ? "PUT" : "POST";
     const url = editingId ? `/api/admin/categories/${editingId}` : "/api/admin/categories";
     try {
-      await fetch(url, {
+      const res = await fetch(url, {
         method,
         headers: {
           "Content-Type": "application/json",
@@ -77,6 +77,11 @@ export default function CategoriesPage() {
         },
         body: JSON.stringify(form),
       });
+      if (!res.ok) {
+        const data = await res.json();
+        alert(data.error || "Failed to save category");
+        return;
+      }
       setShowForm(false);
       setEditingId(null);
       setForm(emptyForm);
@@ -89,15 +94,19 @@ export default function CategoriesPage() {
 
   const handleDelete = async (id: number) => {
     if (!confirm("Delete this category?")) return;
-    await fetch(`/api/admin/categories/${id}`, {
+    const res = await fetch(`/api/admin/categories/${id}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${token}` },
     });
+    if (!res.ok) {
+      alert("Failed to delete category");
+      return;
+    }
     fetchCategories();
   };
 
   const toggleActive = async (cat: Category) => {
-    await fetch(`/api/admin/categories/${cat.id}`, {
+    const res = await fetch(`/api/admin/categories/${cat.id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -105,6 +114,10 @@ export default function CategoriesPage() {
       },
       body: JSON.stringify({ is_active: !cat.is_active }),
     });
+    if (!res.ok) {
+      alert("Failed to update category status");
+      return;
+    }
     fetchCategories();
   };
 
@@ -113,6 +126,18 @@ export default function CategoriesPage() {
     const updated = [...categories];
     [updated[index - 1], updated[index]] = [updated[index], updated[index - 1]];
     setCategories(updated);
+    const res = await fetch("/api/admin/categories", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ sort_order: updated.map((c) => c.id) }),
+    });
+    if (!res.ok) {
+      alert("Failed to save sort order");
+      fetchCategories();
+    }
   };
 
   const moveDown = async (index: number) => {
@@ -120,6 +145,18 @@ export default function CategoriesPage() {
     const updated = [...categories];
     [updated[index], updated[index + 1]] = [updated[index + 1], updated[index]];
     setCategories(updated);
+    const res = await fetch("/api/admin/categories", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ sort_order: updated.map((c) => c.id) }),
+    });
+    if (!res.ok) {
+      alert("Failed to save sort order");
+      fetchCategories();
+    }
   };
 
   return (

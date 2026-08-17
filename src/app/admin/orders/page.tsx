@@ -1,7 +1,7 @@
 "use client";
 
-import { Suspense, useEffect, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { Suspense, Fragment, useEffect, useState } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 
 interface Order {
@@ -29,6 +29,7 @@ const statuses = ["pending", "processing", "shipped", "delivered", "cancelled"];
 
 function OrdersContent() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const userFilter = searchParams.get("user") || "";
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
@@ -71,7 +72,7 @@ function OrdersContent() {
     .filter((o) => filter === "all" || o.status === filter);
 
   const updateStatus = async (orderId: number, status: string) => {
-    await fetch(`/api/admin/orders/${orderId}`, {
+    const res = await fetch(`/api/admin/orders/${orderId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -79,6 +80,10 @@ function OrdersContent() {
       },
       body: JSON.stringify({ status }),
     });
+    if (!res.ok) {
+      alert("Failed to update order status");
+      return;
+    }
     setOrders((prev) =>
       prev.map((o) => (o.id === orderId ? { ...o, status } : o))
     );
@@ -108,7 +113,7 @@ function OrdersContent() {
         <div className="flex gap-2">
           {userFilter && (
             <button
-              onClick={() => window.history.pushState({}, "", "/admin/orders")}
+              onClick={() => router.push("/admin/orders")}
               className="px-4 py-2.5 bg-white/10 text-white text-sm font-semibold rounded-lg hover:bg-white/15 transition-colors border border-white/10"
             >
               Clear Filter
@@ -206,8 +211,8 @@ function OrdersContent() {
                 </tr>
               ) : (
                 filtered.map((order) => (
-                  <>
-                    <tr key={order.id} className="border-b border-white/5 hover:bg-white/5 transition-colors">
+                  <Fragment key={order.id}>
+                    <tr className="border-b border-white/5 hover:bg-white/5 transition-colors">
                       <td className="px-6 py-4 text-sm text-white font-mono">#{order.id}</td>
                       <td className="px-6 py-4">
                         <p className="text-sm font-medium text-white">{order.customer_name}</p>
@@ -314,7 +319,7 @@ function OrdersContent() {
                         </td>
                       </tr>
                     )}
-                  </>
+                  </Fragment>
                 ))
               )}
             </tbody>

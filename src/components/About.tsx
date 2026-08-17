@@ -35,7 +35,7 @@ export default function About() {
               </div>
             </div>
             
-            <div className="absolute -bottom-6 -right-6 bg-accent text-black p-6 shadow-xl">
+            <div className="absolute -bottom-6 -right-6 bg-accent text-black p-6 shadow-xl hidden md:block">
               <span className="block text-3xl font-bold font-serif">8+</span>
               <span className="text-[12px] text-black/70">Years of Excellence</span>
             </div>

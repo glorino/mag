@@ -19,10 +19,6 @@ export default function CheckoutPage() {
 
   useEffect(() => {
     closeCart();
-    const script = document.createElement("script");
-    script.src = "https://checkout.flutterwave.com/v3.js";
-    script.async = true;
-    document.body.appendChild(script);
 
     const userData = localStorage.getItem("user");
     if (userData) {
@@ -38,10 +34,6 @@ export default function CheckoutPage() {
         // ignore
       }
     }
-
-    return () => {
-      if (script.parentNode) script.parentNode.removeChild(script);
-    };
   }, [closeCart]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -77,7 +69,7 @@ export default function CheckoutPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          amount: totalPrice(),
+        amount: totalPrice(),
           email: form.email,
           name: form.name,
           phone: form.phone,
@@ -108,7 +100,7 @@ export default function CheckoutPage() {
       window.FlutterwaveCheckout?.({
         public_key: process.env.NEXT_PUBLIC_FLWPUBK || "",
         tx_ref: data.tx_ref,
-        amount: totalPrice(),
+        amount: data.serverTotal,
         currency: "NGN",
         payment_options: "card,banktransfer,ussd",
         customer: {

@@ -151,16 +151,20 @@ export default function ProductsPage() {
 
   const handleDelete = async (id: number) => {
     if (!confirm("Delete this product?")) return;
-    await fetch(`/api/admin/products/${id}`, {
+    const res = await fetch(`/api/admin/products/${id}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${token}` },
     });
+    if (!res.ok) {
+      alert("Failed to delete product");
+      return;
+    }
     setPage(1);
     await fetchProducts();
   };
 
   const toggleActive = async (p: Product) => {
-    await fetch(`/api/admin/products/${p.id}`, {
+    const res = await fetch(`/api/admin/products/${p.id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -168,6 +172,10 @@ export default function ProductsPage() {
       },
       body: JSON.stringify({ is_active: !p.is_active }),
     });
+    if (!res.ok) {
+      alert("Failed to update product status");
+      return;
+    }
     await fetchProducts();
   };
 

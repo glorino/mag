@@ -1,21 +1,20 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createOrder, decrementStock } from "@/lib/queries";
+import { createOrder, decrementStock, getProductById } from "@/lib/queries";
 import getSql from "@/lib/database";
 import crypto from "crypto";
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const secret = process.env.FLWSECK;
     const encryptionKey = process.env.FLW_ENCRYPTION_KEY;
 
-    // Verify webhook signature using encryption key (Flutterwave uses encryption key for webhook hash)
     const signature = request.headers.get("verif-hash");
-    if (signature && encryptionKey) {
-      const hash = crypto.createHmac("sha512", encryptionKey).update(JSON.stringify(body)).digest("hex");
-      if (hash !== signature) {
-        return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
-      }
+    if (!signature || !encryptionKey) {
+      return NextResponse.json({ error: "Missing webhook signature or encryption key" }, { status: 400 });
+    }
+    const hash = crypto.createHmac("sha512", encryptionKey).update(JSON.stringify(body)).digest("hex");
+    if (hash !== signature) {
+      return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
     }
 
     if (body.event !== "charge.completed") {
@@ -48,13 +47,34 @@ export async function POST(request: NextRequest) {
       items = [];
     }
 
+    // Re-validate item prices from database
+    let validatedTotal = 0;
+    const validatedItems = [];
+    for (const item of items) {
+      const product = await getProductById(item.id);
+      if (product) {
+        const qty = item.quantity || 1;
+        validatedTotal += Number(product.price) * qty;
+        validatedItems.push({
+          ...item,
+          price: Number(product.price),
+        });
+      } else {
+        validatedItems.push(item);
+      }
+    }
+
+    if (validatedTotal > 0 && validatedTotal !== txData.amount) {
+      console.warn(`Webhook price mismatch: expected ${validatedTotal}, got ${txData.amount} for tx ${transactionId}`);
+    }
+
     const order = await createOrder({
       user_id: userId,
       customer_name: txData.customer?.name || "",
       email: txData.customer?.email || "",
       phone: txData.customer?.phonenumber || "",
       address,
-      items,
+      items: validatedItems,
       total: txData.amount,
       payment_ref: transactionId,
       payment_status: "paid",

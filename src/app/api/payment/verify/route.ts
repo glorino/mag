@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { createOrder, decrementStock } from "@/lib/queries";
+import { createOrder, decrementStock, getProductById } from "@/lib/queries";
 import getSql from "@/lib/database";
 
 export async function GET(request: NextRequest) {
@@ -61,13 +61,34 @@ export async function GET(request: NextRequest) {
       items = [];
     }
 
+    // Re-validate item prices from database
+    let validatedTotal = 0;
+    const validatedItems = [];
+    for (const item of items) {
+      const product = await getProductById(item.id);
+      if (product) {
+        const qty = item.quantity || 1;
+        validatedTotal += Number(product.price) * qty;
+        validatedItems.push({
+          ...item,
+          price: Number(product.price),
+        });
+      } else {
+        validatedItems.push(item);
+      }
+    }
+
+    if (validatedTotal > 0 && validatedTotal !== txData.amount) {
+      console.warn(`Verify price mismatch: expected ${validatedTotal}, got ${txData.amount} for tx ${transactionId}`);
+    }
+
     const order = await createOrder({
       user_id: userId,
       customer_name: txData.customer?.name || "",
       email: txData.customer?.email || "",
       phone: txData.customer?.phonenumber || "",
       address,
-      items,
+      items: validatedItems,
       total: txData.amount,
       payment_ref: transactionId,
       payment_status: "paid",

@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect, Suspense } from "react";
-import { useSearchParams } from "next/navigation";
+import { useState, useEffect, Suspense, useCallback } from "react";
+import { useSearchParams, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useCart } from "@/lib/cart-context";
@@ -22,6 +22,7 @@ interface Product {
 
 function ShopContent() {
   const searchParams = useSearchParams();
+  const router = useRouter();
   const initialQuery = searchParams.get("q") || "";
   const initialCategory = searchParams.get("category") || "All";
   const [activeCategory, setActiveCategory] = useState(initialCategory);
@@ -29,6 +30,14 @@ function ShopContent() {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const { addItem } = useCart();
+
+  const updateUrl = useCallback((newCategory?: string, newSort?: string) => {
+    const params = new URLSearchParams();
+    if (initialQuery) params.set("q", initialQuery);
+    if (newCategory && newCategory !== "All") params.set("category", newCategory);
+    if (newSort && newSort !== "latest") params.set("sort", newSort);
+    router.push(`/shop?${params.toString()}`, { scroll: false });
+  }, [initialQuery, router]);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -107,7 +116,7 @@ function ShopContent() {
             {categories.map((cat) => (
               <button
                 key={cat}
-                onClick={() => setActiveCategory(cat)}
+                onClick={() => { setActiveCategory(cat); updateUrl(cat, sortBy); }}
                 className={`px-6 py-3 text-[12px] font-semibold tracking-wider uppercase border transition-all duration-300 ${
                   activeCategory === cat
                     ? "bg-accent text-black border-accent"
@@ -128,7 +137,7 @@ function ShopContent() {
             <p className="text-[13px] text-text font-medium">{filtered.length} products</p>
             <select
               value={sortBy}
-              onChange={(e) => setSortBy(e.target.value)}
+              onChange={(e) => { setSortBy(e.target.value); updateUrl(activeCategory, e.target.value); }}
               className="px-5 py-3 border border-border text-[13px] text-charcoal bg-white focus:outline-none focus:border-accent transition-colors cursor-pointer"
             >
               <option value="latest">Sort by: Latest</option>

@@ -72,7 +72,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
   }
 
   return (
-    <div className="min-h-screen bg-black pt-20">
+    <div className="min-h-screen bg-black">
       <div className="flex max-w-[1200px] mx-auto">
         {/* Mobile sidebar toggle */}
         <button
@@ -153,7 +153,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         </AnimatePresence>
 
         {/* Desktop Sidebar */}
-        <aside className="hidden lg:flex sticky top-20 w-[260px] min-h-[calc(100vh-80px)] bg-[#111] border-r border-white/10 z-40 flex-col shrink-0">
+        <aside className="hidden lg:flex sticky top-0 w-[260px] min-h-screen bg-[#111] border-r border-white/10 z-40 flex-col shrink-0">
           <div className="p-6 border-b border-white/10">
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 bg-accent/20 rounded-full flex items-center justify-center">

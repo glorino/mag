@@ -43,7 +43,7 @@ export default function UsersPage() {
   );
 
   const updateRole = async (userId: number, role: string) => {
-    await fetch(`/api/admin/users/${userId}`, {
+    const res = await fetch(`/api/admin/users/${userId}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -51,6 +51,10 @@ export default function UsersPage() {
       },
       body: JSON.stringify({ role }),
     });
+    if (!res.ok) {
+      alert("Failed to update user role");
+      return;
+    }
     setUsers((prev) =>
       prev.map((u) => (u.id === userId ? { ...u, role } : u))
     );

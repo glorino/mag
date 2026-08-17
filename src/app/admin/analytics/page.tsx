@@ -37,7 +37,7 @@ export default function AnalyticsPage() {
       .then((r) => r.json())
       .then((d) => { setData(d); setLoading(false); })
       .catch(() => setLoading(false));
-  }, [token]);
+  }, [token, period]);
 
   const handleExport = (type: string) => {
     window.open(`/api/admin/export?type=${type}`, "_blank");

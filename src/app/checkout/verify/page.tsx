@@ -4,9 +4,11 @@ import { Suspense, useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { useCart } from "@/lib/cart-context";
 
 function VerifyContent() {
   const searchParams = useSearchParams();
+  const { clearCart } = useCart();
   const [status, setStatus] = useState<"loading" | "success" | "error">("loading");
   const [orderId, setOrderId] = useState<string | null>(null);
 
@@ -29,6 +31,7 @@ function VerifyContent() {
         const data = await res.json();
         if (res.ok && data.success) {
           setOrderId(String(data.order?.id || ""));
+          clearCart();
           setStatus("success");
         } else {
           setStatus("error");

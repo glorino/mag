@@ -100,7 +100,7 @@ export default function AboutPage() {
                   className="w-full h-full object-cover"
                 />
               </div>
-              <div className="absolute -bottom-6 -right-6 bg-black text-white p-8 max-w-[200px]">
+              <div className="absolute -bottom-6 -right-6 bg-black text-white p-8 max-w-[200px] hidden md:block">
                 <span className="block text-4xl font-bold font-serif text-accent">8+</span>
                 <span className="text-[12px] text-white/60 leading-relaxed">Years of fashion excellence across Nigeria</span>
               </div>

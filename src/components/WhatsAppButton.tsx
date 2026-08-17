@@ -18,7 +18,7 @@ export default function WhatsAppButton() {
         alignItems: "center",
         justifyContent: "center",
         boxShadow: "0 4px 20px rgba(37,211,102,0.4)",
-        zIndex: 1000,
+        zIndex: 50,
         transition: "transform 0.3s",
       }}
       aria-label="Chat on WhatsApp"

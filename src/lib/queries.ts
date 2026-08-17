@@ -110,6 +110,10 @@ export async function initDatabase() {
       updated_at TIMESTAMP DEFAULT NOW()
     )
   `;
+
+  await sql`CREATE INDEX IF NOT EXISTS idx_products_category_id ON products(category_id)`;
+  await sql`CREATE INDEX IF NOT EXISTS idx_orders_user_id ON orders(user_id)`;
+  await sql`CREATE INDEX IF NOT EXISTS idx_orders_created_at ON orders(created_at)`;
 }
 
 // ─── Seed Data ─────────────────────────────────────────
@@ -590,10 +594,10 @@ export async function createPasswordResetToken(userId: number): Promise<string> 
   const token = crypto.randomBytes(32).toString("hex");
   const expiresAt = new Date(Date.now() + 3600000); // 1 hour
 
+  await sql`DELETE FROM password_reset_tokens WHERE user_id = ${userId}`;
   await sql`
     INSERT INTO password_reset_tokens (user_id, token, expires_at)
     VALUES (${userId}, ${token}, ${expiresAt.toISOString()})
-    ON CONFLICT (user_id) DO UPDATE SET token = EXCLUDED.token, expires_at = EXCLUDED.expires_at, used = false
   `;
   return token;
 }

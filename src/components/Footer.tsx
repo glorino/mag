@@ -50,7 +50,7 @@ export default function Footer() {
             <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "12px" }}>
               {["Shirt", "Trouser", "Nicker"].map((item) => (
                 <li key={item}>
-                  <Link href="/shop" style={{ color: "#aaa", fontSize: "13px", textDecoration: "none", transition: "color 0.3s" }}
+                  <Link href={`/shop?category=${item}`} style={{ color: "#aaa", fontSize: "13px", textDecoration: "none", transition: "color 0.3s" }}
                     onMouseEnter={(e) => (e.currentTarget.style.color = "#fff")}
                     onMouseLeave={(e) => (e.currentTarget.style.color = "#aaa")}
                   >

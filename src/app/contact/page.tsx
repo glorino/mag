@@ -6,16 +6,24 @@ import { useState } from "react";
 export default function ContactPage() {
   const [form, setForm] = useState({ firstName: "", lastName: "", email: "", phone: "", type: "", message: "" });
   const [submitted, setSubmitted] = useState(false);
+  const [error, setError] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await fetch("/api/contact", {
+      const res = await fetch("/api/contact", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(form),
       });
-    } catch {}
+      if (!res.ok) {
+        setError(true);
+        return;
+      }
+    } catch {
+      setError(true);
+      return;
+    }
     setSubmitted(true);
   };
 
@@ -141,8 +149,11 @@ export default function ContactPage() {
                 <div className="bg-cream/50 p-10 md:p-12 border border-border">
                   <h3 className="text-2xl font-serif font-bold text-charcoal mb-2">Send a Message</h3>
                   <div className="w-[40px] h-[2px] bg-accent mb-10" />
+                  {error && (
+                    <p className="text-red-500 text-[13px] mb-6">Something went wrong. Please try again.</p>
+                  )}
                   <form onSubmit={handleSubmit} className="space-y-6">
-                    <div className="grid grid-cols-2 gap-5">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                       <input
                         type="text"
                         placeholder="First Name"

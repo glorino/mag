@@ -38,7 +38,8 @@ export default function MessagesPage() {
       });
       const data = await res.json();
       setMessages(data);
-    } catch {
+    } catch (err) {
+      console.error(err);
       setMessages([]);
     }
     setLoading(false);
@@ -50,7 +51,7 @@ export default function MessagesPage() {
   }, []);
 
   const markRead = async (id: number) => {
-    await fetch("/api/admin/messages", {
+    const res = await fetch("/api/admin/messages", {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -58,6 +59,10 @@ export default function MessagesPage() {
       },
       body: JSON.stringify({ id }),
     });
+    if (!res.ok) {
+      alert("Failed to mark message as read");
+      return;
+    }
     setMessages((prev) =>
       prev.map((m) => (m.id === id ? { ...m, is_read: true } : m))
     );
@@ -65,10 +70,14 @@ export default function MessagesPage() {
 
   const handleDelete = async (id: number) => {
     if (!confirm("Delete this message?")) return;
-    await fetch(`/api/admin/messages?id=${id}`, {
+    const res = await fetch(`/api/admin/messages?id=${id}`, {
       method: "DELETE",
       headers: { Authorization: `Bearer ${token}` },
     });
+    if (!res.ok) {
+      alert("Failed to delete message");
+      return;
+    }
     setMessages((prev) => prev.filter((m) => m.id !== id));
   };
 

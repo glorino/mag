@@ -91,7 +91,7 @@ export async function POST(request: Request) {
     const data = await response.json();
 
     if (data.status === "success") {
-      return NextResponse.json({ url: data.data.link, tx_ref: txRef });
+      return NextResponse.json({ url: data.data.link, tx_ref: txRef, serverTotal });
     }
 
     return NextResponse.json(

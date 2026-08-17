@@ -94,7 +94,7 @@ export default function Header() {
                     {categories.map((cat) => (
                       <Link
                         key={cat}
-                        href="/shop"
+                        href={`/shop?category=${cat}`}
                         className="block px-5 py-2 text-[13px] text-white/60 hover:text-accent hover:bg-white/5 transition-colors"
                       >
                         {cat}
@@ -173,7 +173,7 @@ export default function Header() {
             <p className="text-[11px] font-semibold tracking-widest uppercase text-white/40 mb-3">Categories</p>
             <div className="flex flex-wrap gap-2">
               {categories.map((cat) => (
-                <Link key={cat} href="/shop" onClick={() => setMobileOpen(false)} className="text-[12px] text-white/60 hover:text-accent border border-white/20 px-3 py-1 hover:border-accent transition-colors">
+                <Link key={cat} href={`/shop?category=${cat}`} onClick={() => setMobileOpen(false)} className="text-[12px] text-white/60 hover:text-accent border border-white/20 px-3 py-1 hover:border-accent transition-colors">
                   {cat}
                 </Link>
               ))}
