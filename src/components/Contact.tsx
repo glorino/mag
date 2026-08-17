@@ -5,7 +5,7 @@ import { useState } from "react";
 const faqs = [
   { q: "How do I make payments?", a: "You can pay via bank transfer, ATM card online, or cash at our store. MAGRE CONCEPT DIAMOND BANK ACCOUNT NUMBER 0045114433." },
   { q: "How long is delivery?", a: "Delivery takes between 3-7 working days after full payment has been confirmed. Orders are dispatched within 48 hours of payment confirmation." },
-  { q: "Do you deliver nationwide?", a: "We deliver to all cities and towns in Nigeria. Pay on delivery is available for customers within Lagos only." },
+  { q: "Do you deliver nationwide?", a: "We deliver to all cities and towns in Nigeria. Pay on delivery is available for all customers across Nigeria." },
   { q: "What is your return policy?", a: "All returns should be made within 7 days upon delivery. Your item must be unused and in the same condition that you received it." },
 ];
 
@@ -61,13 +61,8 @@ function FaqItem({ q, a }: { q: string; a: string }) {
 
 const contactCards = [
   {
-    title: "Location",
-    lines: ["35 Eric Moore Close,", "Off Eric Moore Road,", "Surulere, Lagos."],
-    icon: "M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z M15 11a3 3 0 11-6 0 3 3 0 016 0z",
-  },
-  {
     title: "Contact",
-    lines: ["08184118997", "08033449004", "info@magre.ng"],
+    lines: ["08184118997", "info@magre.ng"],
     icon: "M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z",
   },
   {

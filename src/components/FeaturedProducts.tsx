@@ -1,21 +1,42 @@
 "use client";
 
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { products } from "@/lib/products";
 import { useCart } from "@/lib/cart-context";
+
+interface Product {
+  id: number;
+  name: string;
+  price: string;
+  priceNum: number;
+  category: string;
+  badge?: string;
+  image: string;
+  description: string;
+  sizes: string[];
+}
 
 export default function FeaturedProducts() {
   const { addItem } = useCart();
-  const featured = products.filter((p) => p.badge).slice(0, 8);
+  const [featured, setFeatured] = useState<Product[]>([]);
+
+  useEffect(() => {
+    fetch("/api/products")
+      .then((res) => res.json())
+      .then((data: Product[]) => {
+        setFeatured(data.filter((p) => p.badge).slice(0, 8));
+      })
+      .catch(() => {});
+  }, []);
 
   return (
-    <section className="py-20 bg-cream">
+    <section className="py-28 bg-cream">
       <div className="max-w-[1200px] mx-auto px-6">
-        <div className="text-center mb-14">
+        <div className="text-center mb-20">
           <p className="text-[11px] tracking-[0.3em] uppercase text-accent mb-3 font-medium">Featured</p>
           <h2 className="text-3xl md:text-4xl font-serif font-bold text-charcoal mb-4">Bestsellers</h2>
-          <div className="w-16 h-[2px] bg-accent mx-auto mb-6" />
+          <div className="w-16 h-[2px] bg-accent mx-auto mb-8" />
           <Link
             href="/shop"
             className="text-[13px] font-semibold text-charcoal hover:text-accent transition-colors inline-flex items-center gap-2 group"
@@ -27,7 +48,7 @@ export default function FeaturedProducts() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {featured.map((product, i) => (
             <motion.div
               key={product.id}
@@ -38,7 +59,7 @@ export default function FeaturedProducts() {
               className="group"
             >
               <Link href={`/product/${product.id}`} className="block">
-                <div className="relative aspect-[3/4] overflow-hidden mb-4 bg-black">
+                <div className="relative aspect-[3/4] overflow-hidden mb-5 bg-black">
                   <img
                     src={product.image}
                     alt={product.name}
@@ -46,7 +67,7 @@ export default function FeaturedProducts() {
                     loading="lazy"
                   />
                   {product.badge && (
-                    <span className={`absolute top-3 left-3 px-3 py-1 text-[10px] font-bold uppercase tracking-wider z-10 ${
+                    <span className={`absolute top-4 left-4 px-3 py-1.5 text-[10px] font-bold uppercase tracking-wider z-10 ${
                       product.badge === "Bestseller" ? "bg-accent text-black" : product.badge === "New" ? "bg-white text-black" : "bg-black text-accent border border-accent/30"
                     }`}>
                       {product.badge}
@@ -60,7 +81,7 @@ export default function FeaturedProducts() {
               <div className="flex items-start justify-between">
                 <div className="min-w-0">
                   <p className="text-[11px] text-text-light tracking-wider uppercase mb-1 font-medium">{product.category}</p>
-                  <h3 className="text-[14px] font-semibold text-charcoal group-hover:text-accent transition-colors mb-1 truncate">{product.name}</h3>
+                  <h3 className="text-[14px] font-semibold text-charcoal group-hover:text-accent transition-colors mb-1.5 truncate">{product.name}</h3>
                   <p className="text-[15px] font-bold text-charcoal">{product.price}</p>
                 </div>
                 <button

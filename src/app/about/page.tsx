@@ -17,7 +17,7 @@ export default function AboutPage() {
   return (
     <main>
       {/* Hero */}
-      <section className="relative py-24 md:py-32 bg-black text-white overflow-hidden">
+      <section className="relative py-28 md:py-36 bg-black text-white overflow-hidden">
         <div className="absolute inset-0 opacity-5">
           <div className="absolute inset-0" style={{
             backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%2300e5ff' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
@@ -28,7 +28,7 @@ export default function AboutPage() {
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-[11px] tracking-[0.4em] uppercase text-accent mb-4 font-medium"
+            className="text-[11px] tracking-[0.4em] uppercase text-accent mb-5 font-medium"
           >
             Our Story
           </motion.p>
@@ -38,14 +38,14 @@ export default function AboutPage() {
             transition={{ delay: 0.1 }}
             className="text-4xl md:text-6xl font-serif font-bold mb-6"
           >
-            Born in Lagos, <br className="hidden md:block" />
+            Born with Heritage, <br className="hidden md:block" />
             <span className="text-accent">Worn Everywhere</span>
           </motion.h1>
           <motion.div
             initial={{ width: 0 }}
             animate={{ width: 60 }}
             transition={{ delay: 0.3, duration: 0.5 }}
-            className="h-[2px] bg-accent mx-auto mb-6"
+            className="h-[2px] bg-accent mx-auto mb-8"
           />
           <motion.p
             initial={{ opacity: 0 }}
@@ -59,7 +59,7 @@ export default function AboutPage() {
       </section>
 
       {/* Story */}
-      <section className="section-padding bg-white">
+      <section className="py-28 bg-white">
         <div className="max-w-[1200px] mx-auto px-6">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <motion.div
@@ -68,14 +68,14 @@ export default function AboutPage() {
               viewport={{ once: true }}
               transition={{ duration: 0.7 }}
             >
-              <p className="text-[11px] tracking-[0.3em] uppercase text-accent mb-3 font-medium">Who We Are</p>
+              <p className="text-[11px] tracking-[0.3em] uppercase text-accent mb-4 font-medium">Who We Are</p>
               <h2 className="text-3xl md:text-4xl font-serif font-bold text-charcoal mb-4">
                 A Legacy of African Elegance
               </h2>
               <div className="w-[60px] h-[2px] bg-accent mb-8" />
-              <div className="space-y-5 text-text leading-relaxed">
+              <div className="space-y-5 text-text leading-relaxed text-[15px]">
                 <p>
-                  MAGRE is a premium Nigerian fashion brand rooted in the rich traditions of West African textile artistry. Founded in Lagos, we create ready-to-wear pieces that seamlessly blend traditional African prints with modern silhouettes.
+                  MAGRE is a premium Nigerian fashion brand rooted in the rich traditions of West African textile artistry. From its origins, we create ready-to-wear pieces that seamlessly blend traditional African prints with modern silhouettes.
                 </p>
                 <p>
                   Every garment is thoughtfully designed and handcrafted using premium fabrics sourced from across West Africa. From vibrant ankara to indigo adire, we honor the artisans and cultures that inspire our collections.
@@ -95,7 +95,7 @@ export default function AboutPage() {
             >
               <div className="aspect-[4/5] overflow-hidden">
                 <img
-                  src="https://images.unsplash.com/photo-1487222477894-8943e31ef7b2?w=600&h=750&fit=crop"
+                  src="https://images.unsplash.com/photo-1627577279497-4b24bf1021b6?w=600&h=750&fit=crop"
                   alt="MAGRE Story"
                   className="w-full h-full object-cover"
                 />
@@ -110,11 +110,11 @@ export default function AboutPage() {
       </section>
 
       {/* Mission & Vision */}
-      <section className="section-padding bg-cream">
+      <section className="py-28 bg-cream">
         <div className="max-w-[1200px] mx-auto px-6">
-          <div className="text-center mb-14">
-            <p className="text-[11px] tracking-[0.3em] uppercase text-accent mb-3 font-medium">What Drives Us</p>
-            <h2 className="text-3xl md:text-4xl font-serif font-bold text-charcoal mb-3">
+          <div className="text-center mb-16">
+            <p className="text-[11px] tracking-[0.3em] uppercase text-accent mb-4 font-medium">What Drives Us</p>
+            <h2 className="text-3xl md:text-4xl font-serif font-bold text-charcoal mb-4">
               Mission & Vision
             </h2>
             <div className="w-[60px] h-[2px] bg-accent mx-auto" />
@@ -162,11 +162,11 @@ export default function AboutPage() {
       </section>
 
       {/* Why Choose Us */}
-      <section className="section-padding bg-white">
+      <section className="py-28 bg-white">
         <div className="max-w-[1200px] mx-auto px-6">
-          <div className="text-center mb-14">
-            <p className="text-[11px] tracking-[0.3em] uppercase text-accent mb-3 font-medium">Why Choose Us</p>
-            <h2 className="text-3xl md:text-4xl font-serif font-bold text-charcoal mb-3">
+          <div className="text-center mb-16">
+            <p className="text-[11px] tracking-[0.3em] uppercase text-accent mb-4 font-medium">Why Choose Us</p>
+            <h2 className="text-3xl md:text-4xl font-serif font-bold text-charcoal mb-4">
               The MAGRE Difference
             </h2>
             <div className="w-[60px] h-[2px] bg-accent mx-auto" />
@@ -198,7 +198,7 @@ export default function AboutPage() {
               {
                 num: "04",
                 title: "Fast Delivery",
-                desc: "Orders dispatched within 48 hours. 3-7 day delivery across Nigeria, same-day in Lagos.",
+                desc: "Orders dispatched within 48 hours. 3-7 day delivery across Nigeria, 1-3 days for major cities.",
               },
               {
                 num: "05",
@@ -226,11 +226,11 @@ export default function AboutPage() {
       </section>
 
       {/* What We Stand For */}
-      <section className="section-padding bg-black text-white">
+      <section className="py-28 bg-black text-white">
         <div className="max-w-[1200px] mx-auto px-6">
-          <div className="text-center mb-14">
-            <p className="text-[11px] tracking-[0.3em] uppercase text-accent mb-3 font-medium">Our Values</p>
-            <h2 className="text-3xl md:text-4xl font-serif font-bold mb-3">
+          <div className="text-center mb-16">
+            <p className="text-[11px] tracking-[0.3em] uppercase text-accent mb-4 font-medium">Our Values</p>
+            <h2 className="text-3xl md:text-4xl font-serif font-bold mb-4">
               What We Stand For
             </h2>
             <div className="w-[60px] h-[2px] bg-accent mx-auto" />
@@ -265,7 +265,7 @@ export default function AboutPage() {
       </section>
 
       {/* Stats */}
-      <section className="py-16 bg-cream">
+      <section className="py-20 bg-cream">
         <div className="max-w-[1200px] mx-auto px-6">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {[
@@ -290,7 +290,7 @@ export default function AboutPage() {
       </section>
 
       {/* CTA */}
-      <section className="section-padding bg-black text-white text-center">
+      <section className="py-28 bg-black text-white text-center">
         <div className="max-w-[600px] mx-auto px-6">
           <motion.div
             initial={{ opacity: 0, y: 20 }}

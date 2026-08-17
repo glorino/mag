@@ -1,9 +1,11 @@
 import { SignJWT, jwtVerify } from "jose";
 import bcrypt from "bcryptjs";
 
-const JWT_SECRET = new TextEncoder().encode(
-  process.env.JWT_SECRET || "magre-secret-key-2026"
-);
+function getJwtSecret() {
+  const secret = process.env.JWT_SECRET;
+  if (!secret) throw new Error("JWT_SECRET environment variable is not set");
+  return new TextEncoder().encode(secret);
+}
 
 export interface User {
   id: number;
@@ -37,12 +39,12 @@ export async function generateToken(payload: AuthPayload): Promise<string> {
     .setProtectedHeader({ alg: "HS256" })
     .setIssuedAt()
     .setExpirationTime("7d")
-    .sign(JWT_SECRET);
+    .sign(getJwtSecret());
 }
 
 export async function verifyToken(token: string): Promise<AuthPayload | null> {
   try {
-    const { payload } = await jwtVerify(token, JWT_SECRET);
+    const { payload } = await jwtVerify(token, getJwtSecret());
     return payload as unknown as AuthPayload;
   } catch {
     return null;
@@ -69,4 +71,10 @@ export async function getUserFromRequest(
 
   if (!token) return null;
   return verifyToken(token);
+}
+
+export async function requireAdmin(request: Request): Promise<AuthPayload | null> {
+  const user = await getUserFromRequest(request);
+  if (!user || user.role !== "admin") return null;
+  return user;
 }

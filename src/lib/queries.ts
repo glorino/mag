@@ -1,5 +1,7 @@
 import getSql from "./database";
 
+import { products as staticProducts } from "./products";
+
 export async function initDatabase() {
   const sql = getSql();
 
@@ -57,8 +59,11 @@ export async function initDatabase() {
       items JSONB NOT NULL,
       total DECIMAL(10, 2) NOT NULL,
       status VARCHAR(50) DEFAULT 'pending',
-      payment_ref VARCHAR(255),
+      payment_ref VARCHAR(255) UNIQUE,
       payment_status VARCHAR(50) DEFAULT 'pending',
+      tracking_number VARCHAR(255),
+      notes TEXT,
+      shipping_cost DECIMAL(10, 2) DEFAULT 0,
       created_at TIMESTAMP DEFAULT NOW(),
       updated_at TIMESTAMP DEFAULT NOW()
     )
@@ -71,6 +76,74 @@ export async function initDatabase() {
       created_at TIMESTAMP DEFAULT NOW()
     )
   `;
+
+  await sql`
+    CREATE TABLE IF NOT EXISTS messages (
+      id SERIAL PRIMARY KEY,
+      first_name VARCHAR(255) NOT NULL,
+      last_name VARCHAR(255) NOT NULL,
+      email VARCHAR(255) NOT NULL,
+      phone VARCHAR(50),
+      type VARCHAR(50) NOT NULL,
+      message TEXT NOT NULL,
+      is_read BOOLEAN DEFAULT false,
+      created_at TIMESTAMP DEFAULT NOW()
+    )
+  `;
+}
+
+// ─── Seed Data ─────────────────────────────────────────
+
+export async function seedCategories() {
+  const sql = getSql();
+  const categories = ["Blouses", "Trousers", "Loungewear"];
+  const results = await Promise.all(
+    categories.map((name) =>
+      sql`
+        INSERT INTO categories (name, slug, description, is_active, sort_order)
+        VALUES (${name}, ${name.toLowerCase()}, ${name + " collection"}, true, 0)
+        ON CONFLICT (name) DO UPDATE SET name = EXCLUDED.name
+        RETURNING id, name
+      `
+    )
+  );
+  return results.flat();
+}
+
+export async function seedProducts() {
+  const sql = getSql();
+
+  const cats = await sql`SELECT id, name FROM categories`;
+  const catMap: Record<string, number> = {};
+  cats.forEach((c) => {
+    catMap[String(c.name)] = Number(c.id);
+  });
+
+  await sql`SELECT COUNT(*) as count FROM products`;
+
+  await Promise.all(
+    staticProducts.map((p) =>
+      sql`
+        INSERT INTO products (id, name, price, category_id, description, sizes, colors, badge, image_url, stock, is_active)
+        VALUES (
+          ${p.id},
+          ${p.name},
+          ${p.priceNum},
+          ${catMap[p.category] || null},
+          ${p.description},
+          ${p.sizes},
+          ${["N/A"]},
+          ${p.badge || ""},
+          ${p.image},
+          ${50},
+          true
+        )
+        ON CONFLICT (id) DO NOTHING
+      `
+    )
+  );
+
+  return { count: staticProducts.length };
 }
 
 // ─── Users ─────────────────────────────────────────────
@@ -127,6 +200,14 @@ export async function updateUser(
         address = COALESCE(${data.address || ""}, address)
     WHERE id = ${id}
     RETURNING id, name, email, phone, role, address, created_at
+  `;
+}
+
+export async function updateUserPassword(id: number, password_hash: string) {
+  const sql = getSql();
+  return sql`
+    UPDATE users SET password_hash = ${password_hash} WHERE id = ${id}
+    RETURNING id, name, email
   `;
 }
 
@@ -365,4 +446,33 @@ export async function subscribe(email: string) {
     ON CONFLICT (email) DO NOTHING
     RETURNING *
   `;
+}
+
+// ─── Messages ────────────────────────────────────────
+
+export async function getAllMessages() {
+  const sql = getSql();
+  return sql`SELECT * FROM messages ORDER BY created_at DESC`;
+}
+
+export async function getMessageById(id: number) {
+  const sql = getSql();
+  const results = await sql`SELECT * FROM messages WHERE id = ${id}`;
+  return results[0] || null;
+}
+
+export async function markMessageRead(id: number) {
+  const sql = getSql();
+  return sql`UPDATE messages SET is_read = true WHERE id = ${id} RETURNING *`;
+}
+
+export async function deleteMessage(id: number) {
+  const sql = getSql();
+  return sql`DELETE FROM messages WHERE id = ${id} RETURNING *`;
+}
+
+export async function getUnreadMessageCount() {
+  const sql = getSql();
+  const results = await sql`SELECT COUNT(*) as count FROM messages WHERE is_read = false`;
+  return Number(results[0]?.count || 0);
 }

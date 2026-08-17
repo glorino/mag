@@ -75,17 +75,20 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           </svg>
         </button>
 
-        {/* Sidebar */}
+        {/* Mobile Sidebar Overlay */}
+        {sidebarOpen && (
+          <div className="fixed inset-0 bg-black/50 z-30 lg:hidden" onClick={() => setSidebarOpen(false)} />
+        )}
+
+        {/* Mobile Sidebar */}
         <AnimatePresence>
-          {(sidebarOpen || true) && (
+          {sidebarOpen && (
             <motion.aside
               initial={{ x: -280 }}
               animate={{ x: 0 }}
               exit={{ x: -280 }}
               transition={{ type: "tween", duration: 0.3 }}
-              className={`fixed lg:sticky top-0 lg:top-20 left-0 w-[260px] h-screen lg:h-auto lg:min-h-[calc(100vh-80px)] bg-[#111] border-r border-white/10 z-40 flex flex-col ${
-                sidebarOpen ? "block" : "hidden lg:block"
-              }`}
+              className="fixed top-0 left-0 w-[260px] h-screen bg-[#111] border-r border-white/10 z-40 flex flex-col lg:hidden"
             >
               {/* User info */}
               <div className="p-6 border-b border-white/10">
@@ -140,13 +143,54 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           )}
         </AnimatePresence>
 
-        {/* Overlay for mobile sidebar */}
-        {sidebarOpen && (
-          <div
-            className="fixed inset-0 bg-black/50 z-30 lg:hidden"
-            onClick={() => setSidebarOpen(false)}
-          />
-        )}
+        {/* Desktop Sidebar */}
+        <aside className="hidden lg:flex sticky top-20 w-[260px] min-h-[calc(100vh-80px)] bg-[#111] border-r border-white/10 z-40 flex-col shrink-0">
+          <div className="p-6 border-b border-white/10">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 bg-accent/20 rounded-full flex items-center justify-center">
+                <span className="text-accent text-lg font-bold">
+                  {user.name.charAt(0).toUpperCase()}
+                </span>
+              </div>
+              <div className="min-w-0">
+                <p className="text-white font-semibold text-[14px] truncate">{user.name}</p>
+                <p className="text-white/40 text-[12px] truncate">{user.email}</p>
+              </div>
+            </div>
+          </div>
+
+          <nav className="flex-1 py-4">
+            {sidebarLinks.map((link) => {
+              const isActive = pathname === link.href;
+              return (
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className={`flex items-center gap-3 px-6 py-3.5 text-[13px] font-medium transition-colors ${
+                    isActive
+                      ? "text-accent bg-accent/10 border-r-2 border-accent"
+                      : "text-white/50 hover:text-white hover:bg-white/5"
+                  }`}
+                >
+                  {link.icon}
+                  {link.name}
+                </Link>
+              );
+            })}
+          </nav>
+
+          <div className="p-6 border-t border-white/10">
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-3 w-full text-[13px] font-medium text-white/40 hover:text-red-400 transition-colors py-2"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+              </svg>
+              Logout
+            </button>
+          </div>
+        </aside>
 
         {/* Main content */}
         <main className="flex-1 min-w-0 p-6 lg:p-10">

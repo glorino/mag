@@ -1,19 +1,61 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "next/navigation";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { getProduct, products } from "@/lib/products";
 import { useCart } from "@/lib/cart-context";
+
+interface Product {
+  id: number;
+  name: string;
+  price: string;
+  priceNum: number;
+  category: string;
+  badge?: string;
+  image: string;
+  description: string;
+  sizes: string[];
+  details: string[];
+  related?: Product[];
+}
 
 export default function ProductPage() {
   const params = useParams();
   const id = Number(params.id);
-  const product = getProduct(id);
   const { addItem } = useCart();
+  const [product, setProduct] = useState<Product | null>(null);
+  const [loading, setLoading] = useState(true);
   const [selectedSize, setSelectedSize] = useState<string>("");
   const [added, setAdded] = useState(false);
+
+  useEffect(() => {
+    const fetchProduct = async () => {
+      try {
+        const res = await fetch(`/api/products/${id}`);
+        if (res.ok) {
+          const data = await res.json();
+          setProduct(data);
+        }
+      } catch {
+        // ignore
+      }
+      setLoading(false);
+    };
+
+    fetchProduct();
+  }, [id]);
+
+  if (loading) {
+    return (
+      <main className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="w-12 h-12 border-2 border-accent border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+          <p className="text-text text-sm">Loading product...</p>
+        </div>
+      </main>
+    );
+  }
 
   if (!product) {
     return (
@@ -42,8 +84,7 @@ export default function ProductPage() {
     setTimeout(() => setAdded(false), 2000);
   };
 
-  // Related products (same category, excluding current)
-  const related = products.filter((p) => p.category === product.category && p.id !== product.id).slice(0, 4);
+  const related = product.related || [];
 
   return (
     <main className="">
@@ -127,17 +168,19 @@ export default function ProductPage() {
               </button>
 
               {/* Details */}
-              <div className="mt-8 pt-8 border-t border-border">
-                <p className="text-[12px] font-semibold text-charcoal uppercase tracking-wider mb-3">Product Details</p>
-                <ul className="space-y-2">
-                  {product.details.map((detail, i) => (
-                    <li key={i} className="text-[13px] text-text flex items-start gap-2">
-                      <span className="text-accent mt-1">•</span>
-                      {detail}
-                    </li>
-                  ))}
-                </ul>
-              </div>
+              {product.details.length > 0 && (
+                <div className="mt-8 pt-8 border-t border-border">
+                  <p className="text-[12px] font-semibold text-charcoal uppercase tracking-wider mb-3">Product Details</p>
+                  <ul className="space-y-2">
+                    {product.details.map((detail, i) => (
+                      <li key={i} className="text-[13px] text-text flex items-start gap-2">
+                        <span className="text-accent mt-1">•</span>
+                        {detail}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </motion.div>
           </div>
         </div>

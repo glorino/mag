@@ -38,6 +38,10 @@ export default function CheckoutPage() {
         // ignore
       }
     }
+
+    return () => {
+      if (script.parentNode) script.parentNode.removeChild(script);
+    };
   }, [closeCart]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -102,7 +106,7 @@ export default function CheckoutPage() {
       await loadFlutterwave();
 
       window.FlutterwaveCheckout?.({
-        public_key: "FLWPUBK-82ef4eaf11c6ce9707067aff45dd23bc-X",
+        public_key: process.env.NEXT_PUBLIC_FLWPUBK || "",
         tx_ref: data.tx_ref,
         amount: totalPrice(),
         currency: "NGN",

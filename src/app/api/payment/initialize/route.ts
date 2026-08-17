@@ -1,19 +1,51 @@
 import { NextResponse } from "next/server";
+import { getProductById } from "@/lib/queries";
+import { getUserFromRequest } from "@/lib/auth";
 
 export async function POST(request: Request) {
   try {
-    const { amount, email, name, phone, items, address } = await request.json();
+    const { items, email, name, phone, address } = await request.json();
 
-    if (!amount || !email || !name || !items || !address) {
+    if (!email || !name || !items?.length || !address) {
       return NextResponse.json(
-        { error: "Amount, email, name, items, and address are required" },
+        { error: "Email, name, items, and address are required" },
         { status: 400 }
       );
     }
 
+    // Server-side price validation: recalculate total from DB
+    let serverTotal = 0;
+    const validatedItems = [];
+    for (const item of items) {
+      const product = await getProductById(item.id);
+      if (!product) {
+        return NextResponse.json({ error: `Product not found: ${item.id}` }, { status: 400 });
+      }
+      const qty = item.quantity || 1;
+      serverTotal += Number(product.price) * qty;
+      validatedItems.push({
+        id: product.id,
+        name: product.name,
+        price: Number(product.price),
+        quantity: qty,
+        size: item.size || "",
+        category: product.category_name || "",
+        image: product.image_url || "",
+      });
+    }
+
     const flutterwaveSecret = process.env.FLWSECK;
+    if (!flutterwaveSecret) {
+      return NextResponse.json({ error: "Payment system not configured" }, { status: 500 });
+    }
 
     const txRef = `magre-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+    const origin = request.headers.get("origin") || process.env.NEXT_PUBLIC_SITE_URL || "https://mag-drab.vercel.app";
+
+    // Get user_id if logged in
+    let userId: number | undefined;
+    const authUser = await getUserFromRequest(request);
+    if (authUser) userId = authUser.userId;
 
     const response = await fetch("https://api.flutterwave.com/v3/payments", {
       method: "POST",
@@ -23,9 +55,9 @@ export async function POST(request: Request) {
       },
       body: JSON.stringify({
         tx_ref: txRef,
-        amount,
+        amount: serverTotal,
         currency: "NGN",
-        redirect_url: `${request.headers.get("origin") || "http://localhost:3000"}/checkout/verify`,
+        redirect_url: `${origin}/checkout/verify`,
         customer: {
           email,
           name,
@@ -33,12 +65,13 @@ export async function POST(request: Request) {
         },
         customizations: {
           title: "MAGRE Store",
-          description: `Payment for ${items.length} item(s)`,
+          description: `Payment for ${validatedItems.length} item(s)`,
           logo: "",
         },
         meta: {
-          items: JSON.stringify(items),
+          items: JSON.stringify(validatedItems),
           address,
+          user_id: userId || "",
         },
       }),
     });
@@ -53,10 +86,9 @@ export async function POST(request: Request) {
       { error: "Failed to initialize payment" },
       { status: 400 }
     );
-  } catch (error) {
-    console.error("Payment init error:", error);
+  } catch {
     return NextResponse.json(
-      { error: "Failed to initialize payment" },
+      { error: "Payment initialization failed" },
       { status: 500 }
     );
   }

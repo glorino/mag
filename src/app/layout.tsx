@@ -19,14 +19,14 @@ const playfair = Playfair_Display({
 export const metadata: Metadata = {
   title: "MAGRE | Premium Women's Fashion",
   description:
-    "MAGRE is a premium Nigerian fashion brand. Ready-to-wear shirts, trousers, and nickers designed exclusively for women of all sizes.",
+    "MAGRE is a premium Nigerian fashion brand. Ready-to-wear blouses, trousers, and loungewear designed exclusively for women of all sizes.",
   keywords: [
     "Nigerian fashion",
     "African clothing",
-    "Women's shirts",
+    "Women's blouses",
     "Women's trousers",
-    "Women's undergarments",
-    "Lagos fashion",
+    "Women's loungewear",
+    "African fashion",
     "women's wear",
     "ready to wear",
     "MAGRE",

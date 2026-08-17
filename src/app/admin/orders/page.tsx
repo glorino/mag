@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import { motion } from "framer-motion";
 
 interface Order {
@@ -26,7 +27,9 @@ const statusColors: Record<string, string> = {
 
 const statuses = ["pending", "processing", "shipped", "delivered", "cancelled"];
 
-export default function OrdersPage() {
+function OrdersContent() {
+  const searchParams = useSearchParams();
+  const userFilter = searchParams.get("user") || "";
   const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("all");
@@ -52,7 +55,9 @@ export default function OrdersPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const filtered = filter === "all" ? orders : orders.filter((o) => o.status === filter);
+  const filtered = orders
+    .filter((o) => !userFilter || o.email === userFilter)
+    .filter((o) => filter === "all" || o.status === filter);
 
   const updateStatus = async (orderId: number, status: string) => {
     await fetch(`/api/admin/orders/${orderId}`, {
@@ -85,15 +90,27 @@ export default function OrdersPage() {
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
           <h1 className="text-2xl font-bold text-white">Orders</h1>
-          <p className="text-white/40 text-sm mt-1">Manage customer orders</p>
+          <p className="text-white/40 text-sm mt-1">
+            {userFilter ? `Orders for ${userFilter}` : "Manage customer orders"}
+          </p>
         </div>
-        <button
-          onClick={() => window.open("/api/admin/export?type=orders", "_blank")}
-          className="px-4 py-2.5 bg-white/10 text-white text-sm font-semibold rounded-lg hover:bg-white/15 transition-colors border border-white/10 flex items-center gap-2"
-        >
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
-          Export CSV
-        </button>
+        <div className="flex gap-2">
+          {userFilter && (
+            <button
+              onClick={() => window.history.pushState({}, "", "/admin/orders")}
+              className="px-4 py-2.5 bg-white/10 text-white text-sm font-semibold rounded-lg hover:bg-white/15 transition-colors border border-white/10"
+            >
+              Clear Filter
+            </button>
+          )}
+          <button
+            onClick={() => window.open("/api/admin/export?type=orders", "_blank")}
+            className="px-4 py-2.5 bg-white/10 text-white text-sm font-semibold rounded-lg hover:bg-white/15 transition-colors border border-white/10 flex items-center gap-2"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+            Export CSV
+          </button>
+        </div>
       </div>
 
       <div className="flex flex-wrap gap-2">
@@ -285,5 +302,13 @@ export default function OrdersPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function OrdersPage() {
+  return (
+    <Suspense fallback={<div className="text-white/40 p-10">Loading orders...</div>}>
+      <OrdersContent />
+    </Suspense>
   );
 }

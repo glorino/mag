@@ -1,7 +1,10 @@
 import { NextResponse } from "next/server";
 import { getAllProducts, createProduct } from "@/lib/queries";
+import { requireAdmin } from "@/lib/auth";
 
-export async function GET() {
+export async function GET(request: Request) {
+  const admin = await requireAdmin(request);
+  if (!admin) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   try {
     const products = await getAllProducts();
     return NextResponse.json(products);
@@ -11,6 +14,8 @@ export async function GET() {
 }
 
 export async function POST(request: Request) {
+  const admin = await requireAdmin(request);
+  if (!admin) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   try {
     const body = await request.json();
     const { name, price, category_id, description, sizes, badge, image_url, stock } = body;

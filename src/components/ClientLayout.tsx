@@ -13,8 +13,6 @@ export default function ClientLayout({ children }: { children: ReactNode }) {
   const isAdmin = pathname.startsWith("/admin");
   const isDashboard = pathname.startsWith("/dashboard");
   const isAuth = pathname.startsWith("/login") || pathname.startsWith("/register");
-  const isCheckout = pathname.startsWith("/checkout");
-
   const showChrome = !isAdmin && !isDashboard && !isAuth;
 
   return (

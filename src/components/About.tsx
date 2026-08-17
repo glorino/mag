@@ -58,7 +58,7 @@ export default function About() {
 
             <div className="space-y-4 text-text leading-relaxed">
               <p>
-                MAGRE is a clothing brand located in Lagos Nigeria. We produce ready to wear shirts, trousers, and nickers for women of all sizes. We make clothes women will love and feel comfortable in.
+                MAGRE is a clothing brand crafting ready to wear blouses, trousers, and loungewear for women of all sizes. We make clothes women will love and feel comfortable in.
               </p>
               <p>
                 From vibrant ankara to contemporary prints, we honor the artisans and cultures that inspire our collections. Every garment is thoughtfully designed and handcrafted using premium fabrics sourced from across West Africa.

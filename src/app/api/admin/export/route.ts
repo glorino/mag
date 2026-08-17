@@ -1,9 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import getSql from "@/lib/database";
+import { requireAdmin } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
 export async function GET(request: NextRequest) {
+  const admin = await requireAdmin(request);
+  if (!admin) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   try {
     const sql = getSql();
     const { searchParams } = new URL(request.url);

@@ -8,7 +8,7 @@ export default function Hero() {
     <section className="relative bg-black">
       <div className="bg-accent text-black text-center py-2.5">
         <p className="text-[12px] tracking-wider font-bold">
-          Free delivery within Lagos on orders above ₦50,000
+          Free delivery on orders above ₦50,000
         </p>
       </div>
 
@@ -61,7 +61,7 @@ export default function Hero() {
               transition={{ delay: 0.6, duration: 0.6 }}
               className="text-white/60 text-[15px] mb-10 max-w-lg mx-auto leading-relaxed"
             >
-              Discover our curated collection of shirts, trousers, and nickers designed exclusively for the modern woman.
+              Discover our curated collection of blouses, trousers, and loungewear designed exclusively for the modern woman.
             </motion.p>
             
             <motion.div

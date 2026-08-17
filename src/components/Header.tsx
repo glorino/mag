@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 import { useCart } from "@/lib/cart-context";
 
@@ -23,11 +24,14 @@ const categories = ["Shirt", "Trouser", "Nicker"];
 
 export default function Header() {
   const pathname = usePathname();
+  const router = useRouter();
   const { totalItems, toggleCart } = useCart();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [shopOpen, setShopOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     setIsLoggedIn(getIsLoggedIn());
@@ -106,7 +110,7 @@ export default function Header() {
         {/* Right */}
         <div className="flex items-center gap-4">
           {/* Search */}
-          <button className="p-2 hover:bg-white/10 rounded-full transition-colors">
+          <button onClick={() => setSearchOpen(true)} className="p-2 hover:bg-white/10 rounded-full transition-colors">
             <svg className="w-[18px] h-[18px] text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
@@ -177,6 +181,34 @@ export default function Header() {
           </div>
         </nav>
       </div>
+
+      {/* Search Modal */}
+      {searchOpen && (
+        <div className="fixed inset-0 z-[60] bg-black/80 flex items-start justify-center pt-32 px-4" onClick={() => setSearchOpen(false)}>
+          <div className="w-full max-w-[500px] bg-[#111] border border-white/10 p-6" onClick={(e) => e.stopPropagation()}>
+            <form onSubmit={(e) => {
+              e.preventDefault();
+              if (searchQuery.trim()) {
+                router.push(`/shop?q=${encodeURIComponent(searchQuery.trim())}`);
+                setSearchOpen(false);
+                setSearchQuery("");
+              }
+            }} className="flex gap-3">
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="Search products..."
+                autoFocus
+                className="flex-1 bg-black border border-white/15 text-white px-4 py-3 text-[14px] focus:outline-none focus:border-accent transition-colors placeholder:text-white/30"
+              />
+              <button type="submit" className="bg-accent text-black px-6 py-3 text-[13px] font-bold tracking-wider uppercase hover:bg-accent-dark transition-colors">
+                Search
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
     </header>
   );
 }

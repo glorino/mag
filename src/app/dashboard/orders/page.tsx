@@ -24,7 +24,10 @@ interface Order {
   items: OrderItem[] | string;
   total: number;
   status: string;
+  tracking_number?: string;
+  notes?: string;
   created_at: string;
+  updated_at: string;
 }
 
 const statusColors: Record<string, { bg: string; text: string }> = {
@@ -150,7 +153,7 @@ export default function OrdersPage() {
                   </div>
                 </button>
 
-                {isExpanded && (
+                  {isExpanded && (
                   <motion.div
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: "auto", opacity: 1 }}
@@ -158,6 +161,53 @@ export default function OrdersPage() {
                     className="border-t border-white/10"
                   >
                     <div className="p-5 space-y-4">
+                      {/* Status Timeline */}
+                      <div>
+                        <p className="text-[11px] text-white/30 uppercase tracking-wider mb-3">Order Status</p>
+                        <div className="flex items-center gap-0">
+                          {["pending", "processing", "shipped", "delivered"].map((step, i) => {
+                            const statusOrder = ["pending", "processing", "shipped", "delivered"];
+                            const currentIdx = statusOrder.indexOf(order.status);
+                            const isCompleted = i <= currentIdx;
+                            const isCurrent = i === currentIdx;
+                            return (
+                              <div key={step} className="flex items-center flex-1 last:flex-none">
+                                <div className="flex flex-col items-center">
+                                  <div className={`w-7 h-7 rounded-full flex items-center justify-center text-[10px] font-bold border-2 transition-all ${
+                                    isCompleted
+                                      ? "bg-accent text-black border-accent"
+                                      : "bg-transparent text-white/30 border-white/15"
+                                  } ${isCurrent ? "ring-2 ring-accent/30" : ""}`}>
+                                    {isCompleted ? (
+                                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                                      </svg>
+                                    ) : (
+                                      i + 1
+                                    )}
+                                  </div>
+                                  <span className={`text-[10px] mt-1 capitalize ${isCompleted ? "text-accent" : "text-white/30"}`}>
+                                    {step}
+                                  </span>
+                                </div>
+                                {i < 3 && (
+                                  <div className={`flex-1 h-[2px] mx-1 mt-[-14px] ${i < currentIdx ? "bg-accent" : "bg-white/15"}`} />
+                                )}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </div>
+
+                      {/* Tracking Number */}
+                      {order.tracking_number && (
+                        <div className="bg-accent/5 border border-accent/20 p-3">
+                          <p className="text-[11px] text-white/30 uppercase tracking-wider mb-1">Tracking Number</p>
+                          <p className="text-accent text-[14px] font-mono font-bold">{order.tracking_number}</p>
+                        </div>
+                      )}
+
+                      {/* Items */}
                       <div>
                         <p className="text-[11px] text-white/30 uppercase tracking-wider mb-2">Items</p>
                         <div className="space-y-2">
@@ -185,6 +235,13 @@ export default function OrdersPage() {
                         <div>
                           <p className="text-[11px] text-white/30 uppercase tracking-wider mb-1">Shipping Address</p>
                           <p className="text-white/60 text-[13px]">{order.address}</p>
+                        </div>
+                      )}
+
+                      {order.notes && (
+                        <div className="bg-white/5 border border-white/10 p-3">
+                          <p className="text-[11px] text-white/30 uppercase tracking-wider mb-1">Admin Notes</p>
+                          <p className="text-white/60 text-[13px]">{order.notes}</p>
                         </div>
                       )}
                     </div>

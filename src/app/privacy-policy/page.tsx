@@ -103,7 +103,6 @@ export default function PrivacyPolicyPage() {
                 </p>
                 <div className="mt-3 text-text">
                   <p><strong>MAGRE Concept</strong></p>
-                  <p>35 Eric Moore Close, Off Eric Moore Road, Surulere, Lagos</p>
                   <p>Email: info@magre.ng</p>
                   <p>Phone: 08184118997</p>
                 </div>

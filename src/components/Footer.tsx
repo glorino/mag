@@ -16,12 +16,12 @@ export default function Footer() {
               <span style={{ fontSize: "20px", fontWeight: 700, letterSpacing: "0.15em", color: "#fff" }}>MAGRE</span>
             </Link>
             <p style={{ color: "#999", fontSize: "13px", lineHeight: 1.8, marginTop: "16px" }}>
-              Premium Nigerian fashion brand. Ready-to-wear shirts, trousers, and nickers designed exclusively for women of all sizes.
+              Premium Nigerian fashion brand. Ready-to-wear blouses, trousers, and loungewear designed exclusively for women of all sizes.
             </p>
             <div style={{ display: "flex", gap: "10px", marginTop: "20px" }}>
               {[
-                { label: "F", href: "#" },
-                { label: "I", href: "#" },
+                { label: "F", href: "https://www.facebook.com" },
+                { label: "I", href: "https://www.instagram.com" },
               ].map((s) => (
                 <a
                   key={s.label}
@@ -48,7 +48,7 @@ export default function Footer() {
           <div>
             <h4 style={{ fontWeight: 700, fontSize: "12px", letterSpacing: "0.15em", textTransform: "uppercase", color: "#00e5ff", marginBottom: "20px" }}>Shop</h4>
             <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "12px" }}>
-              {["Shirts", "Trousers", "Nicker"].map((item) => (
+              {["Blouses", "Trousers", "Loungewear"].map((item) => (
                 <li key={item}>
                   <Link href="/shop" style={{ color: "#aaa", fontSize: "13px", textDecoration: "none", transition: "color 0.3s" }}
                     onMouseEnter={(e) => (e.currentTarget.style.color = "#fff")}
@@ -87,9 +87,6 @@ export default function Footer() {
           <div>
             <h4 style={{ fontWeight: 700, fontSize: "12px", letterSpacing: "0.15em", textTransform: "uppercase", color: "#00e5ff", marginBottom: "20px" }}>Contact Us</h4>
             <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "12px" }}>
-              <li style={{ color: "#aaa", fontSize: "13px", lineHeight: 1.7 }}>
-                35 Eric Moore Close, Off Eric Moore Road, Surulere, Lagos
-              </li>
               <li>
                 <a href="tel:08184118997" style={{ color: "#aaa", fontSize: "13px", textDecoration: "none", transition: "color 0.3s" }}
                   onMouseEnter={(e) => (e.currentTarget.style.color = "#fff")}

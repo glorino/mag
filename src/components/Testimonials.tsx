@@ -5,8 +5,8 @@ import { motion } from "framer-motion";
 const testimonials = [
   {
     name: "Adaeze O.",
-    location: "Lagos, Nigeria",
-    text: "The quality of MAGRE pieces is unmatched. Every time I wear my ankara shirt, I get endless compliments. The fabric is premium and the fit is perfect.",
+    location: "Nigeria",
+    text: "The quality of MAGRE pieces is unmatched. Every time I wear my ankara blouse, I get endless compliments. The fabric is premium and the fit is perfect.",
     rating: 5,
   },
   {

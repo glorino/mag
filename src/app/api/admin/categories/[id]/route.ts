@@ -1,10 +1,13 @@
 import { NextResponse } from "next/server";
 import { updateCategory, deleteCategory, toggleCategoryActive } from "@/lib/queries";
+import { requireAdmin } from "@/lib/auth";
 
 export async function PUT(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const admin = await requireAdmin(request);
+  if (!admin) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   try {
     const { id } = await params;
     const body = await request.json();
@@ -22,7 +25,7 @@ export async function PUT(
         slug,
         description: body.description || "",
         image_url: body.image_url || "",
-        sort_order: body.sort_order || 0,
+        sort_order: body.sort_order ?? 0,
       });
       return NextResponse.json({ success: true });
     }
@@ -37,6 +40,8 @@ export async function DELETE(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const admin = await requireAdmin(request);
+  if (!admin) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   try {
     const { id } = await params;
     await deleteCategory(parseInt(id));

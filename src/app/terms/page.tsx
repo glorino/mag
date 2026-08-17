@@ -80,7 +80,7 @@ export default function TermsPage() {
               <div>
                 <h2 className="text-xl font-serif font-bold text-charcoal mb-3">5. Shipping & Delivery</h2>
                 <p className="text-text leading-relaxed">
-                  We aim to dispatch all orders within 48 hours of confirmation. Delivery times vary depending on your location and selected shipping method. Estimated delivery within Lagos is 1-3 business days, while other states within Nigeria may take 3-7 business days. We are not responsible for delays caused by courier services.
+                  We aim to dispatch all orders within 48 hours of confirmation. Delivery times vary depending on your location and selected shipping method. Estimated delivery is 1-3 business days for major cities and 3-7 business days for other areas within Nigeria. We are not responsible for delays caused by courier services.
                 </p>
               </div>
 
@@ -119,7 +119,6 @@ export default function TermsPage() {
                 </p>
                 <div className="mt-3 text-text">
                   <p><strong>MAGRE Concept</strong></p>
-                  <p>35 Eric Moore Close, Off Eric Moore Road, Surulere, Lagos</p>
                   <p>Email: info@magre.ng</p>
                   <p>Phone: 08184118997</p>
                 </div>
