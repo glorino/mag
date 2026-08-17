@@ -138,7 +138,7 @@ export default function SizeGuidePage() {
 
             {/* Top Sizes */}
             <motion.div {...fadeIn} transition={{ delay: 0.1, duration: 0.5 }}>
-              <h2 className="text-2xl font-serif font-bold text-charcoal mb-2">Tops & Blouses</h2>
+              <h2 className="text-2xl font-serif font-bold text-charcoal mb-2">Shirts</h2>
               <div className="divider mb-4" />
               <div className="overflow-x-auto">
                 <table className="w-full text-[13px] border-collapse">
@@ -166,7 +166,7 @@ export default function SizeGuidePage() {
 
             {/* Bottom Sizes */}
             <motion.div {...fadeIn} transition={{ delay: 0.2, duration: 0.5 }}>
-              <h2 className="text-2xl font-serif font-bold text-charcoal mb-2">Trousers & Skirts</h2>
+              <h2 className="text-2xl font-serif font-bold text-charcoal mb-2">Trousers</h2>
               <div className="divider mb-4" />
               <div className="overflow-x-auto">
                 <table className="w-full text-[13px] border-collapse">

@@ -20,7 +20,7 @@ const navLinks = [
   { name: "FAQ", href: "/faq" },
 ];
 
-const categories = ["Blouses", "Trousers", "Loungewear"];
+const categories = ["Shirt", "Trouser", "Nicker"];
 
 export default function Header() {
   const pathname = usePathname();

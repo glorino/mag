@@ -5,19 +5,19 @@ import Link from "next/link";
 
 const categories = [
   { 
-    name: "Blouses", 
+    name: "Shirt", 
     desc: "Elegant tops & blouses for every occasion",
     image: "https://images.unsplash.com/photo-1571513722275-4b41940f54b8?w=600&h=400&fit=crop",
     count: "24+ styles",
   },
   { 
-    name: "Trousers", 
+    name: "Trouser", 
     desc: "Stylish bottoms that define your silhouette",
     image: "https://images.unsplash.com/photo-1614786269829-d24616faf56d?w=600&h=400&fit=crop",
     count: "18+ styles",
   },
   { 
-    name: "Loungewear", 
+    name: "Nicker", 
     desc: "Comfortable undergarments with African flair",
     image: "https://images.unsplash.com/photo-1516762689617-e1cffcef479d?w=600&h=400&fit=crop",
     count: "12+ styles",

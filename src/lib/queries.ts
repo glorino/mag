@@ -116,7 +116,7 @@ export async function initDatabase() {
 
 export async function seedCategories() {
   const sql = getSql();
-  const categories = ["Blouses", "Trousers", "Loungewear"];
+  const categories = ["Shirt", "Trouser", "Nicker"];
   const results = await Promise.all(
     categories.map((name) =>
       sql`

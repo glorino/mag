@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface Product {
@@ -46,6 +46,8 @@ export default function ProductsPage() {
   const [editingId, setEditingId] = useState<number | null>(null);
   const [form, setForm] = useState(emptyForm);
   const [saving, setSaving] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const token = typeof window !== "undefined" ? localStorage.getItem("token") : "";
 
@@ -153,6 +155,36 @@ export default function ProductsPage() {
       ...prev,
       sizes: prev.sizes.includes(size) ? prev.sizes.filter((s) => s !== size) : [...prev.sizes, size],
     }));
+  };
+
+  const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setUploading(true);
+    try {
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}` },
+        body: formData,
+      });
+
+      const data = await res.json();
+      if (!res.ok) {
+        alert(data.error || "Upload failed");
+        return;
+      }
+
+      setForm((prev) => ({ ...prev, image_url: data.url }));
+    } catch {
+      alert("Upload failed. Please try again.");
+    } finally {
+      setUploading(false);
+      if (fileInputRef.current) fileInputRef.current.value = "";
+    }
   };
 
   return (
@@ -269,15 +301,67 @@ export default function ProductsPage() {
                     placeholder="e.g. New, Bestseller"
                   />
                 </div>
-                <div>
-                  <label className="block text-xs font-semibold text-white/40 uppercase tracking-wider mb-1.5">Image URL</label>
-                  <input
-                    type="text"
-                    value={form.image_url}
-                    onChange={(e) => setForm({ ...form, image_url: e.target.value })}
-                    className="w-full bg-black border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-accent/50 transition-colors"
-                    placeholder="https://..."
-                  />
+                <div className="md:col-span-2">
+                  <label className="block text-xs font-semibold text-white/40 uppercase tracking-wider mb-1.5">Product Image</label>
+                  <div className="flex gap-3 items-start">
+                    <div className="flex-1">
+                      <input
+                        ref={fileInputRef}
+                        type="file"
+                        accept="image/jpeg,image/png,image/webp,image/gif"
+                        onChange={handleImageUpload}
+                        className="hidden"
+                        id="image-upload"
+                      />
+                      <label
+                        htmlFor="image-upload"
+                        className={`flex items-center justify-center gap-2 w-full bg-black border border-dashed border-white/20 rounded-lg px-4 py-4 text-sm text-white/40 hover:border-accent/50 hover:text-white/60 transition-colors cursor-pointer ${uploading ? "opacity-50 pointer-events-none" : ""}`}
+                      >
+                        {uploading ? (
+                          <>
+                            <svg className="w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24">
+                              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
+                            </svg>
+                            Uploading...
+                          </>
+                        ) : (
+                          <>
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                            </svg>
+                            Click to upload image
+                          </>
+                        )}
+                      </label>
+                      <p className="text-[11px] text-white/25 mt-1">JPEG, PNG, WebP or GIF. Max 5MB.</p>
+                    </div>
+                    <div className="flex-1">
+                      <input
+                        type="text"
+                        value={form.image_url.startsWith("data:") ? "" : form.image_url}
+                        onChange={(e) => setForm({ ...form, image_url: e.target.value })}
+                        className="w-full bg-black border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-accent/50 transition-colors"
+                        placeholder="Or paste image URL here"
+                      />
+                    </div>
+                  </div>
+                  {form.image_url && (
+                    <div className="mt-3 relative inline-block">
+                      <img
+                        src={form.image_url}
+                        alt="Preview"
+                        className="w-24 h-24 object-cover rounded-lg border border-white/10"
+                        onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
+                      />
+                      <button
+                        onClick={() => setForm((prev) => ({ ...prev, image_url: "" }))}
+                        className="absolute -top-2 -right-2 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center text-white text-xs hover:bg-red-600 transition-colors"
+                      >
+                        ×
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
 

@@ -48,7 +48,7 @@ export default function Footer() {
           <div>
             <h4 style={{ fontWeight: 700, fontSize: "12px", letterSpacing: "0.15em", textTransform: "uppercase", color: "#00e5ff", marginBottom: "20px" }}>Shop</h4>
             <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "12px" }}>
-              {["Blouses", "Trousers", "Loungewear"].map((item) => (
+              {["Shirt", "Trouser", "Nicker"].map((item) => (
                 <li key={item}>
                   <Link href="/shop" style={{ color: "#aaa", fontSize: "13px", textDecoration: "none", transition: "color 0.3s" }}
                     onMouseEnter={(e) => (e.currentTarget.style.color = "#fff")}
