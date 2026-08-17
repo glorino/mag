@@ -7,11 +7,12 @@ export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
     const secret = process.env.FLWSECK;
+    const encryptionKey = process.env.FLW_ENCRYPTION_KEY;
 
-    // Verify webhook signature
+    // Verify webhook signature using encryption key (Flutterwave uses encryption key for webhook hash)
     const signature = request.headers.get("verif-hash");
-    if (signature && secret) {
-      const hash = crypto.createHmac("sha512", secret).update(JSON.stringify(body)).digest("hex");
+    if (signature && encryptionKey) {
+      const hash = crypto.createHmac("sha512", encryptionKey).update(JSON.stringify(body)).digest("hex");
       if (hash !== signature) {
         return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
       }
