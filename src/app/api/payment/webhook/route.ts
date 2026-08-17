@@ -61,7 +61,8 @@ export async function POST(request: NextRequest) {
     });
 
     // Decrement stock
-    await decrementStock(items.map((item: any) => ({ id: item.id, quantity: item.quantity })));
+    interface StockItem { id: number; quantity: number; }
+    await decrementStock(items.map((item: StockItem) => ({ id: item.id, quantity: item.quantity })));
 
     return NextResponse.json({ received: true, orderId: order[0].id });
   } catch {
