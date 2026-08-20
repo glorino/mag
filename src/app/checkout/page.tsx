@@ -16,6 +16,14 @@ export default function CheckoutPage() {
   const [form, setForm] = useState({ name: "", email: "", phone: "", address: "" });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [promoCode, setPromoCode] = useState("");
+  const [promoDiscount, setPromoDiscount] = useState(0);
+  const [promoError, setPromoError] = useState("");
+  const [promoLoading, setPromoLoading] = useState(false);
+
+  const subtotal = totalPrice();
+  const discountAmount = Math.round((subtotal * promoDiscount) / 100);
+  const finalTotal = subtotal - discountAmount;
 
   useEffect(() => {
     closeCart();
@@ -31,13 +39,38 @@ export default function CheckoutPage() {
           phone: user.phone || "",
         }));
       } catch {
-        // ignore
+        localStorage.removeItem("user");
       }
     }
   }, [closeCart]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const applyPromo = async () => {
+    if (!promoCode.trim()) return;
+    setPromoLoading(true);
+    setPromoError("");
+    try {
+      const res = await fetch("/api/promos", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ code: promoCode, orderAmount: subtotal }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setPromoError(data.error || "Invalid code");
+        setPromoDiscount(0);
+      } else {
+        setPromoDiscount(data.discountPercent);
+        setPromoError("");
+      }
+    } catch {
+      setPromoError("Failed to validate code");
+    } finally {
+      setPromoLoading(false);
+    }
   };
 
   const loadFlutterwave = (): Promise<void> => {
@@ -69,7 +102,7 @@ export default function CheckoutPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-        amount: totalPrice(),
+        amount: finalTotal,
           email: form.email,
           name: form.name,
           phone: form.phone,
@@ -84,6 +117,8 @@ export default function CheckoutPage() {
             image: item.image,
           })),
           address: form.address,
+          promoCode: promoCode || undefined,
+          discount: discountAmount || undefined,
         }),
       });
 
@@ -111,7 +146,7 @@ export default function CheckoutPage() {
         customizations: {
           title: "MAGRE Fashion",
           description: "Payment for order",
-          logo: "https://mag-drab.vercel.app/logo.jpeg",
+          logo: "https://www.magre.com.ng/logo.jpeg",
         },
         redirect_url: `${window.location.origin}/checkout/verify`,
         meta: {
@@ -232,15 +267,47 @@ export default function CheckoutPage() {
               <div className="border-t border-white/10 pt-4 space-y-3">
                 <div className="flex justify-between items-center">
                   <span className="text-white/50 text-[13px]">Subtotal</span>
-                  <span className="text-white text-[14px]">₦{totalPrice().toLocaleString()}</span>
+                  <span className="text-white text-[14px]">₦{subtotal.toLocaleString()}</span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-white/50 text-[13px]">Shipping</span>
                   <span className="text-white text-[14px]">Free</span>
                 </div>
+
+                {/* Promo Code */}
+                <div className="pt-2">
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      value={promoCode}
+                      onChange={(e) => setPromoCode(e.target.value.toUpperCase())}
+                      placeholder="Promo code"
+                      className="flex-1 bg-black border border-white/15 text-white px-3 py-2 text-[13px] focus:outline-none focus:border-accent transition-colors"
+                    />
+                    <button
+                      onClick={applyPromo}
+                      disabled={promoLoading || !promoCode.trim()}
+                      className="px-4 py-2 border border-accent text-accent text-[11px] font-bold tracking-wider uppercase hover:bg-accent hover:text-black transition-all duration-300 disabled:opacity-50"
+                    >
+                      {promoLoading ? "..." : "Apply"}
+                    </button>
+                  </div>
+                  {promoError && <p className="text-red-400 text-[11px] mt-1.5">{promoError}</p>}
+                  {promoDiscount > 0 && (
+                    <p className="text-green-400 text-[11px] mt-1.5">{promoDiscount}% discount applied!</p>
+                  )}
+                </div>
+
+                {promoDiscount > 0 && (
+                  <div className="flex justify-between items-center">
+                    <span className="text-green-400 text-[13px]">Discount ({promoDiscount}%)</span>
+                    <span className="text-green-400 text-[14px]">-₦{discountAmount.toLocaleString()}</span>
+                  </div>
+                )}
+
                 <div className="border-t border-white/10 pt-3 flex justify-between items-center">
                   <span className="text-white font-semibold text-[15px]">Total</span>
-                  <span className="text-accent font-bold text-[18px]">₦{totalPrice().toLocaleString()}</span>
+                  <span className="text-accent font-bold text-[18px]">₦{finalTotal.toLocaleString()}</span>
                 </div>
               </div>
 

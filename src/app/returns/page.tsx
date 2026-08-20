@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { BUSINESS } from "@/lib/constants";
 
 export default function ReturnsPage() {
   return (
@@ -82,7 +83,7 @@ export default function ReturnsPage() {
               <div>
                 <h2 className="text-xl font-serif font-bold text-charcoal mb-3">How to Initiate a Return</h2>
                 <ol className="text-text leading-relaxed space-y-3 list-decimal list-inside">
-                  <li>Contact our customer service team via WhatsApp at <strong>08184118997</strong> or email at <strong>info@magre.ng</strong> with your order number and reason for return.</li>
+                  <li>Contact our customer service team via WhatsApp at <strong>{BUSINESS.phone}</strong> or email at <strong>{BUSINESS.email}</strong> with your order number and reason for return.</li>
                   <li>Our team will review your request and provide you with a return authorization and instructions.</li>
                   <li>Pack the item(s) securely in the original packaging.</li>
                   <li>Ship the item(s) to the address provided by our customer service team.</li>
@@ -125,8 +126,8 @@ export default function ReturnsPage() {
                 </p>
                 <div className="mt-3 text-text">
                   <p><strong>MAGRE Concept</strong></p>
-                  <p>Phone: 08184118997</p>
-                  <p>Email: info@magre.ng</p>
+                  <p>Phone: {BUSINESS.phone}</p>
+                  <p>Email: {BUSINESS.email}</p>
                 </div>
               </div>
 

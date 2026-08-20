@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { BUSINESS } from "@/lib/constants";
 
 export default function TermsPage() {
   return (
@@ -52,7 +53,7 @@ export default function TermsPage() {
               <div>
                 <h2 className="text-xl font-serif font-bold text-charcoal mb-3">1. General</h2>
                 <p className="text-text leading-relaxed">
-                  By accessing and using the MAGRE website (magre.ng), you agree to be bound by these Terms and Conditions. If you do not agree with any part of these terms, please do not use our website.
+                  By accessing and using the MAGRE website (www.magre.com.ng), you agree to be bound by these Terms and Conditions. If you do not agree with any part of these terms, please do not use our website.
                 </p>
               </div>
 
@@ -119,8 +120,8 @@ export default function TermsPage() {
                 </p>
                 <div className="mt-3 text-text">
                   <p><strong>MAGRE Concept</strong></p>
-                  <p>Email: info@magre.ng</p>
-                  <p>Phone: 08184118997</p>
+                  <p>Email: {BUSINESS.email}</p>
+                  <p>Phone: {BUSINESS.phone}</p>
                 </div>
               </div>
             </div>

@@ -29,7 +29,9 @@ export default function FeaturedProducts() {
       .then((data: Product[]) => {
         setFeatured(data.filter((p) => p.badge).slice(0, 8));
       })
-      .catch(() => {});
+      .catch(() => {
+        // Fetch failed - no products to display
+      });
   }, []);
 
   return (

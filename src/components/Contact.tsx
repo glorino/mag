@@ -1,9 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import { BUSINESS } from "@/lib/constants";
 
 const faqs = [
-  { q: "How do I make payments?", a: "You can pay via bank transfer, ATM card online, or cash at our store. MAGRE CONCEPT DIAMOND BANK ACCOUNT NUMBER 0045114433." },
+  { q: "How do I make payments?", a: `You can pay via bank transfer, ATM card online, or cash at our store. ${BUSINESS.bankAccountName} ${BUSINESS.bankName} Account Number ${BUSINESS.bankAccount}.` },
   { q: "How long is delivery?", a: "Delivery takes between 3-7 working days after full payment has been confirmed. Orders are dispatched within 48 hours of payment confirmation." },
   { q: "Do you deliver nationwide?", a: "We deliver to all cities and towns in Nigeria. Pay on delivery is available for all customers across Nigeria." },
   { q: "What is your return policy?", a: "All returns should be made within 7 days upon delivery. Your item must be unused and in the same condition that you received it." },
@@ -62,12 +63,12 @@ function FaqItem({ q, a }: { q: string; a: string }) {
 const contactCards = [
   {
     title: "Contact",
-    lines: ["08184118997", "info@magre.ng"],
+    lines: [BUSINESS.phone, BUSINESS.email],
     icon: "M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z",
   },
   {
     title: "Hours",
-    lines: ["Mon - Fri: 8am - 5pm", "Sat: 11am - 6pm", "Sun: Closed"],
+    lines: BUSINESS.businessHours,
     icon: "M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z",
   },
 ];

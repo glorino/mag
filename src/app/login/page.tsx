@@ -9,7 +9,7 @@ import { useCart } from "@/lib/cart-context";
 
 export default function LoginPage() {
   const router = useRouter();
-  const { items, syncCart } = useCart();
+  const { items } = useCart();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");

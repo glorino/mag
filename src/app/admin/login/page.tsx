@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { motion } from "framer-motion";
+import { BUSINESS } from "@/lib/constants";
 
 export default function AdminLoginPage() {
   const router = useRouter();
@@ -103,7 +104,7 @@ export default function AdminLoginPage() {
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 className="w-full bg-black border border-white/15 text-white px-4 py-3.5 text-[14px] focus:outline-none focus:border-accent transition-colors placeholder:text-white/25"
-                placeholder="admin@magre.ng"
+                placeholder={BUSINESS.adminEmail}
               />
             </div>
 

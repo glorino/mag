@@ -36,7 +36,7 @@ export async function POST(request: Request) {
     
     // In production, send email with reset link
     // For now, return token in response (remove in production)
-    const resetLink = `${process.env.NEXT_PUBLIC_SITE_URL || "https://mag-drab.vercel.app"}/reset-password?token=${token}`;
+    const resetLink = `${process.env.NEXT_PUBLIC_SITE_URL || "https://www.magre.com.ng"}/reset-password?token=${token}`;
     
     console.log(`Password reset link for ${email}: ${resetLink}`);
 

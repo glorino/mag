@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
+import { BUSINESS } from "@/lib/constants";
 
 export default function Footer() {
   return (
@@ -88,19 +89,19 @@ export default function Footer() {
             <h4 style={{ fontWeight: 700, fontSize: "12px", letterSpacing: "0.15em", textTransform: "uppercase", color: "#00e5ff", marginBottom: "20px" }}>Contact Us</h4>
             <ul style={{ listStyle: "none", padding: 0, margin: 0, display: "flex", flexDirection: "column", gap: "12px" }}>
               <li>
-                <a href="tel:08184118997" style={{ color: "#aaa", fontSize: "13px", textDecoration: "none", transition: "color 0.3s" }}
+                <a href={`tel:${BUSINESS.phone}`} style={{ color: "#aaa", fontSize: "13px", textDecoration: "none", transition: "color 0.3s" }}
                   onMouseEnter={(e) => (e.currentTarget.style.color = "#fff")}
                   onMouseLeave={(e) => (e.currentTarget.style.color = "#aaa")}
                 >
-                  08184118997
+                  {BUSINESS.phone}
                 </a>
               </li>
               <li>
-                <a href="mailto:info@magre.ng" style={{ color: "#aaa", fontSize: "13px", textDecoration: "none", transition: "color 0.3s" }}
+                <a href={`mailto:${BUSINESS.email}`} style={{ color: "#aaa", fontSize: "13px", textDecoration: "none", transition: "color 0.3s" }}
                   onMouseEnter={(e) => (e.currentTarget.style.color = "#fff")}
                   onMouseLeave={(e) => (e.currentTarget.style.color = "#aaa")}
                 >
-                  info@magre.ng
+                  {BUSINESS.email}
                 </a>
               </li>
             </ul>

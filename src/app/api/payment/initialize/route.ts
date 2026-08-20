@@ -52,7 +52,7 @@ export async function POST(request: Request) {
 
     // Generate unique tx_ref using UUID to prevent collision
     const txRef = `magre-${crypto.randomUUID()}`;
-    const origin = request.headers.get("origin") || process.env.NEXT_PUBLIC_SITE_URL || "https://mag-drab.vercel.app";
+    const origin = request.headers.get("origin") || process.env.NEXT_PUBLIC_SITE_URL || "https://www.magre.com.ng";
 
     // Get user_id if logged in
     let userId: number | undefined;

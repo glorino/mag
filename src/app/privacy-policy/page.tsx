@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { BUSINESS } from "@/lib/constants";
 
 export default function PrivacyPolicyPage() {
   return (
@@ -103,8 +104,8 @@ export default function PrivacyPolicyPage() {
                 </p>
                 <div className="mt-3 text-text">
                   <p><strong>MAGRE Concept</strong></p>
-                  <p>Email: info@magre.ng</p>
-                  <p>Phone: 08184118997</p>
+                  <p>Email: {BUSINESS.email}</p>
+                  <p>Phone: {BUSINESS.phone}</p>
                 </div>
               </div>
             </div>

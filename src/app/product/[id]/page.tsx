@@ -5,6 +5,8 @@ import { useParams, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useCart } from "@/lib/cart-context";
+import { useWishlist } from "@/lib/wishlist-context";
+import Reviews from "@/components/Reviews";
 
 interface Product {
   id: number;
@@ -25,9 +27,11 @@ export default function ProductPage() {
   const router = useRouter();
   const id = Number(params.id);
   const { addItem } = useCart();
+  const { addItem: addToWishlist, removeItem: removeFromWishlist, isInWishlist } = useWishlist();
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectedSize, setSelectedSize] = useState<string>("");
+  const [error, setError] = useState("");
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -37,9 +41,9 @@ export default function ProductPage() {
           const data = await res.json();
           setProduct(data);
         }
-      } catch {
-        // ignore
-      }
+    } catch {
+      setError("Product not found");
+    }
       setLoading(false);
     };
 
@@ -155,12 +159,30 @@ export default function ProductPage() {
               )}
 
               {/* Add to Cart */}
-              <button
-                onClick={handleAddToCart}
-                className="w-full py-4 text-[13px] font-bold tracking-wider uppercase transition-all duration-300 border-none cursor-pointer bg-accent text-black hover:bg-accent-dark"
-              >
-                Add to Cart & Checkout
-              </button>
+              <div className="flex gap-3">
+                <button
+                  onClick={handleAddToCart}
+                  className="flex-1 py-4 text-[13px] font-bold tracking-wider uppercase transition-all duration-300 border-none cursor-pointer bg-accent text-black hover:bg-accent-dark"
+                >
+                  Add to Cart & Checkout
+                </button>
+                <button
+                  onClick={() => {
+                    if (isInWishlist(product.id)) {
+                      removeFromWishlist(product.id);
+                    } else {
+                      addToWishlist({ id: product.id, name: product.name, price: product.price, priceNum: product.priceNum, category: product.category, image: product.image });
+                    }
+                  }}
+                  className={`w-14 h-14 border flex items-center justify-center transition-all duration-300 shrink-0 ${
+                    isInWishlist(product.id) ? "border-red-500 text-red-500 bg-red-500/10" : "border-border text-text-light hover:border-accent hover:text-accent"
+                  }`}
+                >
+                  <svg className="w-5 h-5" fill={isInWishlist(product.id) ? "currentColor" : "none"} stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                  </svg>
+                </button>
+              </div>
 
               {/* Details */}
               {product.details.length > 0 && (
@@ -211,6 +233,13 @@ export default function ProductPage() {
           </div>
         </section>
       )}
+
+      {/* Reviews */}
+      <section className="py-16 bg-white">
+        <div className="max-w-[800px] mx-auto px-6">
+          <Reviews productId={id} />
+        </div>
+      </section>
     </main>
   );
 }

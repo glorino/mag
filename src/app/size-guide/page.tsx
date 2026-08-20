@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { BUSINESS } from "@/lib/constants";
 
 const fadeIn = {
   initial: { opacity: 0, y: 20 },
@@ -203,9 +204,9 @@ export default function SizeGuidePage() {
                 If you&apos;re between sizes or unsure about which size to order, we&apos;re here to help! Our team can provide personalised sizing recommendations based on your measurements.
               </p>
               <div className="space-y-2 text-[13px] text-text">
-                <p><strong>WhatsApp:</strong> 08184118997</p>
-                <p><strong>Email:</strong> info@magre.ng</p>
-                <p><strong>Hours:</strong> Mon - Sat, 9am - 6pm</p>
+                <p><strong>WhatsApp:</strong> {BUSINESS.phone}</p>
+                <p><strong>Email:</strong> {BUSINESS.email}</p>
+                <p><strong>Hours:</strong> {BUSINESS.businessHours.join(", ")}</p>
               </div>
               <div className="mt-6">
                 <Link href="/contact" className="inline-flex items-center gap-2 bg-transparent text-black px-8 py-3 text-[12px] font-bold tracking-wider uppercase hover:bg-accent hover:text-black transition-all duration-300 border border-black cursor-pointer">

@@ -60,7 +60,7 @@ export default function ProductsPage() {
       const data = await res.json();
       setProducts(data);
     } catch {
-      // ignore
+      setSaveError("Failed to load products");
     } finally {
       setLoading(false);
     }
@@ -70,7 +70,9 @@ export default function ProductsPage() {
     fetch("/api/admin/categories", { headers: { Authorization: `Bearer ${token}` } })
       .then((res) => res.json())
       .then((data) => setCategories(data))
-      .catch(() => {});
+      .catch(() => {
+        // Categories fetch failed
+      });
   };
 
   useEffect(() => {

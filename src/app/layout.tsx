@@ -34,7 +34,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "MAGRE | Premium Women's Fashion",
     description: "Ready-to-wear blouses, trousers, and loungewear designed exclusively for women of all sizes.",
-    url: "https://mag-drab.vercel.app",
+    url: "https://www.magre.com.ng",
     siteName: "MAGRE Fashion",
     locale: "en_US",
     type: "website",

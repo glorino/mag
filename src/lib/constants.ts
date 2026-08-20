@@ -10,5 +10,10 @@ export const BUSINESS = {
   bankAccountName: "MAGRE CONCEPT",
   freeDeliveryThreshold: 50000,
   freeDeliveryNote: "Free delivery on orders above ₦50,000",
-  siteUrl: "https://mag-drab.vercel.app",
+  siteUrl: "https://www.magre.com.ng",
+  businessHours: [
+    "Mon - Fri: 8am - 5pm",
+    "Saturday: 11am - 6pm",
+    "Sunday: Closed",
+  ],
 } as const;

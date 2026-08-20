@@ -38,7 +38,9 @@ function loadCartFromStorage(): CartItem[] {
   try {
     const stored = localStorage.getItem(CART_STORAGE_KEY);
     if (stored) return JSON.parse(stored);
-  } catch { /* ignore */ }
+  } catch {
+    localStorage.removeItem(CART_STORAGE_KEY);
+  }
   return [];
 }
 
@@ -46,7 +48,9 @@ function saveCartToStorage(items: CartItem[]) {
   if (typeof window === "undefined") return;
   try {
     localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items));
-  } catch { /* ignore */ }
+  } catch {
+    // Storage full or unavailable
+  }
 }
 
 export function CartProvider({ children }: { children: ReactNode }) {
@@ -81,7 +85,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
             return prev;
           });
         }
-      } catch { /* ignore */ }
+      } catch {
+        // Sync failed silently
+      }
     };
     sync();
   }, []);
@@ -139,7 +145,9 @@ export function CartProvider({ children }: { children: ReactNode }) {
       if (data.success && data.items) {
         setItems(data.items);
       }
-    } catch { /* ignore */ }
+    } catch {
+      // Sync cart failed
+    }
   }, []);
 
   return (

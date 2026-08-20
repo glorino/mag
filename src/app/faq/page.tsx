@@ -2,6 +2,7 @@
 
 import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
+import { BUSINESS } from "@/lib/constants";
 
 const faqCategories = [
   {
@@ -9,7 +10,7 @@ const faqCategories = [
     items: [
       {
         q: "How do I make payments?",
-        a: "You can pay via bank transfer, ATM card online, or cash at our store. MAGRE CONCEPT DIAMOND BANK ACCOUNT NUMBER 0045114433. You can also pay on delivery for orders placed anywhere in Nigeria.",
+        a: `You can pay via bank transfer, ATM card online, or cash at our store. ${BUSINESS.bankAccountName} ${BUSINESS.bankName} Account Number ${BUSINESS.bankAccount}. You can also pay on delivery for orders placed anywhere in Nigeria.`,
       },
       {
         q: "How do I place an order?",
@@ -173,13 +174,13 @@ export default function FAQPage() {
               Can&apos;t find what you&apos;re looking for? Our team is here to help.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a href="tel:08184118997" className="inline-flex items-center justify-center gap-2 bg-accent text-black px-10 py-4 text-[13px] font-bold tracking-wider uppercase hover:bg-accent-dark transition-all duration-300">
+              <a href={`tel:${BUSINESS.phone}`} className="inline-flex items-center justify-center gap-2 bg-accent text-black px-10 py-4 text-[13px] font-bold tracking-wider uppercase hover:bg-accent-dark transition-all duration-300">
                 <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                 </svg>
-                Call Us: 08184118997
+                Call Us: {BUSINESS.phone}
               </a>
-              <a href="mailto:info@magre.ng" className="inline-flex items-center justify-center gap-2 bg-white/10 text-white border border-white/20 px-10 py-4 text-[13px] font-bold tracking-wider uppercase hover:bg-white/20 transition-all duration-300">
+              <a href={`mailto:${BUSINESS.email}`} className="inline-flex items-center justify-center gap-2 bg-white/10 text-white border border-white/20 px-10 py-4 text-[13px] font-bold tracking-wider uppercase hover:bg-white/20 transition-all duration-300">
                 Email Us
               </a>
             </div>

@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 import { useCart } from "@/lib/cart-context";
+import { useWishlist } from "@/lib/wishlist-context";
 
 function getIsLoggedIn(): boolean {
   if (typeof window === "undefined") return false;
@@ -26,6 +27,7 @@ export default function Header() {
   const pathname = usePathname();
   const router = useRouter();
   const { totalItems, toggleCart } = useCart();
+  const { totalItems: wishlistCount } = useWishlist();
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [shopOpen, setShopOpen] = useState(false);
@@ -130,6 +132,18 @@ export default function Header() {
               </svg>
             </Link>
           )}
+
+          {/* Wishlist */}
+          <Link href="/wishlist" className="p-2 hover:bg-white/10 rounded-full transition-colors relative">
+            <svg className="w-[18px] h-[18px] text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+            </svg>
+            {wishlistCount > 0 && (
+              <span className="absolute -top-0.5 -right-0.5 w-4 h-4 bg-accent text-black text-[9px] font-bold rounded-full flex items-center justify-center">
+                {wishlistCount}
+              </span>
+            )}
+          </Link>
 
           {/* Cart */}
           <button onClick={toggleCart} className="p-2 hover:bg-white/10 rounded-full transition-colors relative">

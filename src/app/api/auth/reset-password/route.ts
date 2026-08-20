@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { findUserById, updateUserPassword, getPasswordResetToken, markPasswordResetTokenUsed } from "@/lib/queries";
+import { updateUserPassword, getPasswordResetToken, markPasswordResetTokenUsed } from "@/lib/queries";
 import { hashPassword } from "@/lib/auth";
 
 export async function POST(request: Request) {

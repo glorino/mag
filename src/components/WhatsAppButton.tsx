@@ -1,9 +1,11 @@
 "use client";
 
+import { BUSINESS } from "@/lib/constants";
+
 export default function WhatsAppButton() {
   return (
     <a
-      href="https://wa.me/2349133195469?text=Hello%20MAGRE!%20I'm%20interested%20in%20your%20collections."
+      href={`https://wa.me/${BUSINESS.whatsapp}?text=Hello%20MAGRE!%20I'm%20interested%20in%20your%20collections.`}
       target="_blank"
       rel="noopener noreferrer"
       style={{

@@ -3,6 +3,7 @@
 import { ReactNode } from "react";
 import { usePathname } from "next/navigation";
 import { CartProvider } from "@/lib/cart-context";
+import { WishlistProvider } from "@/lib/wishlist-context";
 import CartSidebar from "@/components/CartSidebar";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
@@ -17,14 +18,16 @@ export default function ClientLayout({ children }: { children: ReactNode }) {
 
   return (
     <CartProvider>
-      {showChrome && <Header />}
-      <div className={showChrome ? "pt-[64px]" : ""}>
-        {children}
-      </div>
-      {showChrome && <Footer />}
-      {showChrome && <WhatsAppButton />}
-      {!isAdmin && !isDashboard && <CartSidebar />}
-      <Toast />
+      <WishlistProvider>
+        {showChrome && <Header />}
+        <div className={showChrome ? "pt-[64px]" : ""}>
+          {children}
+        </div>
+        {showChrome && <Footer />}
+        {showChrome && <WhatsAppButton />}
+        {!isAdmin && !isDashboard && <CartSidebar />}
+        <Toast />
+      </WishlistProvider>
     </CartProvider>
   );
 }
