@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useCart } from "@/lib/cart-context";
 
 interface Product {
@@ -19,6 +20,7 @@ interface Product {
 
 export default function FeaturedProducts() {
   const { addItem } = useCart();
+  const router = useRouter();
   const [featured, setFeatured] = useState<Product[]>([]);
 
   useEffect(() => {
@@ -95,6 +97,7 @@ export default function FeaturedProducts() {
                       category: product.category,
                       image: product.image,
                     });
+                    router.push("/checkout");
                   }}
                   className="mt-1 w-9 h-9 border border-border hover:border-accent hover:bg-accent hover:text-black text-text flex items-center justify-center transition-all duration-300 flex-shrink-0"
                 >

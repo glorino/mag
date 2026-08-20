@@ -31,10 +31,60 @@ interface CartContextType {
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
+const CART_STORAGE_KEY = "magre_cart";
+
+function loadCartFromStorage(): CartItem[] {
+  if (typeof window === "undefined") return [];
+  try {
+    const stored = localStorage.getItem(CART_STORAGE_KEY);
+    if (stored) return JSON.parse(stored);
+  } catch { /* ignore */ }
+  return [];
+}
+
+function saveCartToStorage(items: CartItem[]) {
+  if (typeof window === "undefined") return;
+  try {
+    localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items));
+  } catch { /* ignore */ }
+}
+
 export function CartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [toast, setToast] = useState("");
+  const [initialized, setInitialized] = useState(false);
+
+  useEffect(() => {
+    setItems(loadCartFromStorage());
+    setInitialized(true);
+  }, []);
+
+  useEffect(() => {
+    if (initialized) {
+      saveCartToStorage(items);
+    }
+  }, [items, initialized]);
+
+  useEffect(() => {
+    const sync = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        if (!token) return;
+        const res = await fetch("/api/cart", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        const data = await res.json();
+        if (data.success && data.items?.length > 0) {
+          setItems((prev) => {
+            if (prev.length === 0) return data.items;
+            return prev;
+          });
+        }
+      } catch { /* ignore */ }
+    };
+    sync();
+  }, []);
 
   const addItem = useCallback((item: Omit<CartItem, "quantity">, size?: string) => {
     setItems((prev) => {
@@ -82,7 +132,6 @@ export function CartProvider({ children }: { children: ReactNode }) {
     try {
       const token = localStorage.getItem("token");
       if (!token) return;
-
       const res = await fetch("/api/cart", {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -90,14 +139,8 @@ export function CartProvider({ children }: { children: ReactNode }) {
       if (data.success && data.items) {
         setItems(data.items);
       }
-    } catch {
-      // Ignore sync errors
-    }
+    } catch { /* ignore */ }
   }, []);
-
-  useEffect(() => {
-    syncCart();
-  }, [syncCart]);
 
   return (
     <CartContext.Provider

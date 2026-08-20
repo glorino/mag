@@ -1,23 +1,10 @@
 "use client";
 
-import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useCart } from "@/lib/cart-context";
 
 export default function CartSidebar() {
   const { items, isOpen, closeCart, removeItem, updateQuantity, totalPrice } = useCart();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
-  useEffect(() => {
-    const check = () => setIsLoggedIn(!!localStorage.getItem("token"));
-    check();
-    window.addEventListener("storage", check);
-    const interval = setInterval(check, 1000);
-    return () => {
-      window.removeEventListener("storage", check);
-      clearInterval(interval);
-    };
-  }, []);
 
   return (
     <>
@@ -112,7 +99,7 @@ export default function CartSidebar() {
             </div>
             <p className="text-[12px] text-text-light">Shipping calculated at checkout</p>
             <Link
-              href={isLoggedIn ? "/checkout" : "/login"}
+              href="/checkout"
               onClick={closeCart}
               className="block w-full bg-accent text-black py-4 text-[13px] font-bold tracking-wider uppercase hover:bg-accent-dark transition-all duration-300 text-center"
             >

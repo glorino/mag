@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { useCart } from "@/lib/cart-context";
@@ -22,12 +22,12 @@ interface Product {
 
 export default function ProductPage() {
   const params = useParams();
+  const router = useRouter();
   const id = Number(params.id);
   const { addItem } = useCart();
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectedSize, setSelectedSize] = useState<string>("");
-  const [added, setAdded] = useState(false);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -80,8 +80,7 @@ export default function ProductPage() {
       },
       selectedSize || undefined
     );
-    setAdded(true);
-    setTimeout(() => setAdded(false), 2000);
+    router.push("/checkout");
   };
 
   const related = product.related || [];
@@ -158,13 +157,9 @@ export default function ProductPage() {
               {/* Add to Cart */}
               <button
                 onClick={handleAddToCart}
-                className={`w-full py-4 text-[13px] font-bold tracking-wider uppercase transition-all duration-300 border-none cursor-pointer ${
-                  added
-                    ? "bg-green-500 text-white"
-                    : "bg-accent text-black hover:bg-accent-dark"
-                }`}
+                className="w-full py-4 text-[13px] font-bold tracking-wider uppercase transition-all duration-300 border-none cursor-pointer bg-accent text-black hover:bg-accent-dark"
               >
-                {added ? "Added to Cart!" : "Add to Cart"}
+                Add to Cart & Checkout
               </button>
 
               {/* Details */}

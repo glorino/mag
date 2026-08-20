@@ -201,6 +201,7 @@ function ShopContent() {
                           category: product.category,
                           image: product.image,
                         });
+                        router.push("/checkout");
                       }}
                       className="mt-2 p-2.5 border border-border hover:border-accent hover:bg-accent hover:text-black text-text transition-all duration-300"
                     >
