@@ -40,20 +40,12 @@ export const metadata: Metadata = {
     type: "website",
   },
   icons: {
-    icon: [],
-    shortcut: "/logo.jpeg?v=2",
-    apple: "/logo.jpeg?v=2",
-    other: [
-      {
-        rel: "icon",
-        type: "image/jpeg",
-        url: "/logo.jpeg?v=2",
-      },
-      {
-        rel: "manifest",
-        url: "/manifest.json",
-      },
+    icon: [
+      { url: "/favicon.ico", sizes: "any" },
+      { url: "/logo.jpeg?v=3", type: "image/jpeg" },
     ],
+    shortcut: "/logo.jpeg?v=3",
+    apple: "/logo.jpeg?v=3",
   },
   manifest: "/manifest.json",
 };
