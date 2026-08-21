@@ -11,6 +11,7 @@ interface TransformedProduct {
   image: string;
   description: string;
   sizes: string[];
+  colors: string[];
   details: string[];
   category_id: number | null;
   is_active: boolean;
@@ -23,6 +24,7 @@ export async function GET(request: Request) {
     const query = searchParams.get("q");
     const category = searchParams.get("category");
     const sort = searchParams.get("sort");
+    const color = searchParams.get("color");
 
     let products;
 
@@ -50,6 +52,7 @@ export async function GET(request: Request) {
       image: String(p.image_url || ""),
       description: String(p.description || ""),
       sizes: (p.sizes as string[]) || ["S", "M", "L", "XL"],
+      colors: (p.colors as string[]) || [],
       details: p.description ? [String(p.description)] : [],
       category_id: p.category_id as number | null,
       is_active: p.is_active as boolean,
@@ -60,7 +63,11 @@ export async function GET(request: Request) {
     if (sort === "price-high") transformed.sort((a, b) => b.priceNum - a.priceNum);
     if (sort === "name") transformed.sort((a, b) => a.name.localeCompare(b.name));
 
-    return NextResponse.json(transformed);
+    const filtered = color
+      ? transformed.filter((p) => p.colors.some((c) => c.toLowerCase() === color.toLowerCase()))
+      : transformed;
+
+    return NextResponse.json(filtered);
   } catch {
     return NextResponse.json([]);
   }

@@ -16,6 +16,7 @@ interface Product {
   category_name?: string;
   description?: string;
   sizes: string[];
+  colors?: string[];
   badge?: string;
   image_url?: string;
   images?: ProductImage[];
@@ -32,12 +33,36 @@ interface Category {
 
 const allSizes = ["XS", "S", "M", "L", "XL", "XXL"];
 
+const allColors = [
+  { name: "Black", hex: "#000000" },
+  { name: "White", hex: "#FFFFFF" },
+  { name: "Red", hex: "#DC2626" },
+  { name: "Blue", hex: "#2563EB" },
+  { name: "Green", hex: "#16A34A" },
+  { name: "Yellow", hex: "#EAB308" },
+  { name: "Pink", hex: "#EC4899" },
+  { name: "Purple", hex: "#9333EA" },
+  { name: "Orange", hex: "#EA580C" },
+  { name: "Brown", hex: "#92400E" },
+  { name: "Grey", hex: "#6B7280" },
+  { name: "Navy", hex: "#1E3A5F" },
+  { name: "Beige", hex: "#D4C5A9" },
+  { name: "Maroon", hex: "#7F1D1D" },
+  { name: "Teal", hex: "#0D9488" },
+  { name: "Gold", hex: "#B8860B" },
+  { name: "Silver", hex: "#C0C0C0" },
+  { name: "Coral", hex: "#FF7F50" },
+  { name: "Cream", hex: "#FFFDD0" },
+  { name: "Wine", hex: "#722F37" },
+];
+
 const emptyForm = {
   name: "",
   price: "",
   category_id: "",
   description: "",
   sizes: [] as string[],
+  colors: [] as string[],
   badge: "",
   image_url: "",
   images: [] as ProductImage[],
@@ -116,6 +141,7 @@ export default function ProductsPage() {
       category_id: p.category_id ? String(p.category_id) : "",
       description: p.description || "",
       sizes: p.sizes || [],
+      colors: p.colors || [],
       badge: p.badge || "",
       image_url: p.image_url || "",
       images: existingImages,
@@ -137,6 +163,7 @@ export default function ProductsPage() {
       formData.append("category_id", form.category_id);
       formData.append("description", form.description);
       formData.append("sizes", JSON.stringify(form.sizes));
+      formData.append("colors", JSON.stringify(form.colors));
       formData.append("badge", form.badge);
       formData.append("stock", form.stock);
       formData.append("image_url", form.image_url);
@@ -199,6 +226,13 @@ export default function ProductsPage() {
     setForm((prev) => ({
       ...prev,
       sizes: prev.sizes.includes(size) ? prev.sizes.filter((s) => s !== size) : [...prev.sizes, size],
+    }));
+  };
+
+  const toggleColor = (color: string) => {
+    setForm((prev) => ({
+      ...prev,
+      colors: prev.colors.includes(color) ? prev.colors.filter((c) => c !== color) : [...prev.colors, color],
     }));
   };
 
@@ -388,7 +422,7 @@ export default function ProductsPage() {
                   />
                 </div>
                 <div className="md:col-span-2">
-                  <label className="block text-xs font-semibold text-white/40 uppercase tracking-wider mb-1.5">Product Images (min 4)</label>
+                  <label className="block text-xs font-semibold text-white/40 uppercase tracking-wider mb-1.5">Product Images</label>
                   <div className="flex gap-3 items-start">
                     <div className="flex-1">
                       <input
@@ -491,9 +525,6 @@ export default function ProductsPage() {
                       ))}
                     </div>
                   )}
-                  {form.images.length > 0 && form.images.length < 4 && (
-                    <p className="text-[11px] text-yellow-400/80 mt-2">⚠ Minimum 4 images required. Currently {form.images.length}/4.</p>
-                  )}
                 </div>
               </div>
 
@@ -528,10 +559,34 @@ export default function ProductsPage() {
                 </div>
               </div>
 
+              <div>
+                <label className="block text-xs font-semibold text-white/40 uppercase tracking-wider mb-2">Colours</label>
+                <div className="flex flex-wrap gap-2">
+                  {allColors.map((color) => (
+                    <button
+                      key={color.name}
+                      type="button"
+                      onClick={() => toggleColor(color.name)}
+                      className={`flex items-center gap-1.5 px-3 py-1.5 text-sm font-medium rounded-lg border transition-colors ${
+                        form.colors.includes(color.name)
+                          ? "bg-accent text-black border-accent"
+                          : "bg-black text-white/50 border-white/10 hover:border-white/20"
+                      }`}
+                    >
+                      <span
+                        className="w-3.5 h-3.5 rounded-full border flex-shrink-0"
+                        style={{ backgroundColor: color.hex, borderColor: color.hex === "#FFFFFF" ? "#555" : color.hex }}
+                      />
+                      {color.name}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
               <div className="flex gap-3 pt-2">
                 <button
                   onClick={handleSave}
-                  disabled={saving || !form.name || !form.price || !form.category_id || form.images.length < 4}
+                  disabled={saving || !form.name || !form.price || !form.category_id}
                   className="px-6 py-2.5 bg-accent text-black text-sm font-semibold rounded-lg hover:bg-accent-dark transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                   {saving ? "Saving..." : editingId ? "Update Product" : "Add Product"}

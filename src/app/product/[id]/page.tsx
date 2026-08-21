@@ -24,6 +24,7 @@ interface Product {
   images: ProductImage[];
   description: string;
   sizes: string[];
+  colors: string[];
   details: string[];
   related?: Product[];
 }
@@ -188,6 +189,23 @@ export default function ProductPage() {
                       >
                         {size}
                       </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Available Colours */}
+              {product.colors.length > 0 && (
+                <div className="mb-8">
+                  <p className="text-[12px] font-semibold text-charcoal uppercase tracking-wider mb-3">Available Colours</p>
+                  <div className="flex flex-wrap gap-2">
+                    {product.colors.map((color) => (
+                      <span
+                        key={color}
+                        className="px-4 py-2 text-[13px] font-medium border border-border bg-white text-charcoal"
+                      >
+                        {color}
+                      </span>
                     ))}
                   </div>
                 </div>

@@ -28,6 +28,13 @@ export async function PUT(
           images = [];
         }
 
+        let colors: string[] = [];
+        try {
+          colors = JSON.parse((formData.get("colors") as string) || "[]");
+        } catch {
+          colors = [];
+        }
+
         if (images.length > 0) {
           const featuredImage = images.find((img) => img.isFeatured)?.url || images[0]?.url || "";
           image_url = featuredImage;
@@ -39,6 +46,7 @@ export async function PUT(
           category_id: formData.get("category_id") ? parseInt(formData.get("category_id") as string) : undefined,
           description: (formData.get("description") as string) || "",
           sizes: JSON.parse((formData.get("sizes") as string) || "[]"),
+          colors,
           badge: (formData.get("badge") as string) || "",
           image_url,
           images,
@@ -66,6 +74,7 @@ export async function PUT(
         category_id: body.category_id ? parseInt(body.category_id) : undefined,
         description: body.description,
         sizes: body.sizes,
+        colors: body.colors || [],
         badge: body.badge,
         image_url: featuredImage,
         images,

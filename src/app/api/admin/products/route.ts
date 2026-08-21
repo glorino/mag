@@ -34,6 +34,13 @@ export async function POST(request: NextRequest) {
       sizes = [];
     }
 
+    let colors: string[] = [];
+    try {
+      colors = JSON.parse((formData.get("colors") as string) || "[]");
+    } catch {
+      colors = [];
+    }
+
     let images: { url: string; isFeatured: boolean }[] = [];
     try {
       images = JSON.parse((formData.get("images") as string) || "[]");
@@ -45,11 +52,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Name, price, and category are required" }, { status: 400 });
     }
 
-    if (images.length < 4) {
-      return NextResponse.json({ error: "Minimum 4 product images are required" }, { status: 400 });
-    }
-
-    const featuredImage = images.find((img) => img.isFeatured)?.url || images[0]?.url || "";
+    const featuredImage = images.find((img) => img.isFeatured)?.url || images[0]?.url || image_url || "";
 
     const result = await createProduct({
       name,
@@ -57,6 +60,7 @@ export async function POST(request: NextRequest) {
       category_id: parseInt(category_id),
       description,
       sizes,
+      colors,
       badge,
       image_url: featuredImage,
       images,
