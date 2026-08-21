@@ -19,13 +19,18 @@ export async function PUT(
       const price = formData.get("price") as string;
 
       if (name !== undefined && price !== undefined) {
-        const file = formData.get("image") as File | null;
         let image_url = (formData.get("image_url") as string) || "";
-        if (file && file.size > 0) {
-          const bytes = await file.arrayBuffer();
-          const buffer = Buffer.from(bytes);
-          const base64 = buffer.toString("base64");
-          image_url = `data:${file.type};base64,${base64}`;
+
+        let images: { url: string; isFeatured: boolean }[] = [];
+        try {
+          images = JSON.parse((formData.get("images") as string) || "[]");
+        } catch {
+          images = [];
+        }
+
+        if (images.length > 0) {
+          const featuredImage = images.find((img) => img.isFeatured)?.url || images[0]?.url || "";
+          image_url = featuredImage;
         }
 
         await updateProduct(productId, {
@@ -36,6 +41,7 @@ export async function PUT(
           sizes: JSON.parse((formData.get("sizes") as string) || "[]"),
           badge: (formData.get("badge") as string) || "",
           image_url,
+          images,
           stock: formData.get("stock") !== undefined ? parseInt(formData.get("stock") as string) : undefined,
         });
         return NextResponse.json({ success: true });
@@ -50,6 +56,10 @@ export async function PUT(
     }
 
     if (body.name !== undefined && body.price !== undefined) {
+      const images = body.images || [];
+      const featuredImage = images.length > 0
+        ? (images.find((img: { isFeatured: boolean }) => img.isFeatured)?.url || images[0]?.url || "")
+        : body.image_url || "";
       await updateProduct(productId, {
         name: body.name,
         price: parseFloat(body.price),
@@ -57,7 +67,8 @@ export async function PUT(
         description: body.description,
         sizes: body.sizes,
         badge: body.badge,
-        image_url: body.image_url,
+        image_url: featuredImage,
+        images,
         stock: body.stock !== undefined ? parseInt(body.stock) : undefined,
         is_active: body.is_active,
       });

@@ -45,6 +45,12 @@ export async function GET(
         details: p.description ? [String(p.description)] : [],
       }));
 
+    const productImages = (product.images && Array.isArray(product.images) && product.images.length > 0)
+      ? product.images
+      : product.image_url
+        ? [{ url: product.image_url, isFeatured: true }]
+        : [];
+
     return NextResponse.json({
       id: product.id,
       name: String(product.name || ""),
@@ -53,6 +59,7 @@ export async function GET(
       category: String(product.category_name || "Uncategorized"),
       badge: product.badge ? String(product.badge) : null,
       image: String(product.image_url || ""),
+      images: productImages,
       description: String(product.description || ""),
       sizes: (product.sizes as string[]) || ["S", "M", "L", "XL"],
       details: product.description ? [String(product.description)] : [],

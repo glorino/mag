@@ -3,6 +3,11 @@
 import { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
+interface ProductImage {
+  url: string;
+  isFeatured: boolean;
+}
+
 interface Product {
   id: number;
   name: string;
@@ -13,6 +18,7 @@ interface Product {
   sizes: string[];
   badge?: string;
   image_url?: string;
+  images?: ProductImage[];
   stock?: number;
   is_active?: boolean;
   created_at: string;
@@ -34,6 +40,7 @@ const emptyForm = {
   sizes: [] as string[],
   badge: "",
   image_url: "",
+  images: [] as ProductImage[],
   stock: "10",
 };
 
@@ -98,6 +105,11 @@ export default function ProductsPage() {
   };
 
   const openEdit = (p: Product) => {
+    const existingImages = p.images && p.images.length > 0
+      ? p.images
+      : p.image_url
+        ? [{ url: p.image_url, isFeatured: true }]
+        : [];
     setForm({
       name: p.name,
       price: String(p.price),
@@ -106,6 +118,7 @@ export default function ProductsPage() {
       sizes: p.sizes || [],
       badge: p.badge || "",
       image_url: p.image_url || "",
+      images: existingImages,
       stock: String(p.stock ?? 10),
     });
     setEditingId(p.id);
@@ -127,6 +140,7 @@ export default function ProductsPage() {
       formData.append("badge", form.badge);
       formData.append("stock", form.stock);
       formData.append("image_url", form.image_url);
+      formData.append("images", JSON.stringify(form.images));
 
       const res = await fetch(url, {
         method,
@@ -189,43 +203,74 @@ export default function ProductsPage() {
   };
 
   const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
 
     setUploading(true);
     try {
-      const compressed = await new Promise<string>((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = (ev) => {
-          const img = new window.Image();
-          img.onload = () => {
-            const canvas = document.createElement("canvas");
-            const MAX = 800;
-            let w = img.width;
-            let h = img.height;
-            if (w > MAX || h > MAX) {
-              if (w > h) { h = Math.round((h * MAX) / w); w = MAX; }
-              else { w = Math.round((w * MAX) / h); h = MAX; }
-            }
-            canvas.width = w;
-            canvas.height = h;
-            const ctx = canvas.getContext("2d")!;
-            ctx.drawImage(img, 0, 0, w, h);
-            resolve(canvas.toDataURL("image/jpeg", 0.8));
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        const compressed = await new Promise<string>((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = (ev) => {
+            const img = new window.Image();
+            img.onload = () => {
+              const canvas = document.createElement("canvas");
+              const MAX = 800;
+              let w = img.width;
+              let h = img.height;
+              if (w > MAX || h > MAX) {
+                if (w > h) { h = Math.round((h * MAX) / w); w = MAX; }
+                else { w = Math.round((w * MAX) / h); h = MAX; }
+              }
+              canvas.width = w;
+              canvas.height = h;
+              const ctx = canvas.getContext("2d")!;
+              ctx.drawImage(img, 0, 0, w, h);
+              resolve(canvas.toDataURL("image/jpeg", 0.8));
+            };
+            img.onerror = reject;
+            img.src = ev.target?.result as string;
           };
-          img.onerror = reject;
-          img.src = ev.target?.result as string;
-        };
-        reader.onerror = reject;
-        reader.readAsDataURL(file);
-      });
-      setForm((prev) => ({ ...prev, image_url: compressed }));
+          reader.onerror = reject;
+          reader.readAsDataURL(file);
+        });
+        setForm((prev) => {
+          const newImages = [...prev.images, { url: compressed, isFeatured: prev.images.length === 0 }];
+          return { ...prev, images: newImages, image_url: newImages.find((img) => img.isFeatured)?.url || "" };
+        });
+      }
     } catch {
       alert("Failed to process image. Please try again.");
     } finally {
       setUploading(false);
       if (fileInputRef.current) fileInputRef.current.value = "";
     }
+  };
+
+  const removeImage = (index: number) => {
+    setForm((prev) => {
+      const newImages = prev.images.filter((_, i) => i !== index);
+      if (prev.images[index]?.isFeatured && newImages.length > 0) {
+        newImages[0].isFeatured = true;
+      }
+      return {
+        ...prev,
+        images: newImages,
+        image_url: newImages.find((img) => img.isFeatured)?.url || "",
+      };
+    });
+  };
+
+  const setFeaturedImage = (index: number) => {
+    setForm((prev) => {
+      const newImages = prev.images.map((img, i) => ({ ...img, isFeatured: i === index }));
+      return {
+        ...prev,
+        images: newImages,
+        image_url: newImages[index]?.url || "",
+      };
+    });
   };
 
   return (
@@ -343,13 +388,14 @@ export default function ProductsPage() {
                   />
                 </div>
                 <div className="md:col-span-2">
-                  <label className="block text-xs font-semibold text-white/40 uppercase tracking-wider mb-1.5">Product Image</label>
+                  <label className="block text-xs font-semibold text-white/40 uppercase tracking-wider mb-1.5">Product Images (min 4)</label>
                   <div className="flex gap-3 items-start">
                     <div className="flex-1">
                       <input
                         ref={fileInputRef}
                         type="file"
                         accept="image/jpeg,image/png,image/webp,image/gif"
+                        multiple
                         onChange={handleImageUpload}
                         className="hidden"
                         id="image-upload"
@@ -371,37 +417,82 @@ export default function ProductsPage() {
                             <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
                             </svg>
-                            Click to upload image
+                            Click to upload images (select multiple)
                           </>
                         )}
                       </label>
-                      <p className="text-[11px] text-white/25 mt-1">JPEG, PNG, WebP or GIF. Max 5MB.</p>
+                      <p className="text-[11px] text-white/25 mt-1">JPEG, PNG, WebP or GIF. Max 5MB each. Select multiple files at once.</p>
                     </div>
                     <div className="flex-1">
                       <input
                         type="text"
-                        value={form.image_url.startsWith("data:") ? "" : form.image_url}
-                        onChange={(e) => setForm({ ...form, image_url: e.target.value })}
+                        value={form.images.length > 0 ? "" : form.image_url}
+                        onChange={(e) => {
+                          const url = e.target.value;
+                          if (url) {
+                            setForm((prev) => ({
+                              ...prev,
+                              images: [...prev.images, { url, isFeatured: prev.images.length === 0 }],
+                              image_url: "",
+                            }));
+                          }
+                        }}
                         className="w-full bg-black border border-white/10 rounded-lg px-4 py-2.5 text-sm text-white focus:outline-none focus:border-accent/50 transition-colors"
-                        placeholder="Or paste image URL here"
+                        placeholder="Or paste image URL and press Enter"
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") {
+                            e.preventDefault();
+                            const input = e.target as HTMLInputElement;
+                            const url = input.value.trim();
+                            if (url) {
+                              setForm((prev) => ({
+                                ...prev,
+                                images: [...prev.images, { url, isFeatured: prev.images.length === 0 }],
+                                image_url: "",
+                              }));
+                              input.value = "";
+                            }
+                          }
+                        }}
                       />
                     </div>
                   </div>
-                  {form.image_url && (
-                    <div className="mt-3 relative inline-block">
-                      <img
-                        src={form.image_url}
-                        alt="Preview"
-                        className="w-24 h-24 object-cover rounded-lg border border-white/10"
-                        onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
-                      />
-                      <button
-                        onClick={() => setForm((prev) => ({ ...prev, image_url: "" }))}
-                        className="absolute -top-2 -right-2 w-5 h-5 bg-red-500 rounded-full flex items-center justify-center text-white text-xs hover:bg-red-600 transition-colors"
-                      >
-                        ×
-                      </button>
+                  {form.images.length > 0 && (
+                    <div className="mt-3 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+                      {form.images.map((img, index) => (
+                        <div key={index} className={`relative group rounded-lg overflow-hidden border-2 transition-colors ${img.isFeatured ? "border-accent" : "border-white/10"}`}>
+                          <img
+                            src={img.url}
+                            alt={`Product image ${index + 1}`}
+                            className="w-full h-28 object-cover"
+                            onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
+                          />
+                          <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+                            <button
+                              type="button"
+                              onClick={() => setFeaturedImage(index)}
+                              className={`px-2 py-1 text-[10px] font-bold rounded transition-colors ${img.isFeatured ? "bg-accent text-black" : "bg-white/20 text-white hover:bg-white/30"}`}
+                            >
+                              {img.isFeatured ? "★ Featured" : "Set Featured"}
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => removeImage(index)}
+                              className="px-2 py-1 text-[10px] font-bold rounded bg-red-500/80 text-white hover:bg-red-500 transition-colors"
+                            >
+                              Remove
+                            </button>
+                          </div>
+                          {img.isFeatured && (
+                            <span className="absolute top-1 left-1 px-1.5 py-0.5 bg-accent text-black text-[9px] font-bold rounded">FEATURED</span>
+                          )}
+                          <span className="absolute top-1 right-1 px-1.5 py-0.5 bg-black/60 text-white text-[9px] font-medium rounded">{index + 1}</span>
+                        </div>
+                      ))}
                     </div>
+                  )}
+                  {form.images.length > 0 && form.images.length < 4 && (
+                    <p className="text-[11px] text-yellow-400/80 mt-2">⚠ Minimum 4 images required. Currently {form.images.length}/4.</p>
                   )}
                 </div>
               </div>
@@ -440,7 +531,7 @@ export default function ProductsPage() {
               <div className="flex gap-3 pt-2">
                 <button
                   onClick={handleSave}
-                  disabled={saving || !form.name || !form.price || !form.category_id}
+                  disabled={saving || !form.name || !form.price || !form.category_id || form.images.length < 4}
                   className="px-6 py-2.5 bg-accent text-black text-sm font-semibold rounded-lg hover:bg-accent-dark transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
                 >
                   {saving ? "Saving..." : editingId ? "Update Product" : "Add Product"}

@@ -34,9 +34,22 @@ export async function POST(request: NextRequest) {
       sizes = [];
     }
 
+    let images: { url: string; isFeatured: boolean }[] = [];
+    try {
+      images = JSON.parse((formData.get("images") as string) || "[]");
+    } catch {
+      images = [];
+    }
+
     if (!name || !price || !category_id) {
       return NextResponse.json({ error: "Name, price, and category are required" }, { status: 400 });
     }
+
+    if (images.length < 4) {
+      return NextResponse.json({ error: "Minimum 4 product images are required" }, { status: 400 });
+    }
+
+    const featuredImage = images.find((img) => img.isFeatured)?.url || images[0]?.url || "";
 
     const result = await createProduct({
       name,
@@ -45,7 +58,8 @@ export async function POST(request: NextRequest) {
       description,
       sizes,
       badge,
-      image_url,
+      image_url: featuredImage,
+      images,
       stock: parseInt(stock) || 0,
     });
     return NextResponse.json({ success: true, product: result[0] });

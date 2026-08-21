@@ -141,6 +141,9 @@ export async function initDatabase() {
   await sql`CREATE INDEX IF NOT EXISTS idx_products_category_id ON products(category_id)`;
   await sql`CREATE INDEX IF NOT EXISTS idx_orders_user_id ON orders(user_id)`;
   await sql`CREATE INDEX IF NOT EXISTS idx_orders_created_at ON orders(created_at)`;
+
+  // Add images column if it doesn't exist
+  await sql`ALTER TABLE products ADD COLUMN IF NOT EXISTS images JSONB DEFAULT '[]'`;
 }
 
 // ─── Seed Data ─────────────────────────────────────────
@@ -175,7 +178,7 @@ export async function seedProducts() {
   await Promise.all(
     staticProducts.map((p) =>
       sql`
-        INSERT INTO products (id, name, price, category_id, description, sizes, colors, badge, image_url, stock, is_active)
+        INSERT INTO products (id, name, price, category_id, description, sizes, colors, badge, image_url, images, stock, is_active)
         VALUES (
           ${p.id},
           ${p.name},
@@ -186,6 +189,7 @@ export async function seedProducts() {
           ${["N/A"]},
           ${p.badge || ""},
           ${p.image},
+          ${JSON.stringify(p.images || [])},
           ${50},
           true
         )
@@ -380,12 +384,13 @@ export async function createProduct(product: {
   colors?: string[];
   badge?: string;
   image_url?: string;
+  images?: { url: string; isFeatured: boolean }[];
   stock?: number;
 }) {
   const sql = getSql();
   try {
     return await sql`
-      INSERT INTO products (name, price, category_id, description, sizes, colors, badge, image_url, stock)
+      INSERT INTO products (name, price, category_id, description, sizes, colors, badge, image_url, images, stock)
       VALUES (
         ${product.name},
         ${product.price},
@@ -395,6 +400,7 @@ export async function createProduct(product: {
         ${product.colors || []},
         ${product.badge || ""},
         ${product.image_url || ""},
+        ${JSON.stringify(product.images || [])},
         ${product.stock || 0}
       )
       RETURNING *
@@ -402,7 +408,7 @@ export async function createProduct(product: {
   } catch {
     await sql`SELECT setval(pg_get_serial_sequence('products', 'id'), COALESCE((SELECT MAX(id) FROM products), 0) + 1, false)`;
     return sql`
-      INSERT INTO products (name, price, category_id, description, sizes, colors, badge, image_url, stock)
+      INSERT INTO products (name, price, category_id, description, sizes, colors, badge, image_url, images, stock)
       VALUES (
         ${product.name},
         ${product.price},
@@ -412,6 +418,7 @@ export async function createProduct(product: {
         ${product.colors || []},
         ${product.badge || ""},
         ${product.image_url || ""},
+        ${JSON.stringify(product.images || [])},
         ${product.stock || 0}
       )
       RETURNING *
@@ -430,6 +437,7 @@ export async function updateProduct(
     colors?: string[];
     badge?: string;
     image_url?: string;
+    images?: { url: string; isFeatured: boolean }[];
     stock?: number;
     is_active?: boolean;
   }
@@ -446,6 +454,7 @@ export async function updateProduct(
       colors = ${product.colors || []},
       badge = ${product.badge || ""},
       image_url = ${product.image_url || ""},
+      images = ${JSON.stringify(product.images || [])},
       stock = ${product.stock || 0},
       is_active = ${product.is_active ?? true}
     WHERE id = ${id}

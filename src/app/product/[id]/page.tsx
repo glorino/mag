@@ -8,6 +8,11 @@ import { useCart } from "@/lib/cart-context";
 import { useWishlist } from "@/lib/wishlist-context";
 import Reviews from "@/components/Reviews";
 
+interface ProductImage {
+  url: string;
+  isFeatured: boolean;
+}
+
 interface Product {
   id: number;
   name: string;
@@ -16,6 +21,7 @@ interface Product {
   category: string;
   badge?: string;
   image: string;
+  images: ProductImage[];
   description: string;
   sizes: string[];
   details: string[];
@@ -32,6 +38,7 @@ export default function ProductPage() {
   const [loading, setLoading] = useState(true);
   const [selectedSize, setSelectedSize] = useState<string>("");
   const [error, setError] = useState("");
+  const [selectedImage, setSelectedImage] = useState(0);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -108,19 +115,47 @@ export default function ProductPage() {
       <section className="py-12 bg-white">
         <div className="max-w-[1200px] mx-auto px-6">
           <div className="grid lg:grid-cols-2 gap-12">
-            {/* Image */}
+            {/* Image Gallery */}
             <motion.div
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              className="relative aspect-[3/4] bg-black overflow-hidden"
             >
-              <img src={product.image} alt={product.name} className="w-full h-full object-cover" />
-              {product.badge && (
-                <span className={`absolute top-4 left-4 px-3 py-1 text-[10px] font-bold uppercase tracking-wider z-10 ${
-                  product.badge === "Bestseller" ? "bg-accent text-black" : product.badge === "New" ? "bg-white text-black" : "bg-black text-accent border border-accent/30"
-                }`}>
-                  {product.badge}
-                </span>
+              <div className="relative aspect-[3/4] bg-black overflow-hidden mb-3">
+                <img
+                  src={product.images[selectedImage]?.url || product.image}
+                  alt={product.name}
+                  className="w-full h-full object-cover"
+                />
+                {product.badge && (
+                  <span className={`absolute top-4 left-4 px-3 py-1 text-[10px] font-bold uppercase tracking-wider z-10 ${
+                    product.badge === "Bestseller" ? "bg-accent text-black" : product.badge === "New" ? "bg-white text-black" : "bg-black text-accent border border-accent/30"
+                  }`}>
+                    {product.badge}
+                  </span>
+                )}
+                {product.images.length > 1 && (
+                  <span className="absolute bottom-4 right-4 px-2 py-1 bg-black/60 text-white text-[11px] font-medium rounded z-10">
+                    {selectedImage + 1} / {product.images.length}
+                  </span>
+                )}
+              </div>
+              {product.images.length > 1 && (
+                <div className="flex gap-2 overflow-x-auto pb-1">
+                  {product.images.map((img, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setSelectedImage(index)}
+                      className={`relative flex-shrink-0 w-16 h-20 border-2 overflow-hidden transition-colors ${
+                        selectedImage === index ? "border-accent" : "border-border hover:border-text-light"
+                      }`}
+                    >
+                      <img src={img.url} alt="" className="w-full h-full object-cover" />
+                      {img.isFeatured && (
+                        <span className="absolute bottom-0 left-0 right-0 bg-accent/90 text-black text-[8px] font-bold text-center py-0.5">MAIN</span>
+                      )}
+                    </button>
+                  ))}
+                </div>
               )}
             </motion.div>
 
