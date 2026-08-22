@@ -11,6 +11,7 @@ interface OrderItem {
   priceNum: number;
   quantity: number;
   size?: string;
+  color?: string;
   image?: string;
   category?: string;
 }
@@ -221,6 +222,7 @@ export default function OrdersPage() {
                                 <p className="text-white/35 text-[11px]">
                                   {item.category && `${item.category} • `}Qty: {item.quantity}
                                   {item.size && ` • Size: ${item.size}`}
+                                  {item.color && ` • Colour: ${item.color}`}
                                 </p>
                               </div>
                               <p className="text-white text-[13px] font-medium whitespace-nowrap">

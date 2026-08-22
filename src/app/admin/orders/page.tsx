@@ -10,7 +10,7 @@ interface Order {
   email: string;
   phone?: string;
   address?: string;
-  items: { name: string; size: string; quantity: number; price: number }[];
+  items: { name: string; size: string; color?: string; quantity: number; price: number }[];
   total: number;
   status: string;
   payment_status?: string;
@@ -89,7 +89,7 @@ function OrdersContent() {
     );
   };
 
-  const parseItems = (items: unknown): { name: string; size: string; quantity: number; price: number }[] => {
+  const parseItems = (items: unknown): { name: string; size: string; color?: string; quantity: number; price: number }[] => {
     if (Array.isArray(items)) return items;
     if (typeof items === "string") {
       try {
@@ -304,6 +304,7 @@ function OrdersContent() {
                                     <div>
                                       <span className="text-sm text-white font-medium">{item.name}</span>
                                       <span className="text-xs text-white/40 ml-2">Size: {item.size}</span>
+                                      {item.color && <span className="text-xs text-white/40 ml-2">Colour: {item.color}</span>}
                                     </div>
                                     <div className="text-right">
                                       <span className="text-xs text-white/40">Qty: {item.quantity}</span>
