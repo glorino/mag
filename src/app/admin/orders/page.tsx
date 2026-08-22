@@ -14,6 +14,7 @@ interface Order {
   total: number;
   status: string;
   payment_status?: string;
+  tracking_number?: string;
   created_at: string;
 }
 
@@ -289,6 +290,29 @@ function OrdersContent() {
                                   Phone
                                 </p>
                                 <p className="text-sm text-white">{order.phone || "No phone provided"}</p>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-3">
+                              <div className="flex-1">
+                                <label className="text-xs font-semibold text-white/40 uppercase tracking-wider mb-1 block">
+                                  Tracking Number
+                                </label>
+                                <input
+                                  type="text"
+                                  defaultValue={order.tracking_number || ""}
+                                  placeholder="Enter tracking number"
+                                  className="w-full bg-black border border-white/10 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-accent/50 transition-colors"
+                                  onBlur={(e) => {
+                                    const val = e.target.value.trim();
+                                    if (val !== (order.tracking_number || "")) {
+                                      fetch(`/api/admin/orders/${order.id}`, {
+                                        method: "PUT",
+                                        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+                                        body: JSON.stringify({ tracking_number: val }),
+                                      });
+                                    }
+                                  }}
+                                />
                               </div>
                             </div>
                             <div>

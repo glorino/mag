@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { updateOrderStatus } from "@/lib/queries";
+import { updateOrderStatus, updateOrderTracking } from "@/lib/queries";
 import { requireAdmin } from "@/lib/auth";
 
 export async function PUT(
@@ -14,6 +14,10 @@ export async function PUT(
 
     if (body.status) {
       await updateOrderStatus(parseInt(id), body.status);
+    }
+
+    if (body.tracking_number !== undefined) {
+      await updateOrderTracking(parseInt(id), body.tracking_number);
     }
 
     return NextResponse.json({ success: true });

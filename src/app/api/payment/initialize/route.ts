@@ -40,6 +40,7 @@ export async function POST(request: Request) {
         price: Number(product.price),
         quantity: qty,
         size: item.size || "",
+        color: item.color || "",
         category: product.category_name || "",
         image: product.image_url || "",
       });

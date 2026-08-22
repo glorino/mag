@@ -139,8 +139,11 @@ export async function initDatabase() {
   `;
 
   await sql`CREATE INDEX IF NOT EXISTS idx_products_category_id ON products(category_id)`;
+  await sql`CREATE INDEX IF NOT EXISTS idx_products_is_active ON products(is_active)`;
   await sql`CREATE INDEX IF NOT EXISTS idx_orders_user_id ON orders(user_id)`;
   await sql`CREATE INDEX IF NOT EXISTS idx_orders_created_at ON orders(created_at)`;
+  await sql`CREATE INDEX IF NOT EXISTS idx_reviews_product_id ON reviews(product_id)`;
+  await sql`CREATE INDEX IF NOT EXISTS idx_messages_is_read ON messages(is_read)`;
 
   // Add images column if it doesn't exist
   await sql`ALTER TABLE products ADD COLUMN IF NOT EXISTS images JSONB DEFAULT '[]'`;
@@ -534,6 +537,13 @@ export async function updateOrderStatus(id: number, status: string) {
   const sql = getSql();
   return sql`
     UPDATE orders SET status = ${status}, updated_at = NOW() WHERE id = ${id} RETURNING *
+  `;
+}
+
+export async function updateOrderTracking(id: number, trackingNumber: string) {
+  const sql = getSql();
+  return sql`
+    UPDATE orders SET tracking_number = ${trackingNumber}, updated_at = NOW() WHERE id = ${id} RETURNING *
   `;
 }
 

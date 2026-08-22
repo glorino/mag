@@ -34,17 +34,12 @@ export async function POST(request: Request) {
     // Generate reset token
     const token = await createPasswordResetToken(user.id);
     
-    // In production, send email with reset link
-    // For now, return token in response (remove in production)
+    // TODO: Send email with reset link using an email service (e.g., Resend, SendGrid)
     const resetLink = `${process.env.NEXT_PUBLIC_SITE_URL || "https://www.magre.com.ng"}/reset-password?token=${token}`;
-    
-    console.log(`Password reset link for ${email}: ${resetLink}`);
 
     return NextResponse.json({
       success: true,
       message: "If an account exists, a password reset link has been sent.",
-      // Remove resetLink in production
-      resetLink,
     });
   } catch (error) {
     console.error("Forgot password error:", error);

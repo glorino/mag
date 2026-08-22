@@ -50,7 +50,12 @@
 
 @layer components {
   .section-padding {
-    padding: 100px 0;
+    padding: 60px 0;
+  }
+  @media (min-width: 768px) {
+    .section-padding {
+      padding: 100px 0;
+    }
   }
 
   .product-card {
@@ -118,8 +123,9 @@
 
   .toast {
     position: fixed;
-    bottom: 100px;
-    right: 24px;
+    bottom: 24px;
+    left: 16px;
+    right: 16px;
     background: #000;
     color: #00e5ff;
     padding: 14px 24px;
@@ -130,6 +136,14 @@
     opacity: 0;
     transition: all 0.3s ease;
     pointer-events: none;
+  }
+  @media (min-width: 768px) {
+    .toast {
+      bottom: 100px;
+      left: auto;
+      right: 24px;
+      width: auto;
+    }
   }
   .toast.show {
     transform: translateY(0);
