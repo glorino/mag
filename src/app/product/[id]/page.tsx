@@ -197,26 +197,24 @@ export default function ProductPage() {
               )}
 
               {/* Available Colours */}
-              {product.colors.length > 0 && (
-                <div className="mb-8">
-                  <p className="text-[12px] font-semibold text-charcoal uppercase tracking-wider mb-3">Select Colour</p>
-                  <div className="flex flex-wrap gap-2">
-                    {product.colors.map((color) => (
-                      <button
-                        key={color}
-                        onClick={() => setSelectedColor(color)}
-                        className={`px-4 py-2 text-[13px] font-medium border transition-all duration-300 ${
-                          selectedColor === color
-                            ? "bg-accent text-black border-accent"
-                            : "bg-white text-charcoal border-border hover:border-charcoal"
-                        }`}
-                      >
-                        {color}
-                      </button>
-                    ))}
-                  </div>
+              <div className="mb-8">
+                <p className="text-[12px] font-semibold text-charcoal uppercase tracking-wider mb-3">Select Colour</p>
+                <div className="flex flex-wrap gap-2">
+                  {(product.colors.length > 0 ? product.colors : ["Black", "White", "Red", "Blue", "Pink", "Green", "Grey", "Navy"]).map((color) => (
+                    <button
+                      key={color}
+                      onClick={() => setSelectedColor(color)}
+                      className={`px-4 py-2 text-[13px] font-medium border transition-all duration-300 ${
+                        selectedColor === color
+                          ? "bg-accent text-black border-accent"
+                          : "bg-white text-charcoal border-border hover:border-charcoal"
+                      }`}
+                    >
+                      {color}
+                    </button>
+                  ))}
                 </div>
-              )}
+              </div>
 
               {/* Add to Cart */}
               <div className="flex gap-3">

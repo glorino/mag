@@ -186,14 +186,14 @@ export async function seedProducts() {
           ${catMap[p.category] || null},
           ${p.description},
           ${p.sizes},
-          ${["N/A"]},
+          ${p.colors || ["Black", "White"]},
           ${p.badge || ""},
           ${p.image},
           ${JSON.stringify(p.images || [])},
           ${50},
           true
         )
-        ON CONFLICT (id) DO NOTHING
+        ON CONFLICT (id) DO UPDATE SET colors = ${p.colors || ["Black", "White"]}, images = ${JSON.stringify(p.images || [])}
       `
     )
   );

@@ -9,6 +9,7 @@ export interface Product {
   images: { url: string; isFeatured: boolean }[];
   description: string;
   sizes: string[];
+  colors?: string[];
   details: string[];
 }
 
@@ -29,6 +30,7 @@ export const products: Product[] = [
     ],
     description: "A beautifully crafted wrap blouse that combines comfort with African elegance. Perfect for casual outings or work wear.",
     sizes: ["XS", "S", "M", "L", "XL", "XXL"],
+    colors: ["Red", "Blue", "Green", "Gold", "Wine"],
     details: ["100% African wax print fabric", "Machine washable", "True to size", "Model wears size M"],
   },
   {
@@ -47,6 +49,7 @@ export const products: Product[] = [
     ],
     description: "Stylish adire peplum blouse with modern tailoring. The perfect blend of comfort and contemporary African fashion.",
     sizes: ["XS", "S", "M", "L", "XL"],
+    colors: ["Blue", "White", "Navy", "Grey"],
     details: ["Premium adire cotton", "Relaxed fit", "Hand wash recommended", "Model wears size M"],
   },
   {
@@ -65,6 +68,7 @@ export const products: Product[] = [
     ],
     description: "Elegant high-waist palazzo trousers that elongate your silhouette. Flowing and comfortable for all-day wear.",
     sizes: ["XS", "S", "M", "L", "XL", "XXL"],
+    colors: ["Black", "White", "Beige", "Navy", "Grey"],
     details: ["Premium cotton blend", "High-waisted", "Side pockets", "Machine washable"],
   },
   {
@@ -83,6 +87,7 @@ export const products: Product[] = [
     ],
     description: "Straight-fit ankara trousers with bold prints. A statement piece that celebrates African heritage.",
     sizes: ["XS", "S", "M", "L", "XL"],
+    colors: ["Red", "Blue", "Green", "Orange"],
     details: ["100% ankara fabric", "Straight fit", "Machine washable", "Model wears size M"],
   },
   {
@@ -101,6 +106,7 @@ export const products: Product[] = [
     ],
     description: "Comfortable and stylish knicker set with delicate lace trim. Soft cotton for all-day comfort.",
     sizes: ["XS", "S", "M", "L", "XL"],
+    colors: ["Pink", "Black", "White", "Red"],
     details: ["Soft cotton fabric", "Lace trim detail", "Elastic waistband", "Hand wash recommended"],
   },
   {
@@ -118,6 +124,7 @@ export const products: Product[] = [
     ],
     description: "Relaxed-fit lounge shorts with African print. Perfect for lounging or everyday comfort.",
     sizes: ["XS", "S", "M", "L", "XL", "XXL"],
+    colors: ["Blue", "Red", "Green", "Black"],
     details: ["Soft cotton fabric", "Relaxed fit", "Elastic waistband", "Machine washable"],
   },
   {
@@ -136,6 +143,7 @@ export const products: Product[] = [
     ],
     description: "A statement off-shoulder blouse with ruffle details. Bold design meets modern elegance.",
     sizes: ["XS", "S", "M", "L", "XL"],
+    colors: ["White", "Black", "Wine", "Gold"],
     details: ["Premium fabric", "Off-shoulder design", "Ruffle detail", "Dry clean only"],
   },
   {
@@ -153,6 +161,7 @@ export const products: Product[] = [
     ],
     description: "Wide-leg ankara trousers with exquisite craftsmanship. Designed for the woman who appreciates luxury.",
     sizes: ["XS", "S", "M", "L", "XL", "XXL"],
+    colors: ["Green", "Blue", "Red", "Orange"],
     details: ["Premium ankara fabric", "Wide-leg silhouette", "High-waisted", "Dry clean only"],
   },
   {
@@ -171,6 +180,7 @@ export const products: Product[] = [
     ],
     description: "Classic cotton brief set with vibrant African prints. Comfort meets style for everyday wear.",
     sizes: ["XS", "S", "M", "L", "XL"],
+    colors: ["Pink", "White", "Black", "Teal"],
     details: ["100% cotton", "Breathable fabric", "Elastic waistband", "Machine washable"],
   },
   {
@@ -188,6 +198,7 @@ export const products: Product[] = [
     ],
     description: "Hand-embroidered tunic blouse with flowing silhouette. Perfect for special occasions.",
     sizes: ["XS", "S", "M", "L", "XL"],
+    colors: ["Gold", "Wine", "Navy", "Cream"],
     details: ["Premium silk blend", "Hand-embroidered", "Full length", "Dry clean recommended"],
   },
   {
@@ -205,6 +216,7 @@ export const products: Product[] = [
     ],
     description: "Trendy culotte trousers that hit mid-calf. A wardrobe essential for the modern woman.",
     sizes: ["XS", "S", "M", "L", "XL", "XXL"],
+    colors: ["Black", "Grey", "Beige", "Navy"],
     details: ["Stretch fabric", "Mid-calf length", "Machine washable", "Model wears size M"],
   },
   {
@@ -222,6 +234,7 @@ export const products: Product[] = [
     ],
     description: "Luxurious silk lounge knicker with tie waist. Ultimate comfort meets elegance.",
     sizes: ["XS", "S", "M", "L", "XL"],
+    colors: ["Black", "Pink", "Cream", "Wine"],
     details: ["Silk blend fabric", "Tie waist", "Relaxed fit", "Hand wash only"],
   },
 ];
