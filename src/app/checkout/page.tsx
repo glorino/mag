@@ -113,6 +113,7 @@ export default function CheckoutPage() {
             priceNum: item.priceNum,
             quantity: item.quantity,
             size: item.size,
+            color: item.color,
             category: item.category,
             image: item.image,
           })),
@@ -248,13 +249,14 @@ export default function CheckoutPage() {
 
               <div className="space-y-4 mb-6 max-h-[300px] overflow-y-auto">
                 {items.map((item) => (
-                  <div key={`${item.id}-${item.size}`} className="flex gap-3">
+                  <div key={`${item.id}-${item.size}-${item.color}`} className="flex gap-3">
                     <img src={item.image} alt={item.name} className="w-14 h-16 object-cover flex-shrink-0" />
                     <div className="flex-1 min-w-0">
                       <p className="text-white text-[13px] truncate">{item.name}</p>
                       <p className="text-white/35 text-[11px]">
                         Qty: {item.quantity}
                         {item.size && ` • ${item.size}`}
+                        {item.color && ` • ${item.color}`}
                       </p>
                     </div>
                     <p className="text-white text-[13px] font-medium whitespace-nowrap">

@@ -11,15 +11,16 @@ export interface CartItem {
   image: string;
   quantity: number;
   size?: string;
+  color?: string;
 }
 
 interface CartContextType {
   items: CartItem[];
   isOpen: boolean;
   toast: string;
-  addItem: (item: Omit<CartItem, "quantity">, size?: string) => void;
-  removeItem: (id: number, size?: string) => void;
-  updateQuantity: (id: number, size: string | undefined, quantity: number) => void;
+  addItem: (item: Omit<CartItem, "quantity">, size?: string, color?: string) => void;
+  removeItem: (id: number, size?: string, color?: string) => void;
+  updateQuantity: (id: number, size: string | undefined, quantity: number, color?: string) => void;
   toggleCart: () => void;
   closeCart: () => void;
   totalItems: () => number;
@@ -92,30 +93,30 @@ export function CartProvider({ children }: { children: ReactNode }) {
     sync();
   }, []);
 
-  const addItem = useCallback((item: Omit<CartItem, "quantity">, size?: string) => {
+  const addItem = useCallback((item: Omit<CartItem, "quantity">, size?: string, color?: string) => {
     setItems((prev) => {
-      const existing = prev.find((i) => i.id === item.id && i.size === size);
+      const existing = prev.find((i) => i.id === item.id && i.size === size && i.color === color);
       if (existing) {
         return prev.map((i) =>
-          i.id === item.id && i.size === size ? { ...i, quantity: i.quantity + 1 } : i
+          i.id === item.id && i.size === size && i.color === color ? { ...i, quantity: i.quantity + 1 } : i
         );
       }
-      return [...prev, { ...item, quantity: 1, size }];
+      return [...prev, { ...item, quantity: 1, size, color }];
     });
     showToast(`${item.name} added to cart`);
   }, []);
 
-  const removeItem = useCallback((id: number, size?: string) => {
-    setItems((prev) => prev.filter((i) => !(i.id === id && i.size === size)));
+  const removeItem = useCallback((id: number, size?: string, color?: string) => {
+    setItems((prev) => prev.filter((i) => !(i.id === id && i.size === size && i.color === color)));
   }, []);
 
-  const updateQuantity = useCallback((id: number, size: string | undefined, quantity: number) => {
+  const updateQuantity = useCallback((id: number, size: string | undefined, quantity: number, color?: string) => {
     if (quantity <= 0) {
-      removeItem(id, size);
+      removeItem(id, size, color);
       return;
     }
     setItems((prev) =>
-      prev.map((i) => (i.id === id && i.size === size ? { ...i, quantity } : i))
+      prev.map((i) => (i.id === id && i.size === size && i.color === color ? { ...i, quantity } : i))
     );
   }, [removeItem]);
 

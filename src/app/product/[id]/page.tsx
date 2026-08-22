@@ -38,6 +38,7 @@ export default function ProductPage() {
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectedSize, setSelectedSize] = useState<string>("");
+  const [selectedColor, setSelectedColor] = useState<string>("");
   const [error, setError] = useState("");
   const [selectedImage, setSelectedImage] = useState(0);
 
@@ -90,7 +91,8 @@ export default function ProductPage() {
         category: product.category,
         image: product.image,
       },
-      selectedSize || undefined
+      selectedSize || undefined,
+      selectedColor || undefined
     );
     router.push("/checkout");
   };
@@ -197,15 +199,20 @@ export default function ProductPage() {
               {/* Available Colours */}
               {product.colors.length > 0 && (
                 <div className="mb-8">
-                  <p className="text-[12px] font-semibold text-charcoal uppercase tracking-wider mb-3">Available Colours</p>
+                  <p className="text-[12px] font-semibold text-charcoal uppercase tracking-wider mb-3">Select Colour</p>
                   <div className="flex flex-wrap gap-2">
                     {product.colors.map((color) => (
-                      <span
+                      <button
                         key={color}
-                        className="px-4 py-2 text-[13px] font-medium border border-border bg-white text-charcoal"
+                        onClick={() => setSelectedColor(color)}
+                        className={`px-4 py-2 text-[13px] font-medium border transition-all duration-300 ${
+                          selectedColor === color
+                            ? "bg-accent text-black border-accent"
+                            : "bg-white text-charcoal border-border hover:border-charcoal"
+                        }`}
                       >
                         {color}
-                      </span>
+                      </button>
                     ))}
                   </div>
                 </div>

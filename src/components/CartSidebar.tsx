@@ -41,12 +41,13 @@ export default function CartSidebar() {
           ) : (
             <div className="space-y-6">
               {items.map((item) => (
-                <div key={`${item.id}-${item.size}`} className="flex gap-4">
+                <div key={`${item.id}-${item.size}-${item.color}`} className="flex gap-4">
                   <img src={item.image} alt={item.name} className="w-20 h-24 flex-shrink-0 object-cover" />
                   <div className="flex-1 min-w-0">
                     <h3 className="font-semibold text-[14px] text-charcoal truncate">{item.name}</h3>
                     <p className="text-[12px] text-text-light">{item.category}</p>
                     {item.size && <p className="text-[12px] text-text-light">Size: {item.size}</p>}
+                    {item.color && <p className="text-[12px] text-text-light">Colour: {item.color}</p>}
                     <p className="text-[14px] font-bold text-charcoal mt-1">{item.price}</p>
                     <div className="flex items-center gap-3 mt-2">
                       <div className="flex items-center border border-border">
@@ -54,10 +55,10 @@ export default function CartSidebar() {
                           onClick={() => {
                             if (item.quantity <= 1) {
                               if (window.confirm("Remove this item from your cart?")) {
-                                removeItem(item.id, item.size);
+                                removeItem(item.id, item.size, item.color);
                               }
                             } else {
-                              updateQuantity(item.id, item.size, item.quantity - 1);
+                              updateQuantity(item.id, item.size, item.quantity - 1, item.color);
                             }
                           }}
                           className="w-8 h-8 flex items-center justify-center text-text hover:bg-warm-gray transition-colors"
@@ -68,14 +69,14 @@ export default function CartSidebar() {
                           {item.quantity}
                         </span>
                         <button
-                          onClick={() => updateQuantity(item.id, item.size, item.quantity + 1)}
+                          onClick={() => updateQuantity(item.id, item.size, item.quantity + 1, item.color)}
                           className="w-8 h-8 flex items-center justify-center text-text hover:bg-warm-gray transition-colors"
                         >
                           +
                         </button>
                       </div>
                       <button
-                        onClick={() => removeItem(item.id, item.size)}
+                        onClick={() => removeItem(item.id, item.size, item.color)}
                         className="text-text-light hover:text-red-500 transition-colors"
                       >
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

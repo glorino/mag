@@ -8,25 +8,6 @@ import { useCart } from "@/lib/cart-context";
 
 const categories = ["All", "Shirt", "Trouser", "Nicker"];
 
-const filterColors = [
-  { name: "Black", hex: "#000000" },
-  { name: "White", hex: "#FFFFFF" },
-  { name: "Red", hex: "#DC2626" },
-  { name: "Blue", hex: "#2563EB" },
-  { name: "Green", hex: "#16A34A" },
-  { name: "Pink", hex: "#EC4899" },
-  { name: "Purple", hex: "#9333EA" },
-  { name: "Orange", hex: "#EA580C" },
-  { name: "Brown", hex: "#92400E" },
-  { name: "Grey", hex: "#6B7280" },
-  { name: "Navy", hex: "#1E3A5F" },
-  { name: "Beige", hex: "#D4C5A9" },
-  { name: "Gold", hex: "#B8860B" },
-  { name: "Wine", hex: "#722F37" },
-  { name: "Teal", hex: "#0D9488" },
-  { name: "Cream", hex: "#FFFDD0" },
-];
-
 interface Product {
   id: number;
   name: string;
@@ -45,20 +26,17 @@ function ShopContent() {
   const router = useRouter();
   const initialQuery = searchParams.get("q") || "";
   const initialCategory = searchParams.get("category") || "All";
-  const initialColor = searchParams.get("color") || "";
   const [activeCategory, setActiveCategory] = useState(initialCategory);
-  const [activeColor, setActiveColor] = useState(initialColor);
   const [sortBy, setSortBy] = useState("latest");
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const { addItem } = useCart();
 
-  const updateUrl = useCallback((newCategory?: string, newSort?: string, newColor?: string) => {
+  const updateUrl = useCallback((newCategory?: string, newSort?: string) => {
     const params = new URLSearchParams();
     if (initialQuery) params.set("q", initialQuery);
     if (newCategory && newCategory !== "All") params.set("category", newCategory);
     if (newSort && newSort !== "latest") params.set("sort", newSort);
-    if (newColor) params.set("color", newColor);
     router.push(`/shop?${params.toString()}`, { scroll: false });
   }, [initialQuery, router]);
 
@@ -70,7 +48,6 @@ function ShopContent() {
         if (initialQuery) params.set("q", initialQuery);
         if (activeCategory !== "All") params.set("category", activeCategory);
         if (sortBy !== "latest") params.set("sort", sortBy);
-        if (activeColor) params.set("color", activeColor);
 
         const res = await fetch(`/api/products?${params.toString()}`);
         const data = await res.json();
@@ -82,7 +59,7 @@ function ShopContent() {
     };
 
     fetchProducts();
-  }, [activeCategory, sortBy, initialQuery, activeColor]);
+  }, [activeCategory, sortBy, initialQuery]);
 
   // Client-side sort as fallback
   const filtered = [...products];
@@ -136,11 +113,11 @@ function ShopContent() {
       {/* Filters */}
       <section className="py-10 bg-white border-b border-border">
         <div className="max-w-[1200px] mx-auto px-6">
-          <div className="flex flex-wrap gap-3 justify-center mb-4">
+          <div className="flex flex-wrap gap-3 justify-center">
             {categories.map((cat) => (
               <button
                 key={cat}
-                onClick={() => { setActiveCategory(cat); updateUrl(cat, sortBy, activeColor); }}
+                onClick={() => { setActiveCategory(cat); updateUrl(cat, sortBy); }}
                 className={`px-6 py-3 text-[12px] font-semibold tracking-wider uppercase border transition-all duration-300 ${
                   activeCategory === cat
                     ? "bg-accent text-black border-accent"
@@ -148,35 +125,6 @@ function ShopContent() {
                 }`}
               >
                 {cat}
-              </button>
-            ))}
-          </div>
-          <div className="flex flex-wrap gap-2 justify-center">
-            <button
-              onClick={() => { setActiveColor(""); updateUrl(activeCategory, sortBy, ""); }}
-              className={`px-4 py-2 text-[11px] font-semibold tracking-wider uppercase border transition-all duration-300 ${
-                activeColor === ""
-                  ? "bg-charcoal text-white border-charcoal"
-                  : "bg-white text-text border-border hover:border-charcoal"
-              }`}
-            >
-              All Colours
-            </button>
-            {filterColors.map((color) => (
-              <button
-                key={color.name}
-                onClick={() => { setActiveColor(color.name); updateUrl(activeCategory, sortBy, color.name); }}
-                className={`flex items-center gap-1.5 px-3 py-2 text-[11px] font-semibold tracking-wider uppercase border transition-all duration-300 ${
-                  activeColor === color.name
-                    ? "bg-charcoal text-white border-charcoal"
-                    : "bg-white text-text border-border hover:border-charcoal"
-                }`}
-              >
-                <span
-                  className="w-3 h-3 rounded-full border flex-shrink-0"
-                  style={{ backgroundColor: color.hex, borderColor: color.hex === "#FFFFFF" ? "#ccc" : color.hex }}
-                />
-                {color.name}
               </button>
             ))}
           </div>
@@ -190,7 +138,7 @@ function ShopContent() {
             <p className="text-[13px] text-text font-medium">{filtered.length} products</p>
             <select
               value={sortBy}
-              onChange={(e) => { setSortBy(e.target.value); updateUrl(activeCategory, e.target.value, activeColor); }}
+              onChange={(e) => { setSortBy(e.target.value); updateUrl(activeCategory, e.target.value); }}
               className="px-5 py-3 border border-border text-[13px] text-charcoal bg-white focus:outline-none focus:border-accent transition-colors cursor-pointer"
             >
               <option value="latest">Sort by: Latest</option>
