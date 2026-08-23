@@ -20,12 +20,15 @@ export async function PUT(
 
       if (name !== undefined && price !== undefined) {
         let image_url = (formData.get("image_url") as string) || "";
+        const skipImages = formData.get("skip_images_update") === "true";
 
         let images: { url: string; isFeatured: boolean }[] = [];
-        try {
-          images = JSON.parse((formData.get("images") as string) || "[]");
-        } catch {
-          images = [];
+        if (!skipImages) {
+          try {
+            images = JSON.parse((formData.get("images") as string) || "[]");
+          } catch {
+            images = [];
+          }
         }
 
         let colors: string[] = [];
@@ -40,7 +43,7 @@ export async function PUT(
           image_url = featuredImage;
         }
 
-        await updateProduct(productId, {
+        const updateData: Record<string, unknown> = {
           name,
           price: parseFloat(price),
           category_id: formData.get("category_id") ? parseInt(formData.get("category_id") as string) : undefined,
@@ -49,9 +52,14 @@ export async function PUT(
           colors,
           badge: (formData.get("badge") as string) || "",
           image_url,
-          images,
           stock: formData.get("stock") !== undefined ? parseInt(formData.get("stock") as string) : undefined,
-        });
+        };
+
+        if (!skipImages) {
+          updateData.images = images;
+        }
+
+        await updateProduct(productId, updateData as Parameters<typeof updateProduct>[1]);
         return NextResponse.json({ success: true });
       }
     }

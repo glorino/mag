@@ -167,7 +167,13 @@ export default function ProductsPage() {
       formData.append("badge", form.badge);
       formData.append("stock", form.stock);
       formData.append("image_url", form.image_url);
-      formData.append("images", JSON.stringify(form.images));
+      const hasNewImages = form.images.some((img) => !img.url.startsWith("data:"));
+      if (editingId && !hasNewImages) {
+        formData.append("skip_images_update", "true");
+        formData.append("images", "[]");
+      } else {
+        formData.append("images", JSON.stringify(form.images));
+      }
 
       const res = await fetch(url, {
         method,

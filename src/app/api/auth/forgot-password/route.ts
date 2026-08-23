@@ -35,7 +35,7 @@ export async function POST(request: Request) {
     const token = await createPasswordResetToken(user.id);
     
     // TODO: Send email with reset link using an email service (e.g., Resend, SendGrid)
-    const resetLink = `${process.env.NEXT_PUBLIC_SITE_URL || "https://www.magre.com.ng"}/reset-password?token=${token}`;
+    // const resetLink = `${process.env.NEXT_PUBLIC_SITE_URL || "https://www.magre.com.ng"}/reset-password?token=${token}`;
 
     return NextResponse.json({
       success: true,
