@@ -504,6 +504,12 @@ export async function getOrdersByUser(userId: number) {
   return sql`SELECT * FROM orders WHERE user_id = ${userId} ORDER BY created_at DESC`;
 }
 
+export async function getOrderByIdAndEmail(id: number, email: string) {
+  const sql = getSql();
+  const results = await sql`SELECT * FROM orders WHERE id = ${id} AND email = ${email}`;
+  return results[0] || null;
+}
+
 export async function createOrder(order: {
   user_id?: number;
   customer_name: string;
@@ -557,6 +563,22 @@ export async function subscribe(email: string) {
     ON CONFLICT (email) DO NOTHING
     RETURNING *
   `;
+}
+
+export async function getAllSubscribers() {
+  const sql = getSql();
+  return sql`SELECT * FROM subscribers ORDER BY created_at DESC`;
+}
+
+export async function deleteSubscriber(id: number) {
+  const sql = getSql();
+  return sql`DELETE FROM subscribers WHERE id = ${id} RETURNING *`;
+}
+
+export async function getSubscriberCount() {
+  const sql = getSql();
+  const results = await sql`SELECT COUNT(*) as count FROM subscribers`;
+  return Number(results[0]?.count || 0);
 }
 
 // ─── Messages ────────────────────────────────────────

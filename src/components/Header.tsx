@@ -16,6 +16,7 @@ function getIsLoggedIn(): boolean {
 const navLinks = [
   { name: "Home", href: "/" },
   { name: "Shop", href: "/shop" },
+  { name: "Track Order", href: "/track-order" },
   { name: "About", href: "/about" },
   { name: "Contact", href: "/contact" },
   { name: "FAQ", href: "/faq" },

@@ -70,6 +70,7 @@ export default function Footer() {
                 { name: "Size Guide", href: "/size-guide" },
                 { name: "Shipping Info", href: "/faq" },
                 { name: "Returns Policy", href: "/returns" },
+                { name: "Track Order", href: "/track-order" },
                 { name: "FAQ", href: "/faq" },
               ].map((item) => (
                 <li key={item.name}>
