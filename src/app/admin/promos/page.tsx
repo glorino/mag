@@ -75,16 +75,14 @@ export default function AdminPromosPage() {
 
   const toggleActive = async (id: number, currentActive: boolean) => {
     try {
-      const sql = (await import("@/lib/database")).default;
-      // Simple toggle via re-creating with same data
       const promo = promos.find((p) => p.id === id);
       if (!promo) return;
-      await fetch(`/api/admin/promos`, {
-        method: "POST",
+      const res = await fetch(`/api/admin/promos/${id}`, {
+        method: "PUT",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-        body: JSON.stringify({ ...promo, is_active: !currentActive }),
+        body: JSON.stringify({ is_active: !currentActive }),
       });
-      fetchPromos();
+      if (res.ok) fetchPromos();
     } catch {
       // ignore
     }
