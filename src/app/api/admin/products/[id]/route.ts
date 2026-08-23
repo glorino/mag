@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { updateProduct, deleteProduct, toggleProductActive } from "@/lib/queries";
+import { updateProduct, deleteProduct, toggleProductActive, getProductById } from "@/lib/queries";
 import { requireAdmin } from "@/lib/auth";
 
 export async function PUT(
@@ -23,7 +23,10 @@ export async function PUT(
         const skipImages = formData.get("skip_images_update") === "true";
 
         let images: { url: string; isFeatured: boolean }[] = [];
-        if (!skipImages) {
+        if (skipImages) {
+          const existing = await getProductById(productId);
+          images = (existing?.images as { url: string; isFeatured: boolean }[]) || [];
+        } else {
           try {
             images = JSON.parse((formData.get("images") as string) || "[]");
           } catch {
@@ -43,7 +46,7 @@ export async function PUT(
           image_url = featuredImage;
         }
 
-        const updateData: Record<string, unknown> = {
+        await updateProduct(productId, {
           name,
           price: parseFloat(price),
           category_id: formData.get("category_id") ? parseInt(formData.get("category_id") as string) : undefined,
@@ -52,14 +55,9 @@ export async function PUT(
           colors,
           badge: (formData.get("badge") as string) || "",
           image_url,
+          images,
           stock: formData.get("stock") !== undefined ? parseInt(formData.get("stock") as string) : undefined,
-        };
-
-        if (!skipImages) {
-          updateData.images = images;
-        }
-
-        await updateProduct(productId, updateData as Parameters<typeof updateProduct>[1]);
+        });
         return NextResponse.json({ success: true });
       }
     }
