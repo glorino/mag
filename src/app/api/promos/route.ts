@@ -10,6 +10,19 @@ export async function POST(request: Request) {
     }
 
     const sql = getSql();
+    await sql`
+      CREATE TABLE IF NOT EXISTS promo_codes (
+        id SERIAL PRIMARY KEY,
+        code VARCHAR(50) UNIQUE NOT NULL,
+        discount_percent INT NOT NULL CHECK (discount_percent > 0 AND discount_percent <= 100),
+        min_order_amount DECIMAL(10, 2) DEFAULT 0,
+        max_uses INT DEFAULT NULL,
+        used_count INT DEFAULT 0,
+        expires_at TIMESTAMP,
+        is_active BOOLEAN DEFAULT true,
+        created_at TIMESTAMP DEFAULT NOW()
+      )
+    `;
     const [promo] = await sql`
       SELECT * FROM promo_codes
       WHERE code = ${code.toUpperCase()} AND is_active = true
