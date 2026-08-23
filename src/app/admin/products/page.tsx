@@ -81,6 +81,8 @@ export default function ProductsPage() {
   const [uploading, setUploading] = useState(false);
   const [saveError, setSaveError] = useState("");
   const [page, setPage] = useState(1);
+  const [hasNewUploads, setHasNewUploads] = useState(false);
+  const [newImageUrls, setNewImageUrls] = useState<string[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const PER_PAGE = 10;
 
@@ -127,6 +129,8 @@ export default function ProductsPage() {
     setForm(emptyForm);
     setEditingId(null);
     setShowForm(true);
+    setHasNewUploads(false);
+    setNewImageUrls([]);
   };
 
   const openEdit = (p: Product) => {
@@ -149,6 +153,8 @@ export default function ProductsPage() {
     });
     setEditingId(p.id);
     setShowForm(true);
+    setHasNewUploads(false);
+    setNewImageUrls([]);
   };
 
   const handleSave = async () => {
@@ -166,12 +172,19 @@ export default function ProductsPage() {
       formData.append("colors", JSON.stringify(form.colors));
       formData.append("badge", form.badge);
       formData.append("stock", form.stock);
-      formData.append("image_url", form.image_url);
-      const hasNewImages = form.images.some((img) => !img.url.startsWith("data:"));
-      if (editingId && !hasNewImages) {
+      if (editingId && !hasNewUploads) {
         formData.append("skip_images_update", "true");
         formData.append("images", "[]");
+        formData.append("image_url", "");
+      } else if (editingId && hasNewUploads) {
+        const newImages = newImageUrls.map((url, i) => ({
+          url,
+          isFeatured: i === 0,
+        }));
+        formData.append("images", JSON.stringify(newImages));
+        formData.append("image_url", newImages[0]?.url || "");
       } else {
+        formData.append("image_url", form.image_url);
         formData.append("images", JSON.stringify(form.images));
       }
 
@@ -279,6 +292,8 @@ export default function ProductsPage() {
           const newImages = [...prev.images, { url: compressed, isFeatured: prev.images.length === 0 }];
           return { ...prev, images: newImages, image_url: newImages.find((img) => img.isFeatured)?.url || "" };
         });
+        setHasNewUploads(true);
+        setNewImageUrls((prev) => [...prev, compressed]);
       }
     } catch {
       alert("Failed to process image. Please try again.");

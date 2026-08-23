@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { updateProduct, deleteProduct, toggleProductActive, getProductById } from "@/lib/queries";
+import { updateProduct, deleteProduct, toggleProductActive } from "@/lib/queries";
 import { requireAdmin } from "@/lib/auth";
 
 export async function PUT(
@@ -23,10 +23,7 @@ export async function PUT(
         const skipImages = formData.get("skip_images_update") === "true";
 
         let images: { url: string; isFeatured: boolean }[] = [];
-        if (skipImages) {
-          const existing = await getProductById(productId);
-          images = (existing?.images as { url: string; isFeatured: boolean }[]) || [];
-        } else {
+        if (!skipImages) {
           try {
             images = JSON.parse((formData.get("images") as string) || "[]");
           } catch {
@@ -54,9 +51,10 @@ export async function PUT(
           sizes: JSON.parse((formData.get("sizes") as string) || "[]"),
           colors,
           badge: (formData.get("badge") as string) || "",
-          image_url,
+          image_url: skipImages ? undefined : image_url,
           images,
           stock: formData.get("stock") !== undefined ? parseInt(formData.get("stock") as string) : undefined,
+          skip_images: skipImages,
         });
         return NextResponse.json({ success: true });
       }
@@ -92,8 +90,9 @@ export async function PUT(
 
     return NextResponse.json({ error: "No fields to update" }, { status: 400 });
   } catch (err) {
+    const message = err instanceof Error ? err.message : "Unknown error";
     console.error("Update product error:", err);
-    return NextResponse.json({ error: "Failed to update product" }, { status: 500 });
+    return NextResponse.json({ error: `Failed to update product: ${message}` }, { status: 500 });
   }
 }
 

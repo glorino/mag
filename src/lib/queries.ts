@@ -443,9 +443,27 @@ export async function updateProduct(
     images?: { url: string; isFeatured: boolean }[];
     stock?: number;
     is_active?: boolean;
+    skip_images?: boolean;
   }
 ) {
   const sql = getSql();
+  if (product.skip_images) {
+    return sql`
+      UPDATE products
+      SET
+        name = ${product.name},
+        price = ${product.price},
+        category_id = ${product.category_id || null},
+        description = ${product.description || ""},
+        sizes = ${product.sizes || ["S", "M", "L", "XL"]},
+        colors = ${product.colors || []},
+        badge = ${product.badge || ""},
+        stock = ${product.stock || 0},
+        is_active = ${product.is_active ?? true}
+      WHERE id = ${id}
+      RETURNING *
+    `;
+  }
   return sql`
     UPDATE products
     SET
