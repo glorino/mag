@@ -101,7 +101,6 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({
       success: true,
       orderId: order[0].id,
-      order: order[0],
     });
   } catch {
     return NextResponse.json(

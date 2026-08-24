@@ -33,5 +33,5 @@ export default function ClientLayout({ children }: { children: ReactNode }) {
 }
 
 function Toast() {
-  return <div id="toast" className="fixed bottom-[100px] right-6 bg-black text-accent px-6 py-3.5 text-[13px] font-semibold z-[200] translate-y-5 opacity-0 transition-all duration-300 pointer-events-none" />;
+  return <div id="toast" className="fixed bottom-[100px] right-6 bg-black text-accent px-6 py-3.5 text-[13px] font-semibold z-[300] translate-y-5 opacity-0 transition-all duration-300 pointer-events-none" />;
 }

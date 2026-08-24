@@ -53,7 +53,7 @@ export default function TermsPage() {
               <div>
                 <h2 className="text-xl font-serif font-bold text-charcoal mb-3">1. General</h2>
                 <p className="text-text leading-relaxed">
-                  By accessing and using the MAGRE website (www.magre.com.ng), you agree to be bound by these Terms and Conditions. If you do not agree with any part of these terms, please do not use our website.
+                  By accessing and using the MAGRE website ({typeof window !== "undefined" ? window.location.hostname : "www.magre.com.ng"}), you agree to be bound by these Terms and Conditions. If you do not agree with any part of these terms, please do not use our website.
                 </p>
               </div>
 

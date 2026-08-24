@@ -89,10 +89,8 @@ export async function PUT(
     }
 
     return NextResponse.json({ error: "No fields to update" }, { status: 400 });
-  } catch (err) {
-    const message = err instanceof Error ? err.message : "Unknown error";
-    console.error("Update product error:", err);
-    return NextResponse.json({ error: `Failed to update product: ${message}` }, { status: 500 });
+  } catch {
+    return NextResponse.json({ error: "Failed to update product" }, { status: 500 });
   }
 }
 

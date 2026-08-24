@@ -13,29 +13,16 @@ export async function PUT(
     const body = await request.json();
     const sql = getSql();
 
-    if (body.is_active !== undefined) {
-      await sql`UPDATE promo_codes SET is_active = ${body.is_active} WHERE id = ${parseInt(id)}`;
-      return NextResponse.json({ success: true });
-    }
-
-    if (body.code !== undefined || body.discount_percent !== undefined) {
-      await sql`
-        UPDATE promo_codes SET
-          code = COALESCE(${body.code || ""}, code),
-          discount_percent = COALESCE(${body.discount_percent}, discount_percent),
-          min_order_amount = COALESCE(${body.min_order_amount}, min_order_amount),
-          max_uses = ${body.max_uses || null},
-          expires_at = ${body.expires_at || null}::timestamp
-        WHERE id = ${parseInt(id)}
-      `;
+    if (body.is_approved !== undefined) {
+      await sql`UPDATE reviews SET is_approved = ${body.is_approved} WHERE id = ${parseInt(id)}`;
       return NextResponse.json({ success: true });
     }
 
     return NextResponse.json({ error: "No fields to update" }, { status: 400 });
   } catch (err) {
     const message = err instanceof Error ? err.message : "Unknown error";
-    console.error("Update promo error:", err);
-    return NextResponse.json({ error: `Failed to update promo: ${message}` }, { status: 500 });
+    console.error("Update review error:", err);
+    return NextResponse.json({ error: `Failed to update review: ${message}` }, { status: 500 });
   }
 }
 
@@ -48,11 +35,11 @@ export async function DELETE(
   try {
     const { id } = await params;
     const sql = getSql();
-    await sql`DELETE FROM promo_codes WHERE id = ${parseInt(id)}`;
+    await sql`DELETE FROM reviews WHERE id = ${parseInt(id)}`;
     return NextResponse.json({ success: true });
   } catch (err) {
     const message = err instanceof Error ? err.message : "Unknown error";
-    console.error("Delete promo error:", err);
-    return NextResponse.json({ error: `Failed to delete promo: ${message}` }, { status: 500 });
+    console.error("Delete review error:", err);
+    return NextResponse.json({ error: `Failed to delete review: ${message}` }, { status: 500 });
   }
 }

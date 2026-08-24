@@ -42,6 +42,7 @@ export async function initDatabase() {
       colors TEXT[],
       badge VARCHAR(50),
       image_url TEXT,
+      images JSONB DEFAULT '[]',
       is_active BOOLEAN DEFAULT true,
       stock INT DEFAULT 0,
       created_at TIMESTAMP DEFAULT NOW()
@@ -142,11 +143,9 @@ export async function initDatabase() {
   await sql`CREATE INDEX IF NOT EXISTS idx_products_is_active ON products(is_active)`;
   await sql`CREATE INDEX IF NOT EXISTS idx_orders_user_id ON orders(user_id)`;
   await sql`CREATE INDEX IF NOT EXISTS idx_orders_created_at ON orders(created_at)`;
+  await sql`CREATE INDEX IF NOT EXISTS idx_orders_status ON orders(status)`;
   await sql`CREATE INDEX IF NOT EXISTS idx_reviews_product_id ON reviews(product_id)`;
   await sql`CREATE INDEX IF NOT EXISTS idx_messages_is_read ON messages(is_read)`;
-
-  // Add images column if it doesn't exist
-  await sql`ALTER TABLE products ADD COLUMN IF NOT EXISTS images JSONB DEFAULT '[]'`;
 }
 
 // ─── Seed Data ─────────────────────────────────────────
@@ -207,7 +206,9 @@ export async function seedProducts() {
 export async function seedAdmin() {
   const sql = getSql();
   const bcrypt = (await import("bcryptjs")).default;
-  const password_hash = await bcrypt.hash("admin123", 12);
+  const password = process.env.SEED_ADMIN_PASSWORD || process.env.ADMIN_PASSWORD;
+  if (!password) throw new Error("SEED_ADMIN_PASSWORD or ADMIN_PASSWORD env var must be set to seed admin user");
+  const password_hash = await bcrypt.hash(password, 12);
   await sql`
     INSERT INTO users (name, email, password_hash, phone, role, address)
     VALUES ('Admin', 'admin@magre.ng', ${password_hash}, '', 'admin', '')
@@ -218,7 +219,9 @@ export async function seedAdmin() {
 export async function seedCustomer() {
   const sql = getSql();
   const bcrypt = (await import("bcryptjs")).default;
-  const password_hash = await bcrypt.hash("customer123", 12);
+  const password = process.env.SEED_CUSTOMER_PASSWORD || process.env.CUSTOMER_PASSWORD;
+  if (!password) throw new Error("SEED_CUSTOMER_PASSWORD or CUSTOMER_PASSWORD env var must be set to seed customer user");
+  const password_hash = await bcrypt.hash(password, 12);
   await sql`
     INSERT INTO users (name, email, password_hash, phone, role, address)
     VALUES ('Customer', 'customer@magre.ng', ${password_hash}, '', 'user', '')

@@ -26,6 +26,7 @@ interface Product {
   sizes: string[];
   colors: string[];
   details: string[];
+  stock: number;
   related?: Product[];
 }
 
@@ -39,6 +40,7 @@ export default function ProductPage() {
   const [loading, setLoading] = useState(true);
   const [selectedSize, setSelectedSize] = useState<string>("");
   const [selectedColor, setSelectedColor] = useState<string>("");
+  const [quantity, setQuantity] = useState(1);
   const [error, setError] = useState("");
   const [selectedImage, setSelectedImage] = useState(0);
 
@@ -49,10 +51,12 @@ export default function ProductPage() {
         if (res.ok) {
           const data = await res.json();
           setProduct(data);
+        } else {
+          setError("Product not found");
         }
-    } catch {
-      setError("Product not found");
-    }
+      } catch {
+        setError("Product not found");
+      }
       setLoading(false);
     };
 
@@ -82,20 +86,24 @@ export default function ProductPage() {
   }
 
   const handleAddToCart = () => {
-    addItem(
-      {
-        id: product.id,
-        name: product.name,
-        price: product.price,
-        priceNum: product.priceNum,
-        category: product.category,
-        image: product.image,
-      },
-      selectedSize || undefined,
-      selectedColor || undefined
-    );
+    for (let i = 0; i < quantity; i++) {
+      addItem(
+        {
+          id: product.id,
+          name: product.name,
+          price: product.price,
+          priceNum: product.priceNum,
+          category: product.category,
+          image: product.image,
+        },
+        selectedSize || undefined,
+        selectedColor || undefined
+      );
+    }
     router.push("/checkout");
   };
+
+  const outOfStock = product.stock <= 0;
 
   const related = product.related || [];
 
@@ -216,13 +224,51 @@ export default function ProductPage() {
                 </div>
               </div>
 
+              {/* Stock */}
+              <div className="mb-6">
+                {outOfStock ? (
+                  <p className="text-red-500 text-[13px] font-semibold">Out of Stock</p>
+                ) : product.stock <= 5 ? (
+                  <p className="text-orange-500 text-[13px] font-semibold">Only {product.stock} left in stock</p>
+                ) : (
+                  <p className="text-green-600 text-[13px] font-semibold">In Stock ({product.stock} available)</p>
+                )}
+              </div>
+
+              {/* Quantity */}
+              {!outOfStock && (
+                <div className="mb-6">
+                  <p className="text-[12px] font-semibold text-charcoal uppercase tracking-wider mb-3">Quantity</p>
+                  <div className="flex items-center gap-3">
+                    <button
+                      onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                      className="w-10 h-10 border border-border text-charcoal flex items-center justify-center hover:border-charcoal transition-colors text-lg font-medium"
+                    >
+                      -
+                    </button>
+                    <span className="w-12 text-center text-[15px] font-medium text-charcoal">{quantity}</span>
+                    <button
+                      onClick={() => setQuantity(Math.min(product.stock, quantity + 1))}
+                      className="w-10 h-10 border border-border text-charcoal flex items-center justify-center hover:border-charcoal transition-colors text-lg font-medium"
+                    >
+                      +
+                    </button>
+                  </div>
+                </div>
+              )}
+
               {/* Add to Cart */}
               <div className="flex gap-3">
                 <button
                   onClick={handleAddToCart}
-                  className="flex-1 py-4 text-[13px] font-bold tracking-wider uppercase transition-all duration-300 border-none cursor-pointer bg-accent text-black hover:bg-accent-dark"
+                  disabled={outOfStock}
+                  className={`flex-1 py-4 text-[13px] font-bold tracking-wider uppercase transition-all duration-300 border-none cursor-pointer ${
+                    outOfStock
+                      ? "bg-gray-300 text-gray-500 cursor-not-allowed"
+                      : "bg-accent text-black hover:bg-accent-dark"
+                  }`}
                 >
-                  Add to Cart & Checkout
+                  {outOfStock ? "Out of Stock" : "Add to Cart & Checkout"}
                 </button>
                 <button
                   onClick={() => {

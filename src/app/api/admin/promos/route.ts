@@ -59,9 +59,7 @@ export async function POST(request: Request) {
     `;
 
     return NextResponse.json(promo, { status: 201 });
-  } catch (err) {
-    const message = err instanceof Error ? err.message : "Unknown error";
-    console.error("Create promo error:", err);
-    return NextResponse.json({ error: `Failed to create promo code: ${message}` }, { status: 500 });
+  } catch {
+    return NextResponse.json({ error: "Failed to create promo code" }, { status: 500 });
   }
 }

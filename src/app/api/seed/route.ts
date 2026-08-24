@@ -13,9 +13,9 @@ export async function POST(request: Request) {
     await seedAdmin();
     await seedCustomer();
     return NextResponse.json({ success: true, message: "Database initialized with seed data" });
-  } catch (error) {
+  } catch {
     return NextResponse.json(
-      { error: "Failed to initialize database", details: String(error) },
+      { error: "Failed to initialize database" },
       { status: 500 }
     );
   }

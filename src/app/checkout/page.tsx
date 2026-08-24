@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { useCart } from "@/lib/cart-context";
+import { BUSINESS } from "@/lib/constants";
 
 declare global {
   interface Window {
@@ -147,7 +148,7 @@ export default function CheckoutPage() {
         customizations: {
           title: "MAGRE Fashion",
           description: "Payment for order",
-          logo: "https://www.magre.com.ng/logo.jpeg",
+          logo: `${BUSINESS.siteUrl}/logo.jpeg`,
         },
         redirect_url: `${window.location.origin}/checkout/verify`,
         meta: {

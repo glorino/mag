@@ -6,10 +6,13 @@ export default function Newsletter() {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email) return;
+    if (!email || loading) return;
+    setLoading(true);
+    setError(false);
     try {
       const res = await fetch("/api/subscribe", {
         method: "POST",
@@ -18,14 +21,17 @@ export default function Newsletter() {
       });
       if (!res.ok) {
         setError(true);
+        setLoading(false);
         return;
       }
     } catch {
       setError(true);
+      setLoading(false);
       return;
     }
     setSubmitted(true);
     setEmail("");
+    setLoading(false);
   };
 
   return (
@@ -83,8 +89,9 @@ export default function Newsletter() {
             />
             <button
               type="submit"
+              disabled={loading}
               style={{
-                background: "#00e5ff",
+                background: loading ? "#ccc" : "#00e5ff",
                 color: "#000",
                 padding: "16px 32px",
                 fontSize: "12px",
@@ -92,11 +99,11 @@ export default function Newsletter() {
                 letterSpacing: "0.1em",
                 textTransform: "uppercase",
                 border: "none",
-                cursor: "pointer",
+                cursor: loading ? "not-allowed" : "pointer",
                 whiteSpace: "nowrap",
               }}
             >
-              Submit
+              {loading ? "..." : "Submit"}
             </button>
           </form>
         )}

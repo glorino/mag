@@ -19,6 +19,7 @@ export default function AdminPromosPage() {
   const [promos, setPromos] = useState<Promo[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
+  const [editingId, setEditingId] = useState<number | null>(null);
   const [form, setForm] = useState({ code: "", discount_percent: 10, min_order_amount: 0, max_uses: "", expires_at: "" });
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
@@ -42,41 +43,81 @@ export default function AdminPromosPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const handleCreate = async (e: React.FormEvent) => {
+  const openEdit = (promo: Promo) => {
+    setEditingId(promo.id);
+    setForm({
+      code: promo.code,
+      discount_percent: promo.discount_percent,
+      min_order_amount: Number(promo.min_order_amount),
+      max_uses: promo.max_uses ? String(promo.max_uses) : "",
+      expires_at: promo.expires_at ? new Date(promo.expires_at).toISOString().slice(0, 16) : "",
+    });
+    setShowForm(true);
+    setError("");
+  };
+
+  const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
     setSaving(true);
     setError("");
     try {
-      const res = await fetch("/api/admin/promos", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
-        body: JSON.stringify({
-          code: form.code,
-          discount_percent: form.discount_percent,
-          min_order_amount: form.min_order_amount || 0,
-          max_uses: form.max_uses ? Number(form.max_uses) : null,
-          expires_at: form.expires_at || null,
-        }),
-      });
-      if (!res.ok) {
-        const data = await res.json();
-        setError(data.error || "Failed to create promo");
-        return;
+      const body = {
+        code: form.code,
+        discount_percent: form.discount_percent,
+        min_order_amount: form.min_order_amount || 0,
+        max_uses: form.max_uses ? Number(form.max_uses) : null,
+        expires_at: form.expires_at || null,
+      };
+
+      if (editingId) {
+        const res = await fetch(`/api/admin/promos/${editingId}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+          body: JSON.stringify(body),
+        });
+        if (!res.ok) {
+          const data = await res.json();
+          setError(data.error || "Failed to update promo");
+          return;
+        }
+      } else {
+        const res = await fetch("/api/admin/promos", {
+          method: "POST",
+          headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+          body: JSON.stringify(body),
+        });
+        if (!res.ok) {
+          const data = await res.json();
+          setError(data.error || "Failed to create promo");
+          return;
+        }
       }
       setForm({ code: "", discount_percent: 10, min_order_amount: 0, max_uses: "", expires_at: "" });
+      setEditingId(null);
       setShowForm(false);
       fetchPromos();
     } catch {
-      setError("Failed to create promo code");
+      setError(editingId ? "Failed to update promo code" : "Failed to create promo code");
     } finally {
       setSaving(false);
     }
   };
 
+  const handleDelete = async (id: number) => {
+    if (!confirm("Delete this promo code?")) return;
+    try {
+      const res = await fetch(`/api/admin/promos/${id}`, {
+        method: "DELETE",
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (res.ok) fetchPromos();
+    } catch {
+      // ignore
+    }
+  };
+
   const toggleActive = async (id: number, currentActive: boolean) => {
     try {
-      const promo = promos.find((p) => p.id === id);
-      if (!promo) return;
       const res = await fetch(`/api/admin/promos/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
@@ -96,7 +137,7 @@ export default function AdminPromosPage() {
           <p className="text-text-light text-[13px] mt-1">Manage discount codes for your store</p>
         </div>
         <button
-          onClick={() => setShowForm(!showForm)}
+          onClick={() => { setShowForm(!showForm); setEditingId(null); setForm({ code: "", discount_percent: 10, min_order_amount: 0, max_uses: "", expires_at: "" }); setError(""); }}
           className="bg-accent text-black px-5 py-3 text-[12px] font-bold tracking-wider uppercase hover:bg-accent-dark transition-all duration-300"
         >
           {showForm ? "Cancel" : "+ New Promo"}
@@ -105,9 +146,9 @@ export default function AdminPromosPage() {
 
       {showForm && (
         <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="bg-white border border-border p-6 mb-8">
-          <h3 className="font-bold text-charcoal mb-4">Create Promo Code</h3>
+          <h3 className="font-bold text-charcoal mb-4">{editingId ? "Edit Promo Code" : "Create Promo Code"}</h3>
           {error && <p className="text-red-500 text-[13px] mb-4">{error}</p>}
-          <form onSubmit={handleCreate} className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <form onSubmit={handleSave} className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
               <label className="block text-[11px] font-semibold text-text-light mb-1.5 uppercase tracking-wider">Code</label>
               <input
@@ -167,7 +208,7 @@ export default function AdminPromosPage() {
                 disabled={saving}
                 className="bg-accent text-black px-6 py-3 text-[12px] font-bold tracking-wider uppercase hover:bg-accent-dark transition-all duration-300 disabled:opacity-50"
               >
-                {saving ? "Creating..." : "Create Promo"}
+                {saving ? "Saving..." : editingId ? "Update Promo" : "Create Promo"}
               </button>
             </div>
           </form>
@@ -189,6 +230,7 @@ export default function AdminPromosPage() {
                 <th className="text-left py-3 px-4 font-semibold text-charcoal">Uses</th>
                 <th className="text-left py-3 px-4 font-semibold text-charcoal">Expires</th>
                 <th className="text-left py-3 px-4 font-semibold text-charcoal">Status</th>
+                <th className="text-right py-3 px-4 font-semibold text-charcoal">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -208,6 +250,12 @@ export default function AdminPromosPage() {
                     >
                       {promo.is_active ? "Active" : "Inactive"}
                     </button>
+                  </td>
+                  <td className="py-3 px-4 text-right">
+                    <div className="flex items-center justify-end gap-2">
+                      <button onClick={() => openEdit(promo)} className="text-blue-500 hover:text-blue-700 text-[13px] font-medium transition-colors">Edit</button>
+                      <button onClick={() => handleDelete(promo.id)} className="text-red-500 hover:text-red-700 text-[13px] font-medium transition-colors">Delete</button>
+                    </div>
                   </td>
                 </tr>
               ))}

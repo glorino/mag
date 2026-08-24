@@ -37,7 +37,7 @@ export async function POST(request: Request) {
     const user = users;
     if (!user) {
       return NextResponse.json(
-        { error: "No account found with this email" },
+        { error: "Invalid email or password" },
         { status: 401 }
       );
     }
@@ -45,7 +45,7 @@ export async function POST(request: Request) {
     const valid = await comparePassword(password, user.password_hash);
     if (!valid) {
       return NextResponse.json(
-        { error: "Incorrect password. Please try again." },
+        { error: "Invalid email or password" },
         { status: 401 }
       );
     }

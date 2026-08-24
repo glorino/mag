@@ -8,9 +8,12 @@ export default function ContactPage() {
   const [form, setForm] = useState({ firstName: "", lastName: "", email: "", phone: "", type: "", message: "" });
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
+    setError(false);
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
@@ -19,13 +22,16 @@ export default function ContactPage() {
       });
       if (!res.ok) {
         setError(true);
+        setLoading(false);
         return;
       }
     } catch {
       setError(true);
+      setLoading(false);
       return;
     }
     setSubmitted(true);
+    setLoading(false);
   };
 
   return (
@@ -210,9 +216,10 @@ export default function ContactPage() {
                     />
                     <button
                       type="submit"
-                      className="w-full justify-center bg-accent text-black px-8 py-4 text-[13px] font-bold tracking-wider uppercase hover:bg-accent-dark transition-all duration-300 inline-flex items-center gap-2"
+                      disabled={loading || submitted}
+                      className="w-full justify-center bg-accent text-black px-8 py-4 text-[13px] font-bold tracking-wider uppercase hover:bg-accent-dark transition-all duration-300 inline-flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
-                      Send Message
+                      {loading ? "Sending..." : "Send Message"}
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                       </svg>

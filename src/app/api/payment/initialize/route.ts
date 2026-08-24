@@ -1,11 +1,13 @@
 import { NextResponse } from "next/server";
 import { getProductById } from "@/lib/queries";
 import { getUserFromRequest } from "@/lib/auth";
+import getSql from "@/lib/database";
+import { BUSINESS } from "@/lib/constants";
 import crypto from "crypto";
 
 export async function POST(request: Request) {
   try {
-    const { items, email, name, phone, address } = await request.json();
+    const { items, email, name, phone, address, promoCode } = await request.json();
 
     if (!email || !name || !items?.length || !address) {
       return NextResponse.json(
@@ -46,6 +48,45 @@ export async function POST(request: Request) {
       });
     }
 
+    // Server-side promo code validation and discount
+    let discountAmount = 0;
+    let appliedPromoCode = "";
+    if (promoCode) {
+      try {
+        const sql = getSql();
+        await sql`
+          CREATE TABLE IF NOT EXISTS promo_codes (
+            id SERIAL PRIMARY KEY,
+            code VARCHAR(50) UNIQUE NOT NULL,
+            discount_percent INT NOT NULL CHECK (discount_percent > 0 AND discount_percent <= 100),
+            min_order_amount DECIMAL(10, 2) DEFAULT 0,
+            max_uses INT DEFAULT NULL,
+            used_count INT DEFAULT 0,
+            expires_at TIMESTAMP,
+            is_active BOOLEAN DEFAULT true,
+            created_at TIMESTAMP DEFAULT NOW()
+          )
+        `;
+        const [promo] = await sql`
+          SELECT * FROM promo_codes
+          WHERE code = ${promoCode.toUpperCase()} AND is_active = true
+        `;
+        if (promo) {
+          const valid = !promo.expires_at || new Date(promo.expires_at) > new Date();
+          const notExhausted = !promo.max_uses || promo.used_count < promo.max_uses;
+          const minMet = !promo.min_order_amount || serverTotal >= Number(promo.min_order_amount);
+          if (valid && notExhausted && minMet) {
+            discountAmount = Math.round((serverTotal * Number(promo.discount_percent)) / 100);
+            appliedPromoCode = promo.code;
+          }
+        }
+      } catch {
+        // promo validation failed silently — charge full price
+      }
+    }
+
+    const finalTotal = serverTotal - discountAmount;
+
     const flutterwaveSecret = process.env.FLWSECK;
     if (!flutterwaveSecret) {
       return NextResponse.json({ error: "Payment system not configured" }, { status: 500 });
@@ -53,7 +94,7 @@ export async function POST(request: Request) {
 
     // Generate unique tx_ref using UUID to prevent collision
     const txRef = `magre-${crypto.randomUUID()}`;
-    const origin = request.headers.get("origin") || process.env.NEXT_PUBLIC_SITE_URL || "https://www.magre.com.ng";
+    const origin = request.headers.get("origin") || process.env.NEXT_PUBLIC_SITE_URL || BUSINESS.siteUrl;
 
     // Get user_id if logged in
     let userId: number | undefined;
@@ -68,7 +109,7 @@ export async function POST(request: Request) {
       },
       body: JSON.stringify({
         tx_ref: txRef,
-        amount: serverTotal,
+        amount: finalTotal,
         currency: "NGN",
         redirect_url: `${origin}/checkout/verify`,
         customer: {
@@ -85,6 +126,9 @@ export async function POST(request: Request) {
           items: JSON.stringify(validatedItems),
           address,
           user_id: userId || "",
+          promo_code: appliedPromoCode,
+          discount_amount: discountAmount,
+          original_total: serverTotal,
         },
       }),
     });
@@ -92,7 +136,7 @@ export async function POST(request: Request) {
     const data = await response.json();
 
     if (data.status === "success") {
-      return NextResponse.json({ url: data.data.link, tx_ref: txRef, serverTotal });
+      return NextResponse.json({ url: data.data.link, tx_ref: txRef, serverTotal: finalTotal });
     }
 
     return NextResponse.json(

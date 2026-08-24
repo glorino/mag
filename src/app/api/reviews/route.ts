@@ -25,6 +25,7 @@ export async function GET(request: Request) {
       FROM reviews r
       LEFT JOIN users u ON r.user_id = u.id
       LEFT JOIN products p ON r.product_id = p.id
+      WHERE r.is_approved = true
       ORDER BY r.created_at DESC
       LIMIT 50
     `;

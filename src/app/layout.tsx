@@ -3,6 +3,7 @@ import { Geist } from "next/font/google";
 import { Playfair_Display } from "next/font/google";
 import "./globals.css";
 import ClientLayout from "@/components/ClientLayout";
+import { BUSINESS } from "@/lib/constants";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -34,7 +35,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "MAGRE | Premium Women's Fashion",
     description: "Ready-to-wear blouses, trousers, and loungewear designed exclusively for women of all sizes.",
-    url: "https://www.magre.com.ng",
+    url: BUSINESS.siteUrl,
     siteName: "MAGRE Fashion",
     locale: "en_US",
     type: "website",
