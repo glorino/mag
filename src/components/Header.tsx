@@ -13,6 +13,16 @@ function getIsLoggedIn(): boolean {
   return !!localStorage.getItem("token");
 }
 
+function getUserRole(): string | null {
+  if (typeof window === "undefined") return null;
+  try {
+    const user = JSON.parse(localStorage.getItem("user") || "{}");
+    return user.role || null;
+  } catch {
+    return null;
+  }
+}
+
 const navLinks = [
   { name: "Home", href: "/" },
   { name: "Shop", href: "/shop" },
@@ -33,14 +43,22 @@ export default function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [shopOpen, setShopOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [userRole, setUserRole] = useState<string | null>(null);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     setIsLoggedIn(getIsLoggedIn());
-    const handleStorage = () => setIsLoggedIn(getIsLoggedIn());
+    setUserRole(getUserRole());
+    const handleStorage = () => {
+      setIsLoggedIn(getIsLoggedIn());
+      setUserRole(getUserRole());
+    };
     window.addEventListener("storage", handleStorage);
-    const interval = setInterval(() => setIsLoggedIn(getIsLoggedIn()), 1000);
+    const interval = setInterval(() => {
+      setIsLoggedIn(getIsLoggedIn());
+      setUserRole(getUserRole());
+    }, 1000);
     return () => {
       window.removeEventListener("storage", handleStorage);
       clearInterval(interval);
@@ -121,7 +139,7 @@ export default function Header() {
 
           {/* User / Login */}
           {isLoggedIn ? (
-            <Link href="/dashboard" className="p-2 hover:bg-white/10 rounded-full transition-colors">
+            <Link href={userRole === "admin" ? "/admin" : "/dashboard"} className="p-2 hover:bg-white/10 rounded-full transition-colors">
               <svg className="w-[18px] h-[18px] text-accent" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
               </svg>
