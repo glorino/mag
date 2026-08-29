@@ -1,6 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getAllProducts, createProduct } from "@/lib/queries";
 import { requireAdmin } from "@/lib/auth";
+import getSql from "@/lib/database";
+
+async function ensureSchema() {
+  const sql = getSql();
+  await sql`ALTER TABLE products ADD COLUMN IF NOT EXISTS images JSONB DEFAULT '[]'`;
+}
 
 export async function GET(request: Request) {
   const admin = await requireAdmin(request);
@@ -18,6 +24,7 @@ export async function POST(request: NextRequest) {
   if (!admin) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   try {
+    await ensureSchema();
     const formData = await request.formData();
     const name = (formData.get("name") as string) || "";
     const price = (formData.get("price") as string) || "";
