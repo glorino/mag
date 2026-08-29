@@ -32,10 +32,9 @@ export async function PUT(
     }
 
     return NextResponse.json({ error: "No fields to update" }, { status: 400 });
-  } catch (err) {
-    const message = err instanceof Error ? err.message : "Unknown error";
-    console.error("Update promo error:", err);
-    return NextResponse.json({ error: `Failed to update promo: ${message}` }, { status: 500 });
+  } catch {
+    console.error("Update promo error:");
+    return NextResponse.json({ error: "Failed to update promo" }, { status: 500 });
   }
 }
 
@@ -50,9 +49,8 @@ export async function DELETE(
     const sql = getSql();
     await sql`DELETE FROM promo_codes WHERE id = ${parseInt(id)}`;
     return NextResponse.json({ success: true });
-  } catch (err) {
-    const message = err instanceof Error ? err.message : "Unknown error";
-    console.error("Delete promo error:", err);
-    return NextResponse.json({ error: `Failed to delete promo: ${message}` }, { status: 500 });
+  } catch {
+    console.error("Delete promo error:");
+    return NextResponse.json({ error: "Failed to delete promo" }, { status: 500 });
   }
 }

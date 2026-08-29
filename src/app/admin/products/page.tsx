@@ -86,13 +86,13 @@ export default function ProductsPage() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const PER_PAGE = 10;
 
-  const token = typeof window !== "undefined" ? localStorage.getItem("token") : "";
+  const token = typeof window !== "undefined" ? localStorage.getItem("token") || "" : "";
 
   const fetchProducts = async () => {
     try {
       const res = await fetch("/api/admin/products", { headers: { Authorization: `Bearer ${token}` } });
       const data = await res.json();
-      setProducts(data);
+      setProducts(Array.isArray(data) ? data : []);
     } catch {
       setSaveError("Failed to load products");
     } finally {

@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import getSql from "@/lib/database";
 import { requireAdmin } from "@/lib/auth";
 

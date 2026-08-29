@@ -3,6 +3,13 @@ import { createOrder, decrementStock, getProductById } from "@/lib/queries";
 import getSql from "@/lib/database";
 import crypto from "crypto";
 
+function timingSafeCompare(a: string, b: string): boolean {
+  const bufA = Buffer.from(a);
+  const bufB = Buffer.from(b);
+  if (bufA.length !== bufB.length) return false;
+  return crypto.timingSafeEqual(bufA, bufB);
+}
+
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
@@ -13,7 +20,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Missing webhook signature or encryption key" }, { status: 400 });
     }
     const hash = crypto.createHmac("sha512", encryptionKey).update(JSON.stringify(body)).digest("hex");
-    if (hash !== signature) {
+    if (!timingSafeCompare(hash, signature)) {
       return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
     }
 
@@ -81,12 +88,13 @@ export async function POST(request: NextRequest) {
       payment_status: "paid",
     });
 
-    // Decrement stock
+    // Decrement stock using validated items (not raw metadata)
     interface StockItem { id: number; quantity: number; }
-    await decrementStock(items.map((item: StockItem) => ({ id: item.id, quantity: item.quantity })));
+    await decrementStock(validatedItems.map((item: StockItem) => ({ id: item.id, quantity: item.quantity })));
 
     return NextResponse.json({ received: true, orderId: order[0].id });
   } catch {
-    return NextResponse.json({ error: "Webhook processing failed" }, { status: 500 });
+    // Return 200 to prevent Flutterwave retries on processing errors
+    return NextResponse.json({ error: "Webhook processing failed" });
   }
 }

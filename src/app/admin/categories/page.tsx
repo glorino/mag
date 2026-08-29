@@ -28,7 +28,7 @@ export default function CategoriesPage() {
   const [form, setForm] = useState(emptyForm);
   const [saving, setSaving] = useState(false);
 
-  const token = typeof window !== "undefined" ? localStorage.getItem("token") : "";
+  const token = typeof window !== "undefined" ? localStorage.getItem("token") || "" : "";
 
   const fetchCategories = async () => {
     try {
@@ -36,7 +36,7 @@ export default function CategoriesPage() {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
-      setCategories(data);
+      setCategories(Array.isArray(data) ? data : []);
     } catch {
       setCategories([]);
     }

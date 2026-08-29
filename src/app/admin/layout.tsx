@@ -200,7 +200,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
             <div className="px-3 py-4 border-t border-white/10">
               <button
-                onClick={() => {
+                onClick={async () => {
+                  try { await fetch("/api/auth/logout", { method: "POST" }); } catch {}
                   localStorage.removeItem("token");
                   localStorage.removeItem("user");
                   window.location.href = "/";

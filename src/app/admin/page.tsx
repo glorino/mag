@@ -33,6 +33,7 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     const token = localStorage.getItem("token");
+    if (!token) { setLoading(false); return; }
     fetch("/api/admin/stats", {
       headers: { Authorization: `Bearer ${token}` },
     })
@@ -46,10 +47,10 @@ export default function AdminDashboard() {
 
   const statCards = stats
     ? [
-        { label: "Total Revenue", value: `₦${stats.totalRevenue.toLocaleString()}`, icon: "💰", color: "from-green-500/20 to-green-500/5", change: "+12% this month" },
-        { label: "Total Orders", value: stats.totalOrders, icon: "📋", color: "from-blue-500/20 to-blue-500/5", change: "+8% this month" },
-        { label: "Total Products", value: stats.totalProducts, icon: "📦", color: "from-purple-500/20 to-purple-500/5", change: `${stats.totalProducts} active` },
-        { label: "Total Users", value: stats.totalUsers, icon: "👥", color: "from-accent/20 to-accent/5", change: `${stats.totalUsers} registered` },
+        { label: "Total Revenue", value: `₦${(stats?.totalRevenue ?? 0).toLocaleString()}`, icon: "💰", color: "from-green-500/20 to-green-500/5", change: "+12% this month" },
+        { label: "Total Orders", value: stats?.totalOrders ?? 0, icon: "📋", color: "from-blue-500/20 to-blue-500/5", change: "+8% this month" },
+        { label: "Total Products", value: stats?.totalProducts ?? 0, icon: "📦", color: "from-purple-500/20 to-purple-500/5", change: `${stats?.totalProducts ?? 0} active` },
+        { label: "Total Users", value: stats?.totalUsers ?? 0, icon: "👥", color: "from-accent/20 to-accent/5", change: `${stats?.totalUsers ?? 0} registered` },
       ]
     : [];
 

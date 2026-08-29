@@ -38,7 +38,7 @@ function OrdersContent() {
   const [expandedId, setExpandedId] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  const token = typeof window !== "undefined" ? localStorage.getItem("token") : "";
+  const token = typeof window !== "undefined" ? localStorage.getItem("token") || "" : "";
 
   const fetchOrders = async () => {
     try {
@@ -54,7 +54,7 @@ function OrdersContent() {
         return;
       }
 
-      setOrders(data);
+      setOrders(Array.isArray(data) ? data : []);
       setError(null);
     } catch {
       setError("Failed to fetch orders");

@@ -79,7 +79,10 @@ export async function GET(request: NextRequest) {
     }
 
     if (validatedTotal > 0 && validatedTotal !== txData.amount) {
-      console.warn(`Verify price mismatch: expected ${validatedTotal}, got ${txData.amount} for tx ${transactionId}`);
+      return NextResponse.json(
+        { success: false, error: "Payment verification failed" },
+        { status: 400 }
+      );
     }
 
     const order = await createOrder({
@@ -89,14 +92,14 @@ export async function GET(request: NextRequest) {
       phone: txData.customer?.phonenumber || "",
       address,
       items: validatedItems,
-      total: txData.amount,
+      total: validatedTotal || txData.amount,
       payment_ref: transactionId,
       payment_status: "paid",
     });
 
-    // Decrement stock
+    // Decrement stock using validated items (not raw metadata)
     interface StockItem { id: number; quantity: number; }
-    await decrementStock(items.map((item: StockItem) => ({ id: item.id, quantity: item.quantity })));
+    await decrementStock(validatedItems.map((item: StockItem) => ({ id: item.id, quantity: item.quantity })));
 
     return NextResponse.json({
       success: true,

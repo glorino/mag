@@ -30,7 +30,7 @@ function VerifyContent() {
       .then(async (res) => {
         const data = await res.json();
         if (res.ok && data.success) {
-          setOrderId(String(data.order?.id || ""));
+          setOrderId(String(data.orderId || ""));
           clearCart();
           setStatus("success");
         } else {

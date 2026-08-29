@@ -13,7 +13,7 @@ export default function SubscribersPage() {
   const [subscribers, setSubscribers] = useState<Subscriber[]>([]);
   const [loading, setLoading] = useState(true);
 
-  const token = typeof window !== "undefined" ? localStorage.getItem("token") : "";
+  const token = typeof window !== "undefined" ? localStorage.getItem("token") || "" : "";
 
   const fetchSubscribers = async () => {
     try {
@@ -21,7 +21,7 @@ export default function SubscribersPage() {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
-      setSubscribers(data);
+      setSubscribers(Array.isArray(data) ? data : []);
     } catch {
       setSubscribers([]);
     }

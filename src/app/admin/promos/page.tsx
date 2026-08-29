@@ -24,7 +24,7 @@ export default function AdminPromosPage() {
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
 
-  const token = typeof window !== "undefined" ? localStorage.getItem("token") : "";
+  const token = typeof window !== "undefined" ? localStorage.getItem("token") || "" : "";
 
   const fetchPromos = async () => {
     try {

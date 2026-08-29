@@ -16,7 +16,7 @@ export default function UsersPage() {
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
 
-  const token = typeof window !== "undefined" ? localStorage.getItem("token") : "";
+  const token = typeof window !== "undefined" ? localStorage.getItem("token") || "" : "";
 
   const fetchUsers = async () => {
     try {
@@ -24,7 +24,7 @@ export default function UsersPage() {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
-      setUsers(data);
+      setUsers(Array.isArray(data) ? data : []);
     } catch {
       setUsers([]);
     }

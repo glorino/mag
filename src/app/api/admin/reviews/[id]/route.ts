@@ -19,10 +19,9 @@ export async function PUT(
     }
 
     return NextResponse.json({ error: "No fields to update" }, { status: 400 });
-  } catch (err) {
-    const message = err instanceof Error ? err.message : "Unknown error";
-    console.error("Update review error:", err);
-    return NextResponse.json({ error: `Failed to update review: ${message}` }, { status: 500 });
+  } catch {
+    console.error("Update review error:");
+    return NextResponse.json({ error: "Failed to update review" }, { status: 500 });
   }
 }
 
@@ -37,9 +36,8 @@ export async function DELETE(
     const sql = getSql();
     await sql`DELETE FROM reviews WHERE id = ${parseInt(id)}`;
     return NextResponse.json({ success: true });
-  } catch (err) {
-    const message = err instanceof Error ? err.message : "Unknown error";
-    console.error("Delete review error:", err);
-    return NextResponse.json({ error: `Failed to delete review: ${message}` }, { status: 500 });
+  } catch {
+    console.error("Delete review error:");
+    return NextResponse.json({ error: "Failed to delete review" }, { status: 500 });
   }
 }

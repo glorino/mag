@@ -23,6 +23,7 @@ const WishlistContext = createContext<WishlistContextType | null>(null);
 
 export function WishlistProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<WishlistItem[]>([]);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     try {
@@ -30,16 +31,19 @@ export function WishlistProvider({ children }: { children: ReactNode }) {
       if (stored) setItems(JSON.parse(stored));
     } catch {
       localStorage.removeItem("magre_wishlist");
+    } finally {
+      setLoaded(true);
     }
   }, []);
 
   useEffect(() => {
+    if (!loaded) return;
     try {
       localStorage.setItem("magre_wishlist", JSON.stringify(items));
     } catch {
       // Storage unavailable
     }
-  }, [items]);
+  }, [items, loaded]);
 
   const addItem = useCallback((item: Omit<WishlistItem, "quantity">) => {
     setItems((prev) => {

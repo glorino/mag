@@ -50,8 +50,12 @@ function ShopContent() {
         if (sortBy !== "latest") params.set("sort", sortBy);
 
         const res = await fetch(`/api/products?${params.toString()}`);
-        const data = await res.json();
-        setProducts(data);
+        if (!res.ok) {
+          setProducts([]);
+        } else {
+          const data = await res.json();
+          setProducts(Array.isArray(data) ? data : []);
+        }
       } catch {
         setProducts([]);
       }

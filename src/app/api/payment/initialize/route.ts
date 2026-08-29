@@ -24,7 +24,10 @@ export async function POST(request: Request) {
       if (!product) {
         return NextResponse.json({ error: `Product not found: ${item.id}` }, { status: 400 });
       }
-      const qty = item.quantity || 1;
+      const qty = Number(item.quantity) || 1;
+      if (!Number.isInteger(qty) || qty < 1) {
+        return NextResponse.json({ error: `Invalid quantity for ${product.name}` }, { status: 400 });
+      }
       
       // Stock validation
       const availableStock = product.stock || 0;

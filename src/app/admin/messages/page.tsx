@@ -29,7 +29,7 @@ export default function MessagesPage() {
   const [expandedId, setExpandedId] = useState<number | null>(null);
   const [filter, setFilter] = useState<"all" | "unread">("all");
 
-  const token = typeof window !== "undefined" ? localStorage.getItem("token") : "";
+  const token = typeof window !== "undefined" ? localStorage.getItem("token") || "" : "";
 
   const fetchMessages = async () => {
     try {
@@ -37,9 +37,8 @@ export default function MessagesPage() {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
-      setMessages(data);
-    } catch (err) {
-      console.error(err);
+      setMessages(Array.isArray(data) ? data : []);
+    } catch {
       setMessages([]);
     }
     setLoading(false);
