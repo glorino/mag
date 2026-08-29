@@ -66,6 +66,7 @@ export async function POST(request: NextRequest) {
 
     if (validatedTotal > 0 && validatedTotal !== txData.amount) {
       console.warn(`Webhook price mismatch: expected ${validatedTotal}, got ${txData.amount} for tx ${transactionId}`);
+      return NextResponse.json({ error: "Price mismatch" }, { status: 400 });
     }
 
     const order = await createOrder({
@@ -75,7 +76,7 @@ export async function POST(request: NextRequest) {
       phone: txData.customer?.phonenumber || "",
       address,
       items: validatedItems,
-      total: txData.amount,
+      total: validatedTotal || txData.amount,
       payment_ref: transactionId,
       payment_status: "paid",
     });
