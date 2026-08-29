@@ -63,6 +63,7 @@ export async function GET(
       description: String(product.description || ""),
       sizes: (product.sizes as string[]) || ["S", "M", "L", "XL"],
       colors: (product.colors as string[]) || [],
+      stock: Number(product.stock) || 0,
       details: product.description ? [String(product.description)] : [],
       related,
     });
