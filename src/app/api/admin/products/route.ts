@@ -67,7 +67,8 @@ export async function POST(request: NextRequest) {
       stock: parseInt(stock) || 0,
     });
     return NextResponse.json({ success: true, product: result[0] });
-  } catch {
+  } catch (err) {
+    console.error("Create product error:", err);
     return NextResponse.json({ error: "Failed to create product" }, { status: 500 });
   }
 }

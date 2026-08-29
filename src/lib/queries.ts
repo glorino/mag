@@ -146,6 +146,8 @@ export async function initDatabase() {
   await sql`CREATE INDEX IF NOT EXISTS idx_orders_status ON orders(status)`;
   await sql`CREATE INDEX IF NOT EXISTS idx_reviews_product_id ON reviews(product_id)`;
   await sql`CREATE INDEX IF NOT EXISTS idx_messages_is_read ON messages(is_read)`;
+
+  await sql`ALTER TABLE products ADD COLUMN IF NOT EXISTS images JSONB DEFAULT '[]'`;
 }
 
 // ─── Seed Data ─────────────────────────────────────────
