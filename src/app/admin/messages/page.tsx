@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import AdminPagination from "@/components/AdminPagination";
 
 interface Message {
   id: number;
@@ -28,16 +29,24 @@ export default function MessagesPage() {
   const [loading, setLoading] = useState(true);
   const [expandedId, setExpandedId] = useState<number | null>(null);
   const [filter, setFilter] = useState<"all" | "unread">("all");
+  const [page, setPage] = useState(1);
+  const [totalItems, setTotalItems] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
+  const LIMIT = 20;
 
   const token = typeof window !== "undefined" ? localStorage.getItem("token") || "" : "";
 
-  const fetchMessages = async () => {
+  const fetchMessages = async (pageNum = page) => {
     try {
-      const res = await fetch("/api/admin/messages", {
+      const res = await fetch(`/api/admin/messages?page=${pageNum}&limit=${LIMIT}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      const data = await res.json();
-      setMessages(Array.isArray(data) ? data : []);
+      const result = await res.json();
+      setMessages(Array.isArray(result.data) ? result.data : Array.isArray(result) ? result : []);
+      if (result.total !== undefined) {
+        setTotalItems(result.total);
+        setTotalPages(result.totalPages || 1);
+      }
     } catch {
       setMessages([]);
     }
@@ -45,7 +54,7 @@ export default function MessagesPage() {
   };
 
   useEffect(() => {
-    fetchMessages();
+    fetchMessages(1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -257,6 +266,7 @@ export default function MessagesPage() {
           </div>
         )}
       </div>
+      <AdminPagination page={page} totalPages={totalPages} total={totalItems} limit={LIMIT} onPageChange={(p) => { setPage(p); fetchMessages(p); }} />
     </div>
   );
 }

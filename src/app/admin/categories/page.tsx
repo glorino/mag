@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import AdminPagination from "@/components/AdminPagination";
 
 interface Category {
   id: number;
@@ -27,16 +28,24 @@ export default function CategoriesPage() {
   const [editingId, setEditingId] = useState<number | null>(null);
   const [form, setForm] = useState(emptyForm);
   const [saving, setSaving] = useState(false);
+  const [page, setPage] = useState(1);
+  const [totalItems, setTotalItems] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
+  const LIMIT = 20;
 
   const token = typeof window !== "undefined" ? localStorage.getItem("token") || "" : "";
 
-  const fetchCategories = async () => {
+  const fetchCategories = async (pageNum = page) => {
     try {
-      const res = await fetch("/api/admin/categories", {
+      const res = await fetch(`/api/admin/categories?page=${pageNum}&limit=${LIMIT}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      const data = await res.json();
-      setCategories(Array.isArray(data) ? data : []);
+      const result = await res.json();
+      setCategories(Array.isArray(result.data) ? result.data : Array.isArray(result) ? result : []);
+      if (result.total !== undefined) {
+        setTotalItems(result.total);
+        setTotalPages(result.totalPages || 1);
+      }
     } catch {
       setCategories([]);
     }
@@ -44,7 +53,7 @@ export default function CategoriesPage() {
   };
 
   useEffect(() => {
-    fetchCategories();
+    fetchCategories(1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -329,6 +338,7 @@ export default function CategoriesPage() {
           </table>
         </div>
       </div>
+      <AdminPagination page={page} totalPages={totalPages} total={totalItems} limit={LIMIT} onPageChange={(p) => { setPage(p); fetchCategories(p); }} />
     </div>
   );
 }

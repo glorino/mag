@@ -24,12 +24,19 @@ export async function GET(request: Request) {
   if (!admin) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   try {
     await ensureTable();
+    const { searchParams } = new URL(request.url);
+    const page = Math.max(1, parseInt(searchParams.get("page") || "1"));
+    const limit = Math.min(100, Math.max(1, parseInt(searchParams.get("limit") || "20")));
+    const offset = (page - 1) * limit;
+
     const sql = getSql();
-    const promos = await sql`SELECT * FROM promo_codes ORDER BY created_at DESC`;
-    return NextResponse.json(promos);
+    const [countResult] = await sql`SELECT COUNT(*) as count FROM promo_codes`;
+    const total = Number(countResult?.count || 0);
+    const promos = await sql`SELECT * FROM promo_codes ORDER BY created_at DESC LIMIT ${limit} OFFSET ${offset}`;
+    return NextResponse.json({ data: promos, total, page, limit, totalPages: Math.ceil(total / limit) });
   } catch (err) {
     console.error("Get promos error:", err);
-    return NextResponse.json([], { status: 500 });
+    return NextResponse.json({ data: [], total: 0, page: 1, limit: 20, totalPages: 0 }, { status: 500 });
   }
 }
 

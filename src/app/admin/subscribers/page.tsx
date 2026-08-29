@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import AdminPagination from "@/components/AdminPagination";
 
 interface Subscriber {
   id: number;
@@ -12,16 +13,24 @@ interface Subscriber {
 export default function SubscribersPage() {
   const [subscribers, setSubscribers] = useState<Subscriber[]>([]);
   const [loading, setLoading] = useState(true);
+  const [page, setPage] = useState(1);
+  const [totalItems, setTotalItems] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
+  const LIMIT = 20;
 
   const token = typeof window !== "undefined" ? localStorage.getItem("token") || "" : "";
 
-  const fetchSubscribers = async () => {
+  const fetchSubscribers = async (pageNum = page) => {
     try {
-      const res = await fetch("/api/admin/subscribers", {
+      const res = await fetch(`/api/admin/subscribers?page=${pageNum}&limit=${LIMIT}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      const data = await res.json();
-      setSubscribers(Array.isArray(data) ? data : []);
+      const result = await res.json();
+      setSubscribers(Array.isArray(result.data) ? result.data : Array.isArray(result) ? result : []);
+      if (result.total !== undefined) {
+        setTotalItems(result.total);
+        setTotalPages(result.totalPages || 1);
+      }
     } catch {
       setSubscribers([]);
     }
@@ -29,7 +38,8 @@ export default function SubscribersPage() {
   };
 
   useEffect(() => {
-    fetchSubscribers();
+    fetchSubscribers(1);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleDelete = async (id: number) => {
@@ -109,6 +119,7 @@ export default function SubscribersPage() {
           </div>
         </div>
       )}
+      <AdminPagination page={page} totalPages={totalPages} total={totalItems} limit={LIMIT} onPageChange={(p) => { setPage(p); fetchSubscribers(p); }} />
     </div>
   );
 }

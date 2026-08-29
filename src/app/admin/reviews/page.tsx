@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
+import AdminPagination from "@/components/AdminPagination";
 
 interface Review {
   id: number;
@@ -19,14 +20,22 @@ export default function AdminReviewsPage() {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<"all" | "pending" | "approved">("all");
+  const [page, setPage] = useState(1);
+  const [totalItems, setTotalItems] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
+  const LIMIT = 20;
 
   const token = typeof window !== "undefined" ? localStorage.getItem("token") || "" : "";
 
-  const fetchReviews = async () => {
+  const fetchReviews = async (pageNum = page) => {
     try {
-      const res = await fetch("/api/admin/reviews", { headers: { Authorization: `Bearer ${token}` } });
-      const data = await res.json();
-      setReviews(Array.isArray(data) ? data : []);
+      const res = await fetch(`/api/admin/reviews?page=${pageNum}&limit=${LIMIT}`, { headers: { Authorization: `Bearer ${token}` } });
+      const result = await res.json();
+      setReviews(Array.isArray(result.data) ? result.data : Array.isArray(result) ? result : []);
+      if (result.total !== undefined) {
+        setTotalItems(result.total);
+        setTotalPages(result.totalPages || 1);
+      }
     } catch {
       setReviews([]);
     } finally {
@@ -35,7 +44,8 @@ export default function AdminReviewsPage() {
   };
 
   useEffect(() => {
-    fetchReviews();
+    fetchReviews(1);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const toggleApproval = async (id: number, current: boolean) => {
@@ -161,6 +171,7 @@ export default function AdminReviewsPage() {
           ))}
         </div>
       )}
+      <AdminPagination page={page} totalPages={totalPages} total={totalItems} limit={LIMIT} onPageChange={(p) => { setPage(p); fetchReviews(p); }} />
     </div>
   );
 }

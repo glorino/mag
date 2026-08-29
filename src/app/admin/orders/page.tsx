@@ -28,6 +28,8 @@ const statusColors: Record<string, string> = {
 
 const statuses = ["pending", "processing", "shipped", "delivered", "cancelled"];
 
+import AdminPagination from "@/components/AdminPagination";
+
 function OrdersContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -37,24 +39,32 @@ function OrdersContent() {
   const [filter, setFilter] = useState("all");
   const [expandedId, setExpandedId] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [page, setPage] = useState(1);
+  const [totalItems, setTotalItems] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
+  const LIMIT = 20;
 
   const token = typeof window !== "undefined" ? localStorage.getItem("token") || "" : "";
 
-  const fetchOrders = async () => {
+  const fetchOrders = async (pageNum = page) => {
     try {
-      const res = await fetch("/api/admin/orders", {
+      const res = await fetch(`/api/admin/orders?page=${pageNum}&limit=${LIMIT}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      const data = await res.json();
+      const result = await res.json();
 
       if (!res.ok) {
-        setError(data.error || "Failed to fetch orders");
+        setError(result.error || "Failed to fetch orders");
         setOrders([]);
         setLoading(false);
         return;
       }
 
-      setOrders(Array.isArray(data) ? data : []);
+      setOrders(Array.isArray(result.data) ? result.data : Array.isArray(result) ? result : []);
+      if (result.total !== undefined) {
+        setTotalItems(result.total);
+        setTotalPages(result.totalPages || 1);
+      }
       setError(null);
     } catch {
       setError("Failed to fetch orders");
@@ -64,7 +74,7 @@ function OrdersContent() {
   };
 
   useEffect(() => {
-    fetchOrders();
+    fetchOrders(1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -351,6 +361,7 @@ function OrdersContent() {
           </table>
         </div>
       </div>
+      <AdminPagination page={page} totalPages={totalPages} total={totalItems} limit={LIMIT} onPageChange={(p) => { setPage(p); fetchOrders(p); }} />
     </div>
   );
 }

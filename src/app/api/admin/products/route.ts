@@ -12,10 +12,24 @@ export async function GET(request: Request) {
   const admin = await requireAdmin(request);
   if (!admin) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   try {
-    const products = await getAllProducts();
-    return NextResponse.json(products);
+    const { searchParams } = new URL(request.url);
+    const page = Math.max(1, parseInt(searchParams.get("page") || "1"));
+    const limit = Math.min(100, Math.max(1, parseInt(searchParams.get("limit") || "20")));
+    const offset = (page - 1) * limit;
+
+    const sql = getSql();
+    const [countResult] = await sql`SELECT COUNT(*) as count FROM products`;
+    const total = Number(countResult?.count || 0);
+    const data = await sql`
+      SELECT p.*, c.name as category_name, c.slug as category_slug
+      FROM products p
+      LEFT JOIN categories c ON p.category_id = c.id
+      ORDER BY p.created_at DESC
+      LIMIT ${limit} OFFSET ${offset}
+    `;
+    return NextResponse.json({ data, total, page, limit, totalPages: Math.ceil(total / limit) });
   } catch {
-    return NextResponse.json([]);
+    return NextResponse.json({ data: [], total: 0, page: 1, limit: 20, totalPages: 0 });
   }
 }
 

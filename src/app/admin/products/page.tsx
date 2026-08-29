@@ -84,15 +84,21 @@ export default function ProductsPage() {
   const [hasNewUploads, setHasNewUploads] = useState(false);
   const [newImageUrls, setNewImageUrls] = useState<string[]>([]);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const PER_PAGE = 10;
+  const PER_PAGE = 20;
+  const [totalItems, setTotalItems] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
 
   const token = typeof window !== "undefined" ? localStorage.getItem("token") || "" : "";
 
-  const fetchProducts = async () => {
+  const fetchProducts = async (pageNum = page) => {
     try {
-      const res = await fetch("/api/admin/products", { headers: { Authorization: `Bearer ${token}` } });
-      const data = await res.json();
-      setProducts(Array.isArray(data) ? data : []);
+      const res = await fetch(`/api/admin/products?page=${pageNum}&limit=${PER_PAGE}`, { headers: { Authorization: `Bearer ${token}` } });
+      const result = await res.json();
+      setProducts(Array.isArray(result.data) ? result.data : Array.isArray(result) ? result : []);
+      if (result.total !== undefined) {
+        setTotalItems(result.total);
+        setTotalPages(result.totalPages || 1);
+      }
     } catch {
       setSaveError("Failed to load products");
     } finally {
@@ -101,29 +107,32 @@ export default function ProductsPage() {
   };
 
   const fetchCategories = () => {
-    fetch("/api/admin/categories", { headers: { Authorization: `Bearer ${token}` } })
+    fetch("/api/admin/categories?limit=100", { headers: { Authorization: `Bearer ${token}` } })
       .then((res) => res.json())
-      .then((data) => setCategories(data))
+      .then((result) => setCategories(Array.isArray(result.data) ? result.data : Array.isArray(result) ? result : []))
       .catch(() => {
         // Categories fetch failed
       });
   };
 
   useEffect(() => {
-    fetchProducts();
+    fetchProducts(1);
     fetchCategories();
+    setPage(1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const filtered = products.filter(
-    (p) =>
-      p.name.toLowerCase().includes(search.toLowerCase()) ||
-      (p.category_name || "").toLowerCase().includes(search.toLowerCase())
-  );
+  const filtered = search
+    ? products.filter(
+        (p) =>
+          p.name.toLowerCase().includes(search.toLowerCase()) ||
+          (p.category_name || "").toLowerCase().includes(search.toLowerCase())
+      )
+    : products;
 
-  const totalPages = Math.max(1, Math.ceil(filtered.length / PER_PAGE));
-  const safePage = Math.min(page, totalPages);
-  const paginated = filtered.slice((safePage - 1) * PER_PAGE, safePage * PER_PAGE);
+  const displayTotalPages = search ? Math.max(1, Math.ceil(filtered.length / PER_PAGE)) : totalPages;
+  const safePage = Math.min(page, displayTotalPages);
+  const paginated = search ? filtered.slice((safePage - 1) * PER_PAGE, safePage * PER_PAGE) : filtered;
 
   const openAdd = () => {
     setForm(emptyForm);
@@ -723,21 +732,21 @@ export default function ProductsPage() {
           </table>
         </div>
 
-        {filtered.length > PER_PAGE && (
+        {!search && totalItems > PER_PAGE && (
           <div className="flex items-center justify-between px-6 py-4 border-t border-white/10">
             <p className="text-sm text-white/40">
-              Showing {(safePage - 1) * PER_PAGE + 1}–{Math.min(safePage * PER_PAGE, filtered.length)} of {filtered.length}
+              Showing {(safePage - 1) * PER_PAGE + 1}–{Math.min(safePage * PER_PAGE, totalItems)} of {totalItems}
             </p>
             <div className="flex items-center gap-2">
               <button
-                onClick={() => setPage((p) => Math.max(1, p - 1))}
+                onClick={() => { setPage((p) => Math.max(1, p - 1)); fetchProducts(Math.max(1, page - 1)); }}
                 disabled={safePage <= 1}
                 className="px-3 py-1.5 text-sm font-medium rounded-lg border border-white/10 text-white/50 hover:text-white hover:border-white/20 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
               >
                 Previous
               </button>
-              {Array.from({ length: totalPages }, (_, i) => i + 1)
-                .filter((p) => p === 1 || p === totalPages || Math.abs(p - safePage) <= 1)
+              {Array.from({ length: displayTotalPages }, (_, i) => i + 1)
+                .filter((p) => p === 1 || p === displayTotalPages || Math.abs(p - safePage) <= 1)
                 .reduce<(number | "...")[]>((acc, p, idx, arr) => {
                   if (idx > 0 && p - (arr[idx - 1] as number) > 1) acc.push("...");
                   acc.push(p);
@@ -749,11 +758,11 @@ export default function ProductsPage() {
                   ) : (
                     <button
                       key={p}
-                      onClick={() => setPage(p as number)}
+                      onClick={() => { setPage(p as number); fetchProducts(p as number); }}
                       className={`px-3 py-1.5 text-sm font-medium rounded-lg transition-colors ${
                         safePage === p
                           ? "bg-accent text-black"
-                          : "border border-white/10 text-white/50 hover:text-white hover:border-white/20"
+                          : "text-white/40 hover:text-white hover:bg-white/5"
                       }`}
                     >
                       {p}
@@ -761,8 +770,8 @@ export default function ProductsPage() {
                   )
                 )}
               <button
-                onClick={() => setPage((p) => Math.min(totalPages, p + 1))}
-                disabled={safePage >= totalPages}
+                onClick={() => { setPage((p) => Math.min(displayTotalPages, p + 1)); fetchProducts(Math.min(displayTotalPages, page + 1)); }}
+                disabled={safePage >= displayTotalPages}
                 className="px-3 py-1.5 text-sm font-medium rounded-lg border border-white/10 text-white/50 hover:text-white hover:border-white/20 disabled:opacity-30 disabled:cursor-not-allowed transition-colors"
               >
                 Next

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import AdminPagination from "@/components/AdminPagination";
 
 interface User {
   id: number;
@@ -15,16 +16,24 @@ export default function UsersPage() {
   const [users, setUsers] = useState<User[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
+  const [page, setPage] = useState(1);
+  const [totalItems, setTotalItems] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
+  const LIMIT = 20;
 
   const token = typeof window !== "undefined" ? localStorage.getItem("token") || "" : "";
 
-  const fetchUsers = async () => {
+  const fetchUsers = async (pageNum = page) => {
     try {
-      const res = await fetch("/api/admin/users", {
+      const res = await fetch(`/api/admin/users?page=${pageNum}&limit=${LIMIT}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      const data = await res.json();
-      setUsers(Array.isArray(data) ? data : []);
+      const result = await res.json();
+      setUsers(Array.isArray(result.data) ? result.data : Array.isArray(result) ? result : []);
+      if (result.total !== undefined) {
+        setTotalItems(result.total);
+        setTotalPages(result.totalPages || 1);
+      }
     } catch {
       setUsers([]);
     }
@@ -32,7 +41,7 @@ export default function UsersPage() {
   };
 
   useEffect(() => {
-    fetchUsers();
+    fetchUsers(1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -191,6 +200,7 @@ export default function UsersPage() {
           </table>
         </div>
       </div>
+      <AdminPagination page={page} totalPages={totalPages} total={totalItems} limit={LIMIT} onPageChange={(p) => { setPage(p); fetchUsers(p); }} />
     </div>
   );
 }

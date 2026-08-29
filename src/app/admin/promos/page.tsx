@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import AdminPagination from "@/components/AdminPagination";
 
 interface Promo {
   id: number;
@@ -23,14 +24,22 @@ export default function AdminPromosPage() {
   const [form, setForm] = useState({ code: "", discount_percent: 10, min_order_amount: 0, max_uses: "", expires_at: "" });
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState("");
+  const [page, setPage] = useState(1);
+  const [totalItems, setTotalItems] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
+  const LIMIT = 20;
 
   const token = typeof window !== "undefined" ? localStorage.getItem("token") || "" : "";
 
-  const fetchPromos = async () => {
+  const fetchPromos = async (pageNum = page) => {
     try {
-      const res = await fetch("/api/admin/promos", { headers: { Authorization: `Bearer ${token}` } });
-      const data = await res.json();
-      setPromos(Array.isArray(data) ? data : []);
+      const res = await fetch(`/api/admin/promos?page=${pageNum}&limit=${LIMIT}`, { headers: { Authorization: `Bearer ${token}` } });
+      const result = await res.json();
+      setPromos(Array.isArray(result.data) ? result.data : Array.isArray(result) ? result : []);
+      if (result.total !== undefined) {
+        setTotalItems(result.total);
+        setTotalPages(result.totalPages || 1);
+      }
     } catch {
       // ignore
     } finally {
@@ -39,7 +48,7 @@ export default function AdminPromosPage() {
   };
 
   useEffect(() => {
-    fetchPromos();
+    fetchPromos(1);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -263,6 +272,7 @@ export default function AdminPromosPage() {
           </table>
         </div>
       )}
+      <AdminPagination page={page} totalPages={totalPages} total={totalItems} limit={LIMIT} onPageChange={(p) => { setPage(p); fetchPromos(p); }} />
     </div>
   );
 }
