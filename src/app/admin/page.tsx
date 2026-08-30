@@ -37,7 +37,10 @@ export default function AdminDashboard() {
     fetch("/api/admin/stats", {
       headers: { Authorization: `Bearer ${token}` },
     })
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to fetch");
+        return res.json();
+      })
       .then((data) => {
         setStats(data);
         setLoading(false);

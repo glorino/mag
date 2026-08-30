@@ -34,7 +34,10 @@ export default function AnalyticsPage() {
 
   useEffect(() => {
     fetch(`/api/admin/analytics?period=${period}`, { headers: { Authorization: `Bearer ${token}` } })
-      .then((r) => r.json())
+      .then((r) => {
+        if (!r.ok) throw new Error("Failed to fetch");
+        return r.json();
+      })
       .then((d) => { setData(d); setLoading(false); })
       .catch(() => setLoading(false));
   }, [token, period]);

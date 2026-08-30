@@ -44,3 +44,22 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Failed to create category" }, { status: 500 });
   }
 }
+
+export async function PUT(request: Request) {
+  const admin = await requireAdmin(request);
+  if (!admin) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  try {
+    const body = await request.json();
+    const { sort_order } = body;
+    if (!Array.isArray(sort_order)) {
+      return NextResponse.json({ error: "Invalid sort order" }, { status: 400 });
+    }
+    const sql = getSql();
+    for (let i = 0; i < sort_order.length; i++) {
+      await sql`UPDATE categories SET sort_order = ${i} WHERE id = ${sort_order[i]}`;
+    }
+    return NextResponse.json({ success: true });
+  } catch {
+    return NextResponse.json({ error: "Failed to update sort order" }, { status: 500 });
+  }
+}

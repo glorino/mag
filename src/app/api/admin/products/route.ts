@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getAllProducts, createProduct } from "@/lib/queries";
+import { createProduct } from "@/lib/queries";
 import { requireAdmin } from "@/lib/auth";
 import getSql from "@/lib/database";
 

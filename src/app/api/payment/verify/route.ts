@@ -52,11 +52,15 @@ export async function GET(request: NextRequest) {
     let items = [];
     let address = "";
     let userId: number | undefined;
+    let promoCode = "";
+    let discountAmount = 0;
     try {
       items = JSON.parse(txData.meta?.items || "[]");
       address = txData.meta?.address || "";
       const uid = txData.meta?.user_id;
       if (uid) userId = parseInt(uid);
+      promoCode = txData.meta?.promo_code || "";
+      discountAmount = Number(txData.meta?.discount_amount) || 0;
     } catch {
       items = [];
     }
@@ -78,7 +82,9 @@ export async function GET(request: NextRequest) {
       }
     }
 
-    if (validatedTotal > 0 && validatedTotal !== txData.amount) {
+    // Price validation: account for promo discount
+    const expectedAmount = promoCode ? validatedTotal - discountAmount : validatedTotal;
+    if (validatedTotal > 0 && Math.abs(expectedAmount - txData.amount) > 0.01) {
       return NextResponse.json(
         { success: false, error: "Payment verification failed" },
         { status: 400 }
@@ -100,6 +106,15 @@ export async function GET(request: NextRequest) {
     // Decrement stock using validated items (not raw metadata)
     interface StockItem { id: number; quantity: number; }
     await decrementStock(validatedItems.map((item: StockItem) => ({ id: item.id, quantity: item.quantity })));
+
+    // Increment promo code used_count after successful order
+    if (promoCode) {
+      try {
+        await sql`UPDATE promo_codes SET used_count = used_count + 1 WHERE code = ${promoCode}`;
+      } catch {
+        // Non-critical: log but don't fail the order
+      }
+    }
 
     return NextResponse.json({
       success: true,

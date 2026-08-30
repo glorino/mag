@@ -59,7 +59,7 @@ export default function SubscribersPage() {
         <div>
           <h1 className="text-2xl font-bold text-white">Subscribers</h1>
           <p className="text-white/50 text-sm mt-1">
-            {subscribers.length} total subscriber{subscribers.length !== 1 ? "s" : ""}
+            {totalItems} total subscriber{totalItems !== 1 ? "s" : ""}
           </p>
         </div>
       </div>
